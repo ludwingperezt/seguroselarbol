@@ -15,11 +15,11 @@ import java.util.logging.Logger;
  * @author HP G42
  */
 public class Conexion {
-    private static String baseDatos = "aseguradora";
-    private static String usuario = "root";
-    private static String password = "";
-    private static String direccionServidor = "jdbc:mysql://localhost/"+baseDatos;
-    private static String nombreServidor = "localhost";
+    private static String baseDatos = "seguroselarbol";
+    private static String usuario = "seguroselarbol";
+    private static String password = "seguroselarbol";
+    private static String direccionServidor = "jdbc:mysql://www.freesql.org/"+baseDatos;
+    private static String nombreServidor = "www.freesql.org";
     private static Connection conexionDB = null;
     
     public static String iniciarConexion(){
@@ -44,9 +44,6 @@ public class Conexion {
     }
     public static Connection obtenerConexion()
     {
-        double jjj;
-        Date djdj;
-        
         return conexionDB;
     }
 

@@ -83,6 +83,8 @@ public class AseguradoraView extends FrameView {
                 }
             }
         });
+        //conexion con la base de datos
+        JOptionPane.showMessageDialog(jTextPane1,Conexion.iniciarConexion() , "Conexion base de datos", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Action
@@ -122,6 +124,11 @@ public class AseguradoraView extends FrameView {
         progressBar = new javax.swing.JProgressBar();
 
         mainPanel.setName("mainPanel"); // NOI18N
+        mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                mainPanelComponentShown(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(AseguradoraView.class);
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
@@ -248,13 +255,13 @@ public class AseguradoraView extends FrameView {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        /*
+        
         javax.swing.Action actions[] = jTextPane1.getActions();
         javax.swing.Action copiar = buskr(actions, DefaultEditorKit.copyAction);
         JButton btn=new JButton(copiar);
         btn.setSize(120,25);
         mainPanel.add(btn);
-        mainPanel.updateUI();*/
+        mainPanel.updateUI();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -264,8 +271,13 @@ public class AseguradoraView extends FrameView {
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
         // TODO add your handling code here:
-         JOptionPane.showMessageDialog(jTextPane1,Conexion.iniciarConexion() , "Conexion base de datos", JOptionPane.INFORMATION_MESSAGE);
+         
     }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void mainPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mainPanelComponentShown
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_mainPanelComponentShown
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
