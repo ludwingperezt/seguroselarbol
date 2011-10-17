@@ -9,6 +9,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,8 +23,8 @@ public class Conexion {
     private static String nombreServidor = "www.freesql.org";
     private static Connection conexionDB = null;
     
-    public static String iniciarConexion(){
-        String bandera;
+    public static Connection iniciarConexion(){
+        conexionDB =null;
         try {
             //Class.forName("com.mysql.jdbc.Driver");
             //conexionDB = DriverManager.getConnection(direccionServidor, usuario, password);
@@ -33,14 +34,16 @@ public class Conexion {
             origenDatos.setUser(usuario);
             origenDatos.setPassword(password);
             origenDatos.setServerName(nombreServidor);
+            System.out.println("Conexion establecida con la base de datos");
             conexionDB = origenDatos.getConnection();
-            bandera="Conexion establecida con la base de datos";
+            //bandera="Conexion establecida con la base de datos";
 
         } catch (Exception ex) {
             //Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-            bandera = ex.getMessage();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //bandera = ex.getMessage();
         }
-        return bandera;
+        return conexionDB;
     }
     public static Connection obtenerConexion()
     {
