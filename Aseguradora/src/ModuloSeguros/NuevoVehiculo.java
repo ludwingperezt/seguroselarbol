@@ -8,7 +8,7 @@
  *
  * Created on 17/10/2011, 06:10:35 PM
  */
-package aseguradora;
+package ModuloSeguros;
 
 /**
  *
