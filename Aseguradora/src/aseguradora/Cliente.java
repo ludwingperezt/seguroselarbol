@@ -10,6 +10,9 @@
  */
 package aseguradora;
 import CapaNegocios.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
@@ -245,18 +248,22 @@ public class Cliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        CapaNegocios.Cliente unCliente=new CapaNegocios.Cliente();
-        unCliente.setDPI(jTextField1.getText());
-        unCliente.setNIT(jTextField2.getText());
-        unCliente.setNombres(jTextField3.getText());
-        unCliente.setApellidos(jTextField4.getText());
-        unCliente.setDireccion(jTextField5.getText());
-        unCliente.setTelefono(jFormattedTextField1.getText());
-        unCliente.setCelular(jTextField5.getText());
-        unCliente.setFechaNacimiento(jFormattedTextField1.getText());
-        unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????
-        unCliente.setCliente();
+        try {
+            // TODO add your handling code here:
+            CapaNegocios.Cliente unCliente=new CapaNegocios.Cliente();
+            unCliente.setDPI(jTextField1.getText());
+            unCliente.setNIT(jTextField2.getText());
+            unCliente.setNombres(jTextField3.getText());
+            unCliente.setApellidos(jTextField4.getText());
+            unCliente.setDireccion(jTextField5.getText());
+            unCliente.setTelefono(jFormattedTextField1.getText());
+            unCliente.setCelular(jTextField5.getText());
+            unCliente.setFechaNacimiento(jFormattedTextField1.getText());
+            unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????
+            unCliente.setCliente();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
