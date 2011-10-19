@@ -98,16 +98,20 @@ public class SeguroAuto {
     }
     public static  SeguroAuto [] consultarListaSeguros() throws SQLException{
         ArrayList<SeguroAuto> lista = new ArrayList<SeguroAuto>();
+        
         Connection con = (Connection) Conexion.obtenerConexion();
         Statement st = (Statement) con.createStatement();
         String consulta = "SELECT idSeguroAuto,Descripcion FROM SeguroAuto";
+        
         ResultSet rs = st.executeQuery(consulta);
+        
         while (rs.next()){
             SeguroAuto i = new SeguroAuto();
             i.setIdSeguroAuto((Integer)rs.getObject(1));
             i.setDescripcion(rs.getString(2));
             lista.add(i);
         }
+        
         SeguroAuto []a = new SeguroAuto[lista.size()];
         a = lista.toArray(a);
         return a;

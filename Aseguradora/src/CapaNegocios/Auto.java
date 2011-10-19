@@ -1,8 +1,24 @@
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 
 public class Auto {
 
+    
     private int idAuto;
 
     private String tipoVehiculo;
@@ -21,7 +37,7 @@ public class Auto {
 
     private int Ejes;
 
-    private byte fotografia;
+    private File fotografia;
 
     public Auto () {
     }
@@ -58,11 +74,11 @@ public class Auto {
         this.NumeroMotor = val;
     }
 
-    public byte getFotografia () {
+    public File getFotografia () {
         return fotografia;
     }
 
-    public void setFotografia (byte val) {
+    public void setFotografia (File val) {
         this.fotografia = val;
     }
 
@@ -105,6 +121,69 @@ public class Auto {
     public void setTipoVehiculo (String val) {
         this.tipoVehiculo = val;
     }
+    public Auto insertarAutoEnBD() {
+        try{
+            FileInputStream bf = new FileInputStream(fotografia);
+            Connection con = (Connection) Conexion.obtenerConexion();
+            
+            java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Auto WRITE;");
+            comandos.execute();
+            
+            String cadena = "INSERT INTO (TipoVehiculo, Marca, Modelo, Placas, NumeroMotor, NumeroChasis, Color, NumeroEjes, Fotografia) VALUES ("
+                    +"'"+this.tipoVehiculo+"',"
+                    +"'"+this.marca+"',"
+                    +"'"+this.modelo+"',"
+                    +"'"+this.placas+"',"
+                    +"'"+this.NumeroMotor+"',"
+                    +"'"+this.NumeroChasis+"',"
+                    +"'"+this.Color+"',"
+                    +"'"+Integer.toString(this.Ejes)+"',"
+                    +"?)";
+            comandos = con.prepareStatement(cadena);
+            comandos.setBlob(1, bf);
+            comandos.execute();
+            
+            comandos = con.prepareStatement("SELECT max(idAuto) FROM Auto");
+            ResultSet rs = comandos.executeQuery();
+            rs.next();
+            this.idAuto = rs.getInt(1);
+            
+            comandos = con.prepareStatement("UNLOCK TABLES;");
+            
+            bf.close();
+            comandos.close();
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+            
+        return this;
+    }
+    
+    public static Auto[] consultarAutoPorCliente(Cliente actualCliente) throws SQLException {
+        ArrayList<Auto> ls = new ArrayList<Auto>();
+        
+        String consulta = "select idAuto,TipoVehiculo,Marca,Modelo,Placas from ClienteSeguro as cs inner join ContratoAuto as ca on cs.ContratoAuto_idContratoAuto = ca.idContratoAuto inner join Auto as a on a.idAuto = ca.Auto_idAuto where cs.Cliente_idAgente = ? and cs.ContratoAuto_idContratoAuto is not null;";
+        
+        Connection cn = (Connection) Conexion.obtenerConexion();
+        PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
+        ps.setInt(1, actualCliente.getIdCliente());
+        ResultSet rs =  ps.executeQuery();
+        
+        while(rs.next()){
+            Auto x = new Auto();
+            x.setIdAuto(rs.getInt(1));
+            x.setTipoVehiculo(rs.getString(2));
+            x.setMarca(rs.getString(3));
+            x.setModelo(rs.getString(4));
+            x.setPlacas(rs.getString(5));
+            ls.add(x);
+        }
+        Auto [] lista = new Auto[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;        
+    }
+
 
 }
 

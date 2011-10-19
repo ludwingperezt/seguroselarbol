@@ -2,16 +2,19 @@ package CapaNegocios;
 
 //import java.util.*;
 import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Cliente {
 
+    
     private int idCliente;
 
     private String DPI;
@@ -170,5 +173,29 @@ public class Cliente {
         Conexion.obtenerConexion().close();
         return true;
     }
+    
+    public static Cliente[] consultarListaClientes() throws SQLException {
+        Cliente[] lista;
+        
+        ArrayList<Cliente> ls = new ArrayList<Cliente>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT idCliente, Nombres, Apellidos FROM Cliente";
+        
+        ResultSet rs = cmd.executeQuery(consulta);
+        
+        while(rs.next()){
+            Cliente x = new Cliente();
+            x.setIdCliente(rs.getInt(1));
+            x.setNombres(rs.getString(2));
+            x.setApellidos(rs.getString(3));
+            ls.add(x);
+        }
+        
+        lista = new Cliente[ls.size()];
+        lista = ls.toArray(lista);        
+        return lista;
+    }
+
 }
 
