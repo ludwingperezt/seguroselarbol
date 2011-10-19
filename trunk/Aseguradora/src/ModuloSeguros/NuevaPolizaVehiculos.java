@@ -10,9 +10,11 @@
  */
 package ModuloSeguros;
 import CapaNegocios.*;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author HP G42
@@ -23,16 +25,39 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
     private  SeguroAuto [] listaAutosPorCliente = null;
     private Cliente[] listaClientes = null;
     private Auto[] listaAuto = null;
+    private SeguroAuto[] listaSeguros = null;
+    private Auto actual = null;
+    private Cliente actualCliente = null;
+    private SeguroAuto actualSeguro = null;
     
     public NuevaPolizaVehiculos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         try {
             jComboBox1.removeAllItems();
-            SeguroAuto[] lista = SeguroAuto.consultarListaSeguros();
-            for (SeguroAuto i: lista){
-                jComboBox1.addItem(i.getDescripcion());
+            listaSeguros = SeguroAuto.consultarListaSeguros();
+            if (listaSeguros.length>0){
+                for (SeguroAuto i: listaSeguros){
+                    jComboBox1.addItem(i.getDescripcion());
+                }
             }
+            else{
+                JOptionPane.showMessageDialog(parent, "No existe ningun seguro. Solicite al administrador la insersión de un nuevo seguro", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            //clientes: asumo que ya hay clientes en la db
+            jComboBox2.removeAllItems();
+            listaClientes = Cliente.consultarListaClientes();
+            if (listaClientes.length>0){
+                for (Cliente i: listaClientes){
+                    jComboBox2.addItem(i.getNombres()+" "+i.getApellidos());
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(parent, "No existe ningun cliente. Inserte un nuevo cliente", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(NuevaPolizaVehiculos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,8 +104,12 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.setName("jComboBox1"); // NOI18N
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevaPolizaVehiculos.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -92,20 +121,48 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.setName("jComboBox2"); // NOI18N
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox3.setName("jComboBox3"); // NOI18N
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
@@ -163,6 +220,11 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
 
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setName("jButton4"); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -222,11 +284,11 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
                         .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(61, 61, 61))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(336, Short.MAX_VALUE)
+                .addContainerGap(388, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addGap(106, 106, 106))
+                .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,13 +347,92 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton3))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try{
+            ContratoAuto ca = new ContratoAuto();
+            ca.setDescripcion(jTextField1.getText());
+            ca.setFechaContrato( Date.valueOf( jTextField2.getText()));
+            ca.setFechaPago(Date.valueOf(jTextField3.getText()));
+            ca.setAño(Date.valueOf(jTextField4.getText()));
+            ca.setMora(Double.parseDouble(jTextField5.getText()));
+            ca.setValor(Double.parseDouble(jTextField6.getText()));
+            ca.setVencimiento(Date.valueOf(jTextField7.getText()));
+            ca.setNumeroPagos(Integer.parseInt(jTextField8.getText()));
+            ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
+            ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
+        }
+        catch(Exception ex){
+            
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        /*
+        aseguradora.Cliente nc = new aseguradora.Cliente();
+        nc.setVisible(true);*/
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            //JOptionPane.showMessageDialog(rootPane, jComboBox2.getSelectedItem());
+            //asumo que ya hay vehiculos para esta persona
+            actualCliente = listaClientes[jComboBox2.getSelectedIndex()];
+            jComboBox3.removeAllItems();
+            listaAuto = Auto.consultarAutoPorCliente(actualCliente);
+            if (listaAuto.length>0){
+                for (Auto i: listaAuto){
+                    jComboBox3.addItem(i.getMarca()+" "+i.getModelo()+" "+i.getPlacas());
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "No existe ningun vehiculo para este cliente. Inserte un nuevo vehiculo", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NuevaPolizaVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        NuevoVehiculo nv = new NuevoVehiculo(null, true);
+        this.actual = nv.insertarYDevolver();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        //asumo que ya existen seguros
+        int index = jComboBox1.getSelectedIndex();
+        actualSeguro = listaSeguros[index];
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+        actual = listaAuto[jComboBox3.getSelectedIndex()];
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**
      * @param args the command line arguments
