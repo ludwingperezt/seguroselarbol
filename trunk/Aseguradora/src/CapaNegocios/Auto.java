@@ -121,15 +121,14 @@ public class Auto {
     public void setTipoVehiculo (String val) {
         this.tipoVehiculo = val;
     }
-    public Auto insertarAutoEnBD() {
-        try{
-            FileInputStream bf = new FileInputStream(fotografia);
+    public Auto insertarAutoEnBD() throws SQLException {
+        FileInputStream bf = null;
+        try {
             Connection con = (Connection) Conexion.obtenerConexion();
-            
+            bf = new FileInputStream(fotografia);
             java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Auto WRITE;");
             comandos.execute();
-            
-            String cadena = "INSERT INTO (TipoVehiculo, Marca, Modelo, Placas, NumeroMotor, NumeroChasis, Color, NumeroEjes, Fotografia) VALUES ("
+            String cadena = "INSERT INTO Auto (TipoVehiculo, Marca, Modelo, Placas, NumeroMotor, NumeroChasis, Color, NumeroEjes, Fotografia) VALUES ("
                     +"'"+this.tipoVehiculo+"',"
                     +"'"+this.marca+"',"
                     +"'"+this.modelo+"',"
@@ -142,28 +141,29 @@ public class Auto {
             comandos = con.prepareStatement(cadena);
             comandos.setBlob(1, bf);
             comandos.execute();
-            
             comandos = con.prepareStatement("SELECT max(idAuto) FROM Auto");
             ResultSet rs = comandos.executeQuery();
             rs.next();
             this.idAuto = rs.getInt(1);
-            
             comandos = con.prepareStatement("UNLOCK TABLES;");
-            
-            bf.close();
             comandos.close();
-        }
-        catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
             
+                bf.close();
+             
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } 
+        catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         return this;
     }
     
     public static Auto[] consultarAutoPorCliente(Cliente actualCliente) throws SQLException {
         ArrayList<Auto> ls = new ArrayList<Auto>();
         
-        String consulta = "select idAuto,TipoVehiculo,Marca,Modelo,Placas from ClienteSeguro as cs inner join ContratoAuto as ca on cs.ContratoAuto_idContratoAuto = ca.idContratoAuto inner join Auto as a on a.idAuto = ca.Auto_idAuto where cs.Cliente_idAgente = ? and cs.ContratoAuto_idContratoAuto is not null;";
+        String consulta = "select distinct idAuto,TipoVehiculo,Marca,Modelo,Placas from ClienteSeguro as cs inner join ContratoAuto as ca on cs.ContratoAuto_idContratoAuto = ca.idContratoAuto inner join Auto as a on a.idAuto = ca.Auto_idAuto where cs.Cliente_idAgente = ? and cs.ContratoAuto_idContratoAuto is not null;";
         
         Connection cn = (Connection) Conexion.obtenerConexion();
         PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
