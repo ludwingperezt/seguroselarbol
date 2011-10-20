@@ -361,22 +361,24 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        try{
-            ContratoAuto ca = new ContratoAuto();
-            ca.setDescripcion(jTextField1.getText());
-            ca.setFechaContrato( Date.valueOf( jTextField2.getText()));
-            ca.setFechaPago(Date.valueOf(jTextField3.getText()));
-            ca.setAño(Date.valueOf(jTextField4.getText()));
-            ca.setMora(Double.parseDouble(jTextField5.getText()));
-            ca.setValor(Double.parseDouble(jTextField6.getText()));
-            ca.setVencimiento(Date.valueOf(jTextField7.getText()));
-            ca.setNumeroPagos(Integer.parseInt(jTextField8.getText()));
-            ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
-            ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
-        }
-        catch(Exception ex){
+        try {
+            // TODO add your handling code here:
             
+                ContratoAuto ca = new ContratoAuto();
+                ca.setDescripcion(jTextField1.getText());
+                ca.setFechaContrato( Date.valueOf( jTextField2.getText()));
+                ca.setFechaPago(Date.valueOf(jTextField3.getText()));
+                ca.setAño(Date.valueOf(jTextField4.getText()));
+                ca.setMora(Double.parseDouble(jTextField5.getText()));
+                ca.setValor(Double.parseDouble(jTextField6.getText()));
+                ca.setVencimiento(Date.valueOf(jTextField7.getText()));
+                ca.setNumeroPagos(Integer.parseInt(jTextField8.getText()));
+                ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
+                ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
+                //hay que agregar un informe para imprimir con los datos de la nueva poliza!!!!!!!!!
+                JOptionPane.showMessageDialog(rootPane, "Ya puede cerrar esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -403,6 +405,7 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
             listaAuto = Auto.consultarAutoPorCliente(actualCliente);
             if (listaAuto.length>0){
                 for (Auto i: listaAuto){
+                    
                     jComboBox3.addItem(i.getMarca()+" "+i.getModelo()+" "+i.getPlacas());
                 }
             }

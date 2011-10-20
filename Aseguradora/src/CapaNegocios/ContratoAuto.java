@@ -3,6 +3,7 @@ package CapaNegocios;
 import CapaDatos.Conexion;
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import java.beans.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -144,11 +145,12 @@ public class ContratoAuto {
         this.vencimiento = val;
     }
 
-    public void insertarContraroAuto(SeguroAuto actualSeguro, Cliente actualCliente, Auto actual, ContratoAuto ca) {
-        try {
-            Connection con = (Connection) Conexion.obtenerConexion();
+    public void insertarContraroAuto(SeguroAuto actualSeguro, Cliente actualCliente, Auto actual, ContratoAuto ca) throws SQLException {
+       Connection con = (Connection) Conexion.obtenerConexion();
+
             
-            CallableStatement funcion = (CallableStatement) con.prepareCall("{SELECT insersionNuevaPolizaAutoRetorno(?,?,?,?,?,?,?,?,?,?)}");
+            PreparedStatement cmd = (PreparedStatement) con.prepareStatement("SELECT insersionNuevaPolizaAutoRetorno(?,?,?,?,?,?,?,?,?,?)");
+            CallableStatement funcion;
             /*
              * 1 idSeguro int,
              * 2 idAuto int,
@@ -161,19 +163,20 @@ public class ContratoAuto {
              * 9 pagos int,
              * 10 montoPago decimal)
              */
-            funcion.setInt(1, actualSeguro.getIdSeguroAuto());
-            funcion.setInt(2, actual.getIdAuto());
-            funcion.setString(3, descripcion);
-            funcion.setDate(4, fechaContrato);
-            funcion.setDate(5, fechaPago);
-            funcion.setDouble(6, mora);
-            funcion.setDouble(7, valor);
-            funcion.setDate(8, vencimiento);
-            funcion.setInt(9, numeroPagos);
-            funcion.setDouble(10, montoPagoSeguro);
-            
-            if (funcion.execute()){
-                ResultSet rs = funcion.getResultSet();
+            cmd.setInt(1,  actualSeguro.getIdSeguroAuto());
+            cmd.setInt(2, actual.getIdAuto());
+            cmd.setString(3, descripcion);
+            cmd.setDate(4, fechaContrato);
+            cmd.setDate(5, fechaPago);
+            cmd.setDouble(6, mora);
+            cmd.setDouble(7, valor);
+            cmd.setDate(8, vencimiento);
+            cmd.setInt(9, numeroPagos);
+            cmd.setDouble(10, montoPagoSeguro);
+           
+            if (cmd.execute()){
+                ResultSet rs = cmd.getResultSet();
+                boolean next = rs.next();
                 int indexContrato = rs.getInt(1);
                 //insertarTuplaSeguroAutoClienteSeguro(agente int, cliente int, contratoAuto int)
                 funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroAutoClienteSeguro(?,?,?)}");
@@ -181,11 +184,9 @@ public class ContratoAuto {
                 funcion.setInt(2, actualCliente.getIdCliente());
                 funcion.setInt(3, indexContrato);
                 boolean execute = funcion.execute();
-            }            
-        } catch (SQLException ex) {
-            
-        }
-        
+            }  
+       
+
     }
 
 }

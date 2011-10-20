@@ -81,7 +81,7 @@ public class SeguroAuto {
     }
 
     public void insertarEnBaseDeDatos() throws SQLException {
-        Connection con = (Connection) Conexion.obtenerConexion();
+        Connection con = (Connection) Conexion.obtenerConexion();        
         Statement st = (Statement) con.createStatement();
         String sentencia = "INSERT INTO SeguroAuto (TipoSeguro,Descripcion,Prima,Serie,Correlativo) VALUES ("
                 +String.valueOf(this.tipoSeguro+1)+","
