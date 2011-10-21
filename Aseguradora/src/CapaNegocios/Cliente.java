@@ -159,7 +159,7 @@ public class Cliente {
     }
     
     
-    public boolean setCliente() throws SQLException
+    public boolean guardarCliente() throws SQLException
     {
         try {
             Statement st=(Statement) Conexion.iniciarConexion().createStatement();

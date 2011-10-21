@@ -260,7 +260,7 @@ public class Cliente extends javax.swing.JFrame {
             unCliente.setCelular(jTextField5.getText());
             unCliente.setFechaNacimiento(jFormattedTextField1.getText());
             unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????
-            unCliente.setCliente();
+            unCliente.guardarCliente();
         } catch (SQLException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
