@@ -10,6 +10,7 @@
  */
 package ModuloClientes;
 
+import CapaNegocios.Cliente;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,9 @@ import java.util.logging.Logger;
  * @author ROLANDO
  */
 public class Clientes extends javax.swing.JDialog {
-
+    
+    CapaNegocios.Cliente unCliente=new CapaNegocios.Cliente();
+    
     /** Creates new form Clientes */
     public Clientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -124,7 +127,6 @@ public class Clientes extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 581, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,20 +234,32 @@ public class Clientes extends javax.swing.JDialog {
 
         try {             // TODO add your handling code here:             CapaNegocios.Cliente unCliente = new CapaNegocios.Cliente();             unCliente.setDPI(jTextField1.getText());             unCliente.setNIT(jTextField2.getText());             unCliente.setNombres(jTextField3.getText());             unCliente.setApellidos(jTextField4.getText());             unCliente.setDireccion(jTextField5.getText());             unCliente.setTelefono(jFormattedTextField1.getText());             unCliente.setCelular(jTextField5.getText());             unCliente.setFechaNacimiento(jFormattedTextField1.getText());             unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????             unCliente.setCliente();         } catch (SQLException ex) {             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);         }     }//GEN-LAST:event_jButton1ActionPerformed
             // TODO add your handling code here:
-            CapaNegocios.Cliente unCliente=new CapaNegocios.Cliente();
+            
             unCliente.setDPI(jTextField1.getText());
             unCliente.setNIT(jTextField2.getText());
             unCliente.setNombres(jTextField3.getText());
             unCliente.setApellidos(jTextField4.getText());
             unCliente.setDireccion(jTextField5.getText());
-            unCliente.setTelefono(jFormattedTextField1.getText());
-            unCliente.setCelular(jTextField5.getText());
+            unCliente.setTelefono(jTextField6.getText());
+            unCliente.setCelular(jTextField7.getText());
             unCliente.setFechaNacimiento(jFormattedTextField1.getText());
-            unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????
-            unCliente.setCliente();
+            unCliente.setEdad(Integer.valueOf(jTextField9.getText())); //calcular edad????
+            unCliente.guardarCliente();
         } catch (SQLException ex) {
             Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public Cliente mostrar()
+    {
+        this.setVisible(true);
+        return unCliente;
+    }
+    
+    public void modificar(Cliente modC)
+    {
+        unCliente=modC;
+        llenar();
     }
     /**
      * @param args the command line arguments
@@ -312,4 +326,16 @@ public class Clientes extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
+
+    private void llenar() {
+        jTextField1.setText(unCliente.getDPI());
+        jTextField2.setText(unCliente.getNIT());
+        jTextField3.setText(unCliente.getNombres());
+        jTextField4.setText(unCliente.getApellidos());
+        jTextField5.setText(unCliente.getDireccion());
+        jTextField5.setText(unCliente.getTelefono()); 
+        jTextField6.setText(unCliente.getCelular());
+        jFormattedTextField1.setText(unCliente.getFechaNacimiento().toString());
+        jTextField9.setText(String.valueOf(unCliente.getEdad())); //calcular edad????
+    }
 }
