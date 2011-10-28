@@ -2,6 +2,7 @@ package CapaNegocios;
 
 import CapaDatos.Conexion;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,8 +44,21 @@ public class Beneficiario extends Cliente {
         this.idContratoVida = val;
     }
     
-    public void insertarBeneficiarioBaseDatos(){
+    public void insertarBeneficiarioBaseDatos() throws SQLException{
+        //hay que arreglar esto!!!!!!!!!!!!!!!!! hay que crear una tabla intermedia entre Beneficiarios y ContratoVida, por ahora queda asi
+        Connection con = (Connection) Conexion.obtenerConexion();
+        PreparedStatement insertarBeneficiario = (PreparedStatement)con.prepareStatement("INSERT INTO Beneficiarios (ContratoVida_idContratoVida,DPI, Nombres,Apellidos, FechaNacimiento, Direccion, Telefono, Celular) values (?,?,?,?,?,?,?,?)");
+        insertarBeneficiario.setInt(1, this.idContratoVida);
+        insertarBeneficiario.setString(2, DPI);
+        insertarBeneficiario.setString(3, Nombres);
+        insertarBeneficiario.setString(4, Apellidos);
+        insertarBeneficiario.setDate(5, fechaNacimiento);
+        insertarBeneficiario.setString(6, Direccion);
+        insertarBeneficiario.setString(7, Telefono);
+        insertarBeneficiario.setString(8, Celular);
         
+        boolean ex = insertarBeneficiario.execute();
+        insertarBeneficiario.close();
     }
     
     public static Beneficiario[] listaBeneficiarios() throws SQLException{
@@ -52,7 +66,7 @@ public class Beneficiario extends Cliente {
         ArrayList<Beneficiario> ls = new ArrayList<Beneficiario>();
         Connection con = (Connection) Conexion.obtenerConexion();
         Statement cmd = (Statement) con.createStatement();
-        String consulta = "SELECT distinct idBeneficiarios,DPI,Nombres,Apellidos FROM Beneficiarios";
+        String consulta = "SELECT distinct idBeneficiarios,DPI,Nombres,Apellidos, FechaNacimiento, Direccion, Telefono, Celular FROM Beneficiarios";
         
         ResultSet rs = cmd.executeQuery(consulta);
 
@@ -64,6 +78,7 @@ public class Beneficiario extends Cliente {
             bf.setApellidos(rs.getString(4));
             ls.add(bf);
         }
+        cmd.close();
         lista = new Beneficiario[ls.size()];
         lista = ls.toArray(lista);
         return lista;

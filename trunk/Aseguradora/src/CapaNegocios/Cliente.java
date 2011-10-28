@@ -15,25 +15,25 @@ import java.util.logging.Logger;
 public class Cliente {
 
     
-    private int idCliente;
+    protected int idCliente;
 
-    private String DPI;
+    protected String DPI;
 
-    private String NIT;
+    protected String NIT;
 
-    private String Nombres;
+    protected String Nombres;
 
-    private String Apellidos;
+    protected String Apellidos;
 
-    private String Direccion;
+    protected String Direccion;
 
-    private String Telefono;
+    protected String Telefono;
 
-    private String Celular;
+    protected String Celular; //"INSERT INTO Beneficiarios (ContratoVida_idContratoVida,DPI, Nombres, Apellidos, FechaNacimiento, Direccion, Telefono, Celular) values ("
 
-    private Date fechaNacimiento;
+    protected Date fechaNacimiento;
 
-    private int edad;
+    protected int edad;
 
     public Cliente () {
     }
