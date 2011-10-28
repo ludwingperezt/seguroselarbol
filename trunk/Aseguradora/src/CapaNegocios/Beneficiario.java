@@ -1,5 +1,12 @@
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 
 public class Beneficiario extends Cliente {
 
@@ -35,6 +42,31 @@ public class Beneficiario extends Cliente {
     public void setIdContratoVida (int val) {
         this.idContratoVida = val;
     }
+    
+    public void insertarBeneficiarioBaseDatos(){
+        
+    }
+    
+    public static Beneficiario[] listaBeneficiarios() throws SQLException{
+        Beneficiario [] lista;
+        ArrayList<Beneficiario> ls = new ArrayList<Beneficiario>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT distinct idBeneficiarios,DPI,Nombres,Apellidos FROM Beneficiarios";
+        
+        ResultSet rs = cmd.executeQuery(consulta);
 
+        while (rs.next()){
+            Beneficiario bf = new Beneficiario();
+            bf.setIdBeneficiario(rs.getInt(1));
+            bf.setDPI(rs.getString(2));
+            bf.setNombres(rs.getString(3));
+            bf.setApellidos(rs.getString(4));
+            ls.add(bf);
+        }
+        lista = new Beneficiario[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;
+    }
 }
 
