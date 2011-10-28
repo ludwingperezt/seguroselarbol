@@ -10,6 +10,7 @@
  */
 package ModuloSeguros;
 import CapaNegocios.*;
+import ModuloClientes.Clientes;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -386,8 +387,13 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         /*
+         * 
         aseguradora.Cliente nc = new aseguradora.Cliente();
         nc.setVisible(true);*/
+        Clientes nc = new Clientes(null, true);
+        this.actualCliente = nc.mostrar();
+        JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo cliente se usarán para la insersión", "Cliente", JOptionPane.INFORMATION_MESSAGE);
+        jComboBox2.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
@@ -400,6 +406,7 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
             // TODO add your handling code here:
             //JOptionPane.showMessageDialog(rootPane, jComboBox2.getSelectedItem());
             //asumo que ya hay vehiculos para esta persona
+            int index = jComboBox2.getSelectedIndex();
             actualCliente = listaClientes[jComboBox2.getSelectedIndex()];
             jComboBox3.removeAllItems();
             listaAuto = Auto.consultarAutoPorCliente(actualCliente);
@@ -423,6 +430,8 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         // TODO add your handling code here:
         NuevoVehiculo nv = new NuevoVehiculo(null, true);
         this.actual = nv.insertarYDevolver();
+        JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo vehiculo se usarán para la insersión", "Vehiculo", JOptionPane.INFORMATION_MESSAGE);
+        jComboBox3.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -434,7 +443,11 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-        actual = listaAuto[jComboBox3.getSelectedIndex()];
+        int index = jComboBox3.getSelectedIndex();
+        if (jComboBox3.getItemCount()>0){
+            actual = listaAuto[jComboBox3.getSelectedIndex()];
+        }
+        
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**
