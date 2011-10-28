@@ -15,7 +15,6 @@ import ModuloClientes.Clientes;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -29,16 +28,18 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     
     private Cliente clienteSeleccionado;
     private SeguroVida seguroSeleccionado;
+    private ContratoVida nuevaPoliza;
+    private ArrayList<Beneficiario> listaBeneficiarios = new ArrayList<Beneficiario>();
+    
     private Cliente [] listaClientes;
     private SeguroVida [] listaSeguros;
-    private ArrayList<Beneficiario> listaBeneficiarios = new ArrayList<Beneficiario>();
     private Beneficiario [] todosBeneficiarios;
     
     /** Creates new form NuevaPolizaVida */
     public NuevaPolizaVida(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        jTextField3.setText(String.valueOf(new java.util.Date()));  
+        //jTextField3.setText(String.valueOf(new java.util.Date()));  
         try {
             listaClientes = Cliente.consultarListaClientes();
             listaSeguros = SeguroVida.consultarListaSegurosVida();
@@ -136,6 +137,11 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         setName("Form"); // NOI18N
 
         jComboBox1.setName("jComboBox1"); // NOI18N
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevaPolizaVida.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -172,7 +178,6 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         jTextField2.setName("jTextField2"); // NOI18N
 
         jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
-        jTextField3.setEnabled(false);
         jTextField3.setName("jTextField3"); // NOI18N
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
@@ -226,6 +231,11 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
 
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setName("jButton4"); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText(resourceMap.getString("jButton5.text")); // NOI18N
         jButton5.setName("jButton5"); // NOI18N
@@ -269,11 +279,11 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField3)
+                                    .addComponent(jTextField5)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
@@ -400,6 +410,32 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.nuevaPoliza = new ContratoVida();
+            nuevaPoliza.setDescripcion(jTextField1.getText());
+            nuevaPoliza.setProfesion(jTextField2.getText());
+            nuevaPoliza.setFechaContrato(Date.valueOf(jTextField3.getText()));
+            nuevaPoliza.setFechaPago(Date.valueOf(jTextField4.getText()));
+            nuevaPoliza.setMora(Double.parseDouble(jTextField5.getText()));
+            nuevaPoliza.setVencimiento(Date.valueOf(jTextField6.getText()));
+            nuevaPoliza.setNumeroPagos(Integer.parseInt(jTextField7.getText()));
+            nuevaPoliza.setMontoPagoSeguro(Double.parseDouble(jTextField8.getText()));
+            nuevaPoliza.insertarEnBaseDeDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiarios);
+        } catch (SQLException ex) {
+            Logger.getLogger(NuevaPolizaVida.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox1.isEnabled()){
+            clienteSeleccionado = listaClientes[jComboBox1.getSelectedIndex()];
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

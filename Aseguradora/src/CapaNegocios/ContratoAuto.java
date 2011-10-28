@@ -4,12 +4,9 @@ import CapaDatos.Conexion;
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import java.beans.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 public class ContratoAuto {
 
     private int idContratoAuto;
