@@ -17,22 +17,12 @@ public class SeguroHogar {
     private String descripcion;
 
     private double prima;
-
-    private double couta;
     
     private int correlativo;
     
     private String serie;
 
     public SeguroHogar () {
-    }
-
-    public double getCouta () {
-        return couta;
-    }
-
-    public void setCouta (double val) {
-        this.couta = val;
     }
 
     public String getDescripcion () {
@@ -90,7 +80,7 @@ public class SeguroHogar {
                 +String.valueOf(prima)+","
                 +"'"+this.serie+"',"
                 +String.valueOf(this.correlativo) +")";
-        st.execute("LOCK TABLE SeguroidaHogar WRITE;");
+        st.execute("LOCK TABLE SeguroHogar WRITE;");
         
         st.execute(sentencia);
         
@@ -102,14 +92,18 @@ public class SeguroHogar {
         
         Connection con = (Connection) Conexion.obtenerConexion();
         Statement st = (Statement) con.createStatement();
-        String consulta = "SELECT idSeguroHogar,Descripcion FROM SeguroHogar";
+        String consulta = "SELECT DISTINCT idSeguroHogar, TipoSeguro, Descripcion, Prima, Serie, Correlativo FROM SeguroHogar";
         
         ResultSet rs = st.executeQuery(consulta);
         
         while (rs.next()){
             SeguroHogar i = new SeguroHogar();
-            i.setIdSeguroHogar((Integer)rs.getObject(1));
-            i.setDescripcion(rs.getString(2));
+            i.setIdSeguroHogar(rs.getInt(1));
+            i.setTipoSeguro(rs.getInt(2));
+            i.setDescripcion(rs.getString(3));
+            i.setPrima(rs.getDouble(4));
+            i.setSerie(rs.getString(5));
+            i.setCorrelativo(rs.getInt(6));
             lista.add(i);
         }
         

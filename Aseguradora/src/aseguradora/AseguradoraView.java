@@ -127,6 +127,9 @@ public class AseguradoraView extends FrameView {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -272,6 +275,29 @@ public class AseguradoraView extends FrameView {
 
         menuBar.add(jMenu3);
 
+        jMenu4.setText(resourceMap.getString("jMenu4.text")); // NOI18N
+        jMenu4.setName("jMenu4"); // NOI18N
+
+        jMenuItem8.setText(resourceMap.getString("jMenuItem8.text")); // NOI18N
+        jMenuItem8.setName("jMenuItem8"); // NOI18N
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem8);
+
+        jMenuItem9.setText(resourceMap.getString("jMenuItem9.text")); // NOI18N
+        jMenuItem9.setName("jMenuItem9"); // NOI18N
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem9);
+
+        menuBar.add(jMenu4);
+
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
@@ -351,27 +377,39 @@ public class AseguradoraView extends FrameView {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        NuevoSeguroVehiculo ventana = new NuevoSeguroVehiculo(null, true);
+        NuevoSeguroVehiculo ventana = new NuevoSeguroVehiculo(this.getFrame(), true);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        NuevaPolizaVehiculos nv = new NuevaPolizaVehiculos(null, true);
+        NuevaPolizaVehiculos nv = new NuevaPolizaVehiculos(this.getFrame(), true);
         nv.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        NuevoSeguroVida nsv = new NuevoSeguroVida(null, true);
+        NuevoSeguroVida nsv = new NuevoSeguroVida(this.getFrame(), true);
         nsv.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
-        NuevaPolizaVida npv = new NuevaPolizaVida(null, true);
+        NuevaPolizaVida npv = new NuevaPolizaVida(this.getFrame(), true);
         npv.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        NuevoSeguroHogar nsh = new NuevoSeguroHogar(this.getFrame(), true);
+        nsh.setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        NuevaPolizaHogar nph = new NuevaPolizaHogar(this.getFrame(), true);
+        nph.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -379,6 +417,7 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -386,6 +425,8 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel mainPanel;
