@@ -29,8 +29,9 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     private Cliente clienteSeleccionado;
     private SeguroVida seguroSeleccionado;
     private ContratoVida nuevaPoliza;
-    private ArrayList<Beneficiario> listaBeneficiarios = new ArrayList<Beneficiario>();
-    
+    private ArrayList<Beneficiario> listaBeneficiariosExistentes = new ArrayList<Beneficiario>();
+    private ArrayList<Beneficiario> listaBeneficiariosNuevos = new ArrayList<Beneficiario>();    
+
     private Cliente [] listaClientes;
     private SeguroVida [] listaSeguros;
     private Beneficiario [] todosBeneficiarios;
@@ -85,8 +86,12 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         int maxSelectionIndex = jList1.getMaxSelectionIndex();
         jList1.removeSelectionInterval(0, maxSelectionIndex);
         DefaultListModel modelo = new DefaultListModel();
-        for (Beneficiario b:todosBeneficiarios){
-            modelo.addElement(b.getNombres()+" "+b.getApellidos());
+        
+        for (Beneficiario i:listaBeneficiariosNuevos){
+            modelo.addElement(i.getNombres()+" "+i.getApellidos());
+        }
+        for (Beneficiario j:listaBeneficiariosExistentes){
+            modelo.addElement(j.getNombres()+" "+j.getApellidos());
         }
         jList1.setModel(modelo);
     }
@@ -204,6 +209,11 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         });
 
         jComboBox2.setName("jComboBox2"); // NOI18N
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
         jLabel10.setName("jLabel10"); // NOI18N
@@ -392,7 +402,8 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (jComboBox2.getItemCount()>0){
-            boolean add = listaBeneficiarios.add(todosBeneficiarios[jComboBox2.getSelectedIndex()]);
+            boolean add = listaBeneficiariosExistentes.add(todosBeneficiarios[jComboBox2.getSelectedIndex()]);
+            actualizarBeneficiarios();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -401,7 +412,8 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         NuevoBeneficiario nb = new NuevoBeneficiario(null, true);
         Beneficiario n = nb.obtenerDatosNuevoBeneficiario();
         if (n!=null){
-            listaBeneficiarios.add(n);
+            listaBeneficiariosNuevos.add(n);
+            actualizarBeneficiarios();
         }
         
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -414,16 +426,30 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             // TODO add your handling code here:
-            this.nuevaPoliza = new ContratoVida();
-            nuevaPoliza.setDescripcion(jTextField1.getText());
-            nuevaPoliza.setProfesion(jTextField2.getText());
-            nuevaPoliza.setFechaContrato(Date.valueOf(jTextField3.getText()));
-            nuevaPoliza.setFechaPago(Date.valueOf(jTextField4.getText()));
-            nuevaPoliza.setMora(Double.parseDouble(jTextField5.getText()));
-            nuevaPoliza.setVencimiento(Date.valueOf(jTextField6.getText()));
-            nuevaPoliza.setNumeroPagos(Integer.parseInt(jTextField7.getText()));
-            nuevaPoliza.setMontoPagoSeguro(Double.parseDouble(jTextField8.getText()));
-            nuevaPoliza.insertarEnBaseDeDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiarios);
+            seguroSeleccionado= listaSeguros[jComboBox2.getSelectedIndex()];
+            if (seguroSeleccionado==null){
+                JOptionPane.showMessageDialog(rootPane, "Debe seleccionar un tipo de seguro", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                if ((listaBeneficiariosExistentes.isEmpty())&&(listaBeneficiariosNuevos.isEmpty())){
+                    JOptionPane.showMessageDialog(rootPane, "Debe seleccionar o crear al menos un beneficiario para este seguro", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else{
+                    this.nuevaPoliza = new ContratoVida();
+                    nuevaPoliza.setDescripcion(jTextField1.getText());
+                    nuevaPoliza.setProfesion(jTextField2.getText());
+                    nuevaPoliza.setFechaContrato(Date.valueOf(jTextField3.getText()));
+                    nuevaPoliza.setFechaPago(Date.valueOf(jTextField4.getText()));
+                    nuevaPoliza.setMora(Double.parseDouble(jTextField5.getText()));
+                    nuevaPoliza.setVencimiento(Date.valueOf(jTextField6.getText()));
+                    nuevaPoliza.setNumeroPagos(Integer.parseInt(jTextField7.getText()));
+                    nuevaPoliza.setMontoPagoSeguro(Double.parseDouble(jTextField8.getText()));
+                    nuevaPoliza.insertarEnBaseDeDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiariosNuevos,listaBeneficiariosExistentes);
+                    JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(NuevaPolizaVida.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -436,6 +462,10 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
             clienteSeleccionado = listaClientes[jComboBox1.getSelectedIndex()];
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments

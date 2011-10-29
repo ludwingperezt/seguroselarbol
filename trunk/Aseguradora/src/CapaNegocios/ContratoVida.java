@@ -126,24 +126,12 @@ public class ContratoVida {
         this.vencimiento = val;
     }
 
-    public void insertarEnBaseDeDatos(Cliente clienteSeleccionado, SeguroVida seguroSeleccionado, ArrayList<Beneficiario> listaBeneficiarios) throws SQLException{
+    public void insertarEnBaseDeDatos(Cliente clienteSeleccionado, SeguroVida seguroSeleccionado, ArrayList<Beneficiario> listaBeneficiariosNuevos,ArrayList<Beneficiario> listaBeneficiariosExistenetes) throws SQLException{
 
-            //insersionNuevaPolizaVidaRetorno
-            /*
-             * idSeguro int,
-                descripcion varchar(45),
-                profesion varchar(45),
-                FechaContrato date,
-                fechapago date, 
-                mora decimal, 
-                vencimiento date, 
-                pagos int,
-                montoPago decimal
-             */
             Connection con = (Connection) Conexion.obtenerConexion();            
             Statement comando = (Statement) con.createStatement();            
             PreparedStatement cmd = (PreparedStatement) con.prepareStatement("SELECT insersionNuevaPolizaVidaRetorno(?,?,?,?,?,?,?,?,?)");
-            PreparedStatement insertarBeneficiario = (PreparedStatement)con.prepareStatement("INSERT INTO Beneficiarios (ContratoVida_idContratoVida,DPI, Nombres,Apellidos, FechaNacimiento, Direccion, Telefono, Celular) values (?,?,?,?,?,?,?,?)");
+            
             CallableStatement funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroVidaClienteSeguro(?,?,?)}");
             
         try {            
@@ -157,25 +145,20 @@ public class ContratoVida {
             cmd.setInt(8, this.numeroPagos);
             cmd.setDouble(9, this.montoPagoSeguro);
             //insertarTuplaSeguroVidaClienteSeguro-agente int, cliente int, contratoVida int
+   
+            boolean execute = comando.execute("Begin;");  //inicia la transaccion
             
-            
-            
-            boolean execute = comando.execute("Begin;");
-            
-            execute = comando.execute("LOCK TABLE ContratoVida;");
-            
-            execute = cmd.execute(); //ejecuta la llamada a la funcion de insersión de contrato vida
-            
+            execute = cmd.execute(); //ejecuta la llamada a la funcion de insersión de contrato vida            
             ResultSet rs = cmd.getResultSet(); //obtene el resultado de la consulta
             execute = rs.next();
-            this.setIdContratoVida(rs.getInt(1)); //ese resultado lo almacena en una variable
-            execute = comando.execute("UNLOCK TABLES;"); //desbloquea la tabla
+            this.setIdContratoVida(rs.getInt(1)); //ese resultado lo almacena en una variable, es el id del ultimo registro insertado
             
             funcion.setInt(1, aseguradora.AseguradoraView.idEmpleado);
             funcion.setInt(2, clienteSeleccionado.getIdCliente());
             funcion.setInt(3,this.idContratoVida);
             
-            for (Beneficiario i:listaBeneficiarios){
+            for (Beneficiario i:listaBeneficiariosNuevos){
+                CallableStatement insertarBeneficiario = (CallableStatement) con.prepareCall("{CALL insertarBeneficiarioSeguroVida(?,?,?,?,?,?,?,?)}");
                 i.setIdContratoVida(this.idContratoVida);
                 insertarBeneficiario.setInt(1, this.idContratoVida);
                 insertarBeneficiario.setString(2, i.getDPI());
@@ -186,13 +169,26 @@ public class ContratoVida {
                 insertarBeneficiario.setString(7, i.getTelefono());
                 insertarBeneficiario.setString(8, i.getCelular());
                 execute = insertarBeneficiario.execute();
+                
             }
-            execute = funcion.execute();
+            
+            for (Beneficiario j:listaBeneficiariosExistenetes){
+                /*
+                 * IMPORTANTISIMO: AQUI SE HACE UNA INSERSIÓN A UNA TABLA INTERMEDIA ENTRE SEGURO Y BENEFICIARIO, YA NO HACIA BENEFICIARIO, PORQUE ÉSTE YA EXISTE
+                 */
+                String consulta = "INSERT INTO SeguroVidaBeneficiarios (Beneficiarios_idBeneficiarios,ContratoVida_idContratoVida) VALUES ("+j.getIdBeneficiario()+","+this.idContratoVida+")";
+                execute = comando.execute(consulta);
+            }
+            
             execute = funcion.execute(); //ejecuta la llamada al procedimiento que inserta la tupla en la tabla cliente-seguro            
             execute = comando.execute("commit;");  //termina la transacción         
             
+            funcion.close();
+            comando.close();
+            cmd.close();
+            
         } catch (SQLException ex) {
-            boolean execute = comando.execute("rollback");
+            boolean execute = comando.execute("rollback;");
             Logger.getLogger(ContratoVida.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
