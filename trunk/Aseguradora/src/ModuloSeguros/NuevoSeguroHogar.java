@@ -10,11 +10,19 @@
  */
 package ModuloSeguros;
 
+import CapaNegocios.SeguroHogar;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author HP G42
  */
 public class NuevoSeguroHogar extends javax.swing.JDialog {
+    
+    private SeguroHogar nuevoSeguro = null;
 
     /** Creates new form NuevoSeguroHogar */
     public NuevoSeguroHogar(java.awt.Frame parent, boolean modal) {
@@ -80,9 +88,19 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
 
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,6 +167,28 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            nuevoSeguro = new SeguroHogar();
+            nuevoSeguro.setTipoSeguro(jComboBox1.getSelectedIndex());
+            nuevoSeguro.setDescripcion(jTextField1.getText());
+            nuevoSeguro.setPrima(Double.parseDouble(jTextField2.getText()));
+            nuevoSeguro.setSerie(jTextField3.getText());
+            nuevoSeguro.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+            nuevoSeguro.insertarEnBaseDeDatos();
+            JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

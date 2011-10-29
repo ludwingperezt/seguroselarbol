@@ -377,7 +377,7 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
                 ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
                 ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
                 //hay que agregar un informe para imprimir con los datos de la nueva poliza!!!!!!!!!
-                JOptionPane.showMessageDialog(rootPane, "Ya puede cerrar esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this.rootPane, "Ya puede cerrar esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

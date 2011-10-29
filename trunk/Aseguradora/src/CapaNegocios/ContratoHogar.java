@@ -1,9 +1,17 @@
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import com.mysql.jdbc.CallableStatement;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 public class ContratoHogar {
 
-    private int idContratoVida;
+    private int idContratoHogar;
 
     private int idSeguroHogar;
 
@@ -70,12 +78,12 @@ public class ContratoHogar {
         this.fechaPago = val;
     }
 
-    public int getIdContratoVida () {
-        return idContratoVida;
+    public int getIdContratoHogar () {
+        return idContratoHogar;
     }
 
-    public void setIdContratoVida (int val) {
-        this.idContratoVida = val;
+    public void setIdContratoHogar (int val) {
+        this.idContratoHogar = val;
     }
 
     public int getIdSeguroHogar () {
@@ -126,5 +134,70 @@ public class ContratoHogar {
         this.vencimiento = val;
     }
 
+    public void insertarEnBaseDatos(Cliente clienteSeleccionado, SeguroHogar seguroSeleccionado, ArrayList<Beneficiario> listaBeneficiariosNuevos, ArrayList<Beneficiario> listaBeneficiariosExistentes) throws SQLException {
+        Connection con = (Connection) Conexion.obtenerConexion();            
+            Statement comando = (Statement) con.createStatement();  
+            PreparedStatement cmd = (PreparedStatement) con.prepareStatement("SELECT insersionNuevaPolizaHogarRetorno(?,?,?,?,?,?,?,?,?,?)");
+            //insertarTuplaSeguroHogarClienteSeguro(agente int, cliente int, contratoHogar int)
+            CallableStatement funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroHogarClienteSeguro(?,?,?)}");
+            try{
+                this.setIdSeguroHogar(seguroSeleccionado.getIdSeguroHogar());
+                cmd.setInt(1, seguroSeleccionado.getIdSeguroHogar());
+                cmd.setDate(2, this.fechaContrato);
+                cmd.setDate(3, fechaPago);
+                cmd.setDouble(4, Mora);
+                cmd.setString(5, Descripcion);
+                cmd.setDate(6, vencimiento);
+                cmd.setDouble(7,valorInmueble);
+                cmd.setDouble(8, valorMuebles);
+                cmd.setInt(9, numeroPagos);
+                cmd.setDouble(10, montoPagoseguro);
+
+                boolean execute = comando.execute("BEGIN;");
+
+                execute = cmd.execute(); //ejecuta la llamada a la funcion de insersión de contrato vida            
+                ResultSet rs = cmd.getResultSet(); //obtene el resultado de la consulta
+                execute = rs.next();
+                this.setIdContratoHogar(rs.getInt(1)); //ese resultado lo almacena en una variable, es el id del ultimo registro insertado
+
+                funcion.setInt(1, aseguradora.AseguradoraView.idEmpleado);
+                funcion.setInt(2, clienteSeleccionado.getIdCliente());
+                funcion.setInt(3,this.idContratoHogar);
+
+                for (Beneficiario i:listaBeneficiariosNuevos){
+                    CallableStatement insertarBeneficiario = (CallableStatement) con.prepareCall("{CALL insertarBeneficiarioSeguroHogar(?,?,?,?,?,?,?,?)}");
+                    i.setIdContratoVida(this.idContratoHogar);
+                    insertarBeneficiario.setInt(1, this.idContratoHogar);
+                    insertarBeneficiario.setString(2, i.getDPI());
+                    insertarBeneficiario.setString(3, i.getNombres());
+                    insertarBeneficiario.setString(4, i.getApellidos());
+                    insertarBeneficiario.setDate(5, i.getFechaNacimiento());
+                    insertarBeneficiario.setString(6, i.getDireccion());
+                    insertarBeneficiario.setString(7, i.getTelefono());
+                    insertarBeneficiario.setString(8, i.getCelular());
+                    execute = insertarBeneficiario.execute();
+
+                }            
+                for (Beneficiario j:listaBeneficiariosExistentes){
+                    /*
+                     * IMPORTANTISIMO: AQUI SE HACE UNA INSERSIÓN A UNA TABLA INTERMEDIA ENTRE SEGURO Y BENEFICIARIO, YA NO HACIA BENEFICIARIO, PORQUE ÉSTE YA EXISTE
+                     */
+                    String consulta = "INSERT INTO SeguroHogarBeneficiarios (Beneficiarios_idBeneficiarios, ContratoHogar_idContratoHogar) VALUES ("+j.getIdBeneficiario()+","+this.idContratoHogar+")";
+                    execute = comando.execute(consulta);
+                }
+
+
+                execute = funcion.execute();
+
+                execute = comando.execute("COMMIT;");
+
+                funcion.close();
+                comando.close();
+                cmd.close();
+            }
+            catch (SQLException ex){
+                 boolean execute = comando.execute("ROLLBACK");
+            }
+    }
 }
 
