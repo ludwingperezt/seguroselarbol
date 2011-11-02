@@ -15,10 +15,10 @@ import javax.swing.JOptionPane;
  */
 public class Conexion {
     private static String baseDatos = "seguroselarbol";
-    private static String usuario = "root";
-    private static String password = "";
+    private static String usuario = "elArbol";
+    private static String password = "seguros";
     private static String direccionServidor = "jdbc:mysql://ROLANDO-PC/"+baseDatos;
-    private static String nombreServidor = "localhost";
+    private static String nombreServidor = "ROLANDO-PC";
     private static Connection conexionDB = null;
     
     public static Connection iniciarConexion(){

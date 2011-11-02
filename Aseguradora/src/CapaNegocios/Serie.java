@@ -1,6 +1,15 @@
 package CapaNegocios;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class Serie {
 
     private int idSerie;
@@ -75,6 +84,27 @@ public class Serie {
     public void setSerie (String val) {
         this.serie = val;
     }
+    public ArrayList<String>  getSeries()  throws SQLException{
+        ArrayList<String> acumuladas = new ArrayList<String>();
+        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+        ResultSet resultado=st.executeQuery("select * from serie where activo=1");
+        while(resultado.next()){
+            acumuladas.add(resultado.getString(2));
+        }
+        return acumuladas;
+    }
+    public int getCorrelativoD(String serie) throws SQLException
+    {
+        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+        int correlativo;
+        ResultSet rs=st.executeQuery("SELECT MAX(Correlativo) FROM FACTURA WHERE serie like '"+serie+"'");
+        correlativo =rs.getInt(4); 
+        return (correlativo);
+    }
+    
+
+
+
 
 }
 
