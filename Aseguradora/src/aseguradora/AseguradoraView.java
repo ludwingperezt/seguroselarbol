@@ -4,6 +4,9 @@
 
 package aseguradora;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -124,6 +127,7 @@ public class AseguradoraView extends FrameView {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -286,6 +290,15 @@ public class AseguradoraView extends FrameView {
 
         menuBar.add(jMenu6);
 
+        jMenu7.setText(resourceMap.getString("jMenu7.text")); // NOI18N
+        jMenu7.setName("jMenu7"); // NOI18N
+        jMenu7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu7ActionPerformed(evt);
+            }
+        });
+        menuBar.add(jMenu7);
+
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
@@ -402,6 +415,16 @@ private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         lista.setVisible(true);
 }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu7ActionPerformed
+        try {
+            // TODO add your handling code here:
+                Factura lista= new Factura(this.getFrame(), true);
+                lista.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AseguradoraView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}//GEN-LAST:event_jMenu7ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -409,6 +432,7 @@ private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
