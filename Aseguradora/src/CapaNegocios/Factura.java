@@ -1,6 +1,9 @@
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 public class Factura {
 
     private int idFactura;
@@ -74,6 +77,23 @@ public class Factura {
 
     public void setTotal (double val) {
         this.total = val;
+    }
+    public void insertarFactura(Factura datos) throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Factura WRITE;");
+        comandos.execute();
+         String cadena = "INSERT INTO Factura (Cliente_idAgente, Serie_idSerie, correlativo, fecha, descuento, total) VALUES ("
+                    +"'"+this.idAgente+"',"
+                    +"'"+this.idSerie+"',"
+                    +"'"+this.correlativo+"',"
+                    +"'"+this.fecha+"',"
+                    +"'"+this.descuento+"',"
+                    +"'"+this.total+"',"
+                    +")";
+         comandos = con.prepareStatement(cadena);
+         comandos.execute();
+         comandos = con.prepareStatement("UNLOCK TABLES;");
+         comandos.close();
     }
 
 }
