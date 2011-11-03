@@ -143,7 +143,7 @@ public class Cliente {
     public ResultSet obtenerCliente(int id) throws SQLException
     {
         Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-        ResultSet rs=st.executeQuery("SELECT * FROM CLIENTE WHERE DPI like '"+id+"'");
+        ResultSet rs=st.executeQuery("SELECT * FROM CLIENTE WHERE ID like '"+id+"'");
         return rs;
     }
     
@@ -231,6 +231,20 @@ public class Cliente {
         st.execute("commit;");
         con.close();
         return true;
+    }
+    public void obtenerClienteDPI(String DPI) throws SQLException
+    {
+        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+        ResultSet rs=st.executeQuery("SELECT * FROM CLIENTE WHERE DPI like '"+DPI+"'");
+        this.setIdCliente(rs.getInt(1));
+        this.setNIT(rs.getString(3));
+        this.setNombres(rs.getString(4));
+        this.setApellidos(rs.getString(5));
+        this.setDireccion(rs.getString(6));
+        this.setTelefono(rs.getString(7));
+        this.setCelular(rs.getString(8));
+        this.setFechaNacimiento(rs.getDate(9));
+        this.setEdad(rs.getInt(10));
     }
 }
 
