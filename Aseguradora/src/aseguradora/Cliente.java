@@ -23,6 +23,7 @@ public class Cliente extends javax.swing.JFrame {
     /** Creates new form Cliente */
     public Cliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /** This method is called from within the constructor to
