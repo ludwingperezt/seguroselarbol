@@ -31,7 +31,6 @@ public class AseguradoraView extends FrameView {
     public static int idEmpleado = 1;
     public AseguradoraView(SingleFrameApplication app) {
         super(app);
-
         initComponents();
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
