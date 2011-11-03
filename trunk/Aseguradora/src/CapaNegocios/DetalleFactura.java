@@ -1,5 +1,11 @@
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import com.mysql.jdbc.Connection;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Date;
+
 
 public class DetalleFactura {
 
@@ -66,5 +72,40 @@ public class DetalleFactura {
         this.subtotal = val;
     }
 
+    public void insertarNuevoDetalle(DetalleFactura detalle) throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE DetalleFactura WRITE;");
+        comandos.execute();
+         String cadena = "INSERT INTO DetalleFactura (Recibo_idRecibo, ContratoAuto_idContratoAuto, ContratoVida_idContratoVida, ContratoHogar_idContratoHogar, subtotal) VALUES ("
+                    +"'"+this. idRecibo+"',"
+                    +"'"+this.idContratoAuto+"',"
+                    +"'"+this.idContratoVida+"',"
+                    +"'"+this.idContratoHogar+"',"
+                    +"'"+this.subtotal+"',"
+                    +")";
+         comandos = con.prepareStatement(cadena);
+         comandos.execute();
+         comandos = con.prepareStatement("UNLOCK TABLES;");
+         comandos.close();
+    }    
+        public void insertarHistorialSeguro(DetalleFactura detalle, Date fecha, Time hora, String anotacion, int idagente, int idcliente) throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE HistorialSeguro WRITE;");
+        comandos.execute();
+         String cadena = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente) VALUES ("
+                    +"'"+anotacion+"',"
+                    +"'"+fecha+"',"
+                    +"'"+hora+"',"
+                    +"'"+this.idContratoVida+"',"
+                    +"'"+this.idContratoHogar+"',"
+                    +"'"+this.idContratoAuto+"',"
+                    +"'"+idagente+"',"
+                    +"'"+idcliente+"',"
+                    +")";
+         comandos = con.prepareStatement(cadena);
+         comandos.execute();
+         comandos = con.prepareStatement("UNLOCK TABLES;");
+         comandos.close();
+    }
 }
 
