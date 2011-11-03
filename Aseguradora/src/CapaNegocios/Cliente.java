@@ -7,8 +7,9 @@ import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -106,13 +107,15 @@ public class Cliente {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento (Date val) {
-        this.fechaNacimiento = val;
+    public void setFechaNacimiento (java.util.Date val) {
+        this.fechaNacimiento = new Date(val.getTime());
     }
     
     public void setFechaNacimiento (String val) {
+
         this.fechaNacimiento = Date.valueOf(val);
     }
+    
     public int getIdCliente () {
         return idCliente;
     }
@@ -161,34 +164,44 @@ public class Cliente {
     
     public boolean guardarCliente() throws SQLException
     {
+        java.sql.Connection con=Conexion.iniciarConexion();
         try {
-            Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-            st.executeUpdate("INSERT INTO Cliente VALUES (null, "+this.getDPI()+", "+this.getNIT()+", "+this.getNombres()+", "+this.getApellidos()+", "+
-                    this.getDireccion()+", "+this.getTelefono()+", "+this.getCelular()+", "+this.getFechaNacimiento().toString()+", "+this.getEdad()+")");
+            con.setAutoCommit(false);
+            Statement st=(Statement) con.createStatement();
+            String w="INSERT INTO Cliente VALUES (null, "+this.getDPI()+", '"+this.getNIT()+"', '"+this.getNombres()+"', '"+this.getApellidos()+"', '"+
+                    this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+this.getFechaNacimiento().toString()+"', "+this.getEdad()+")";
+            st.executeUpdate(w);
             Conexion.obtenerConexion().commit();
         } catch (SQLException ex) {
-            Conexion.obtenerConexion().rollback();
+            con.rollback();
             return false;
         }
-        Conexion.obtenerConexion().close();
+        con.commit();
+        con.close();
         return true;
     }
     
     public static Cliente[] consultarListaClientes() throws SQLException {
         Cliente[] lista;
-        
         ArrayList<Cliente> ls = new ArrayList<Cliente>();
-        Connection con = (Connection) Conexion.obtenerConexion();
+        java.sql.Connection  con =  Conexion.iniciarConexion();
         Statement cmd = (Statement) con.createStatement();
-        String consulta = "SELECT idCliente, Nombres, Apellidos FROM Cliente";
+        String consulta = "SELECT * FROM Cliente";
         
         ResultSet rs = cmd.executeQuery(consulta);
         
         while(rs.next()){
             Cliente x = new Cliente();
             x.setIdCliente(rs.getInt(1));
-            x.setNombres(rs.getString(2));
-            x.setApellidos(rs.getString(3));
+            x.setDPI(rs.getString(2));
+            x.setNIT(rs.getString(3));
+            x.setNombres(rs.getString(4));
+            x.setApellidos(rs.getString(5));
+            x.setDireccion(rs.getString(6));
+            x.setTelefono(rs.getString(7));
+            x.setCelular(rs.getString(8));
+            x.setFechaNacimiento(rs.getString(9));
+            x.edad=rs.getInt(10);
             ls.add(x);
         }
         
@@ -196,6 +209,28 @@ public class Cliente {
         lista = ls.toArray(lista);        
         return lista;
     }
+    @Override
+    public String toString()
+    {
+        return this.getNombres();
+    }
 
+    public boolean modificar() throws SQLException {
+        java.sql.Connection con=Conexion.iniciarConexion();
+        try {            
+            con.setAutoCommit(false);
+            Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+            st.executeUpdate("UPDATE Cliente SET (null, "+this.getDPI()+", "+this.getNIT()+", "+this.getNombres()+", "+this.getApellidos()+", "+
+                    this.getDireccion()+", "+this.getTelefono()+", "+this.getCelular()+", "+this.getFechaNacimiento().toString()+", "+
+                    this.getEdad()+") WHERE idCliente="+this.getIdCliente());
+            Conexion.obtenerConexion().commit();
+        } catch (SQLException ex) {
+            con.rollback();
+            return false;
+        }
+        con.commit();
+        con.close();
+        return true;
+    }
 }
 

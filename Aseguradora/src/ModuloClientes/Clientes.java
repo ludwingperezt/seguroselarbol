@@ -12,12 +12,11 @@ package ModuloClientes;
 
 import CapaNegocios.Cliente;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +25,7 @@ import javax.swing.JOptionPane;
 public class Clientes extends javax.swing.JDialog {
     Calendar selectedDate;
     CapaNegocios.Cliente unCliente=new CapaNegocios.Cliente();
+    private boolean modificar=false;
     
     /** Creates new form Clientes */
     public Clientes(java.awt.Frame parent, boolean modal) {
@@ -63,6 +63,8 @@ public class Clientes extends javax.swing.JDialog {
         jTextField4 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -131,6 +133,12 @@ public class Clientes extends javax.swing.JDialog {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
+        dateChooserCombo2.setWeekStyle(datechooser.view.WeekDaysStyle.FULL);
+        try {
+            dateChooserCombo2.setDefaultPeriods(new datechooser.model.multiple.PeriodSet());
+        } catch (datechooser.model.exeptions.IncompatibleDataExeption e1) {
+            e1.printStackTrace();
+        }
         dateChooserCombo2.addCommitListener(new datechooser.events.CommitListener() {
             public void onCommit(datechooser.events.CommitEvent evt) {
                 dateChooserCombo2OnCommit(evt);
@@ -141,6 +149,12 @@ public class Clientes extends javax.swing.JDialog {
                 dateChooserCombo2OnSelectionChange(evt);
             }
         });
+
+        jTextField8.setName("jTextField8"); // NOI18N
+
+        jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
+        jLabel10.setName("jLabel10"); // NOI18N
+        jLabel10.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,11 +168,15 @@ public class Clientes extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(65, 65, 65)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,14 +199,14 @@ public class Clientes extends javax.swing.JDialog {
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
                                 .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                                .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -198,7 +216,7 @@ public class Clientes extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(383, Short.MAX_VALUE))))
+                        .addContainerGap(420, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +228,9 @@ public class Clientes extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -256,20 +276,35 @@ public class Clientes extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       try {
-            unCliente.setDPI(jTextField1.getText());
-            unCliente.setNIT(jTextField2.getText());
-            unCliente.setNombres(jTextField3.getText());
-            unCliente.setApellidos(jTextField4.getText());
-            unCliente.setDireccion(jTextField5.getText());
-            unCliente.setTelefono(jTextField6.getText());
-            unCliente.setCelular(jTextField7.getText());
-            unCliente.setFechaNacimiento(dateChooserCombo1.getText());
-            unCliente.setEdad(Integer.valueOf(jTextField9.getText()));
-            unCliente.guardarCliente();
-        } catch (SQLException ex) {
-            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+        unCliente.setDPI(jTextField1.getText());
+                unCliente.setNIT(jTextField2.getText());
+                unCliente.setDPI(jTextField8.getText());
+                unCliente.setNombres(jTextField3.getText());
+                unCliente.setApellidos(jTextField4.getText());
+                unCliente.setDireccion(jTextField5.getText());
+                unCliente.setTelefono(jTextField6.getText());
+                unCliente.setCelular(jTextField7.getText());
+                unCliente.setFechaNacimiento(selectedDate.getTime());
+                unCliente.setEdad(Integer.valueOf(jTextField9.getText()));
+        if (modificar)
+        {
+            try {
+                if (unCliente.modificar())
+                    this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        else{
+            try {
+                
+                if (unCliente.guardarCliente())
+                    this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
@@ -279,17 +314,10 @@ public class Clientes extends javax.swing.JDialog {
 
     private void dateChooserCombo2OnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnCommit
         // TODO add your handling code here:
-        selectedDate= dateChooserCombo1.getSelectedDate();
-        Date hoy=GregorianCalendar.getInstance().getTime();
-        Date f2=selectedDate.getTime();
-        if (hoy.after(f2))
-        {
-            long milis=hoy.getTime()-f2.getTime();
-            int y=GregorianCalendar.getInstance().get(Calendar.YEAR);
-            jTextField9.setText(String.valueOf(y));
-        }
-        else
-            JOptionPane.showMessageDialog(this, "Fecha incorrecta!");
+        selectedDate=dateChooserCombo2.getSelectedDate();
+        int y0=GregorianCalendar.getInstance().get(1);
+        int y1=selectedDate.get(1);
+        jTextField9.setText(String.valueOf(y0-y1));
     }//GEN-LAST:event_dateChooserCombo2OnCommit
 
     public Cliente mostrar()
@@ -352,6 +380,7 @@ public class Clientes extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -367,18 +396,31 @@ public class Clientes extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 
     private void llenar() {
-        jTextField1.setText(unCliente.getDPI());
+        jTextField1.setText(String.valueOf(unCliente.getIdCliente()));
+        jTextField8.setText(unCliente.getDPI());
         jTextField2.setText(unCliente.getNIT());
         jTextField3.setText(unCliente.getNombres());
         jTextField4.setText(unCliente.getApellidos());
         jTextField5.setText(unCliente.getDireccion());
-        jTextField5.setText(unCliente.getTelefono()); 
-        jTextField6.setText(unCliente.getCelular());
+        jTextField6.setText(unCliente.getTelefono()); 
+        jTextField7.setText(unCliente.getCelular());
         //jFormattedTextField1.setText(unCliente.getFechaNacimiento().toString());
-        jTextField9.setText(String.valueOf(unCliente.getEdad())); //calcular edad????
+        Calendar cal= GregorianCalendar.getInstance();
+        SimpleDateFormat formato=new SimpleDateFormat("yyyy");
+        int año=Integer.valueOf(formato.format(unCliente.getFechaNacimiento()));
+        formato.applyPattern("MM");
+        int mes=Integer.valueOf(formato.format(unCliente.getFechaNacimiento()));
+        formato.applyPattern("dd");
+        int dia=Integer.valueOf(formato.format(unCliente.getFechaNacimiento()));
+        cal.set(año,mes, dia);
+        dateChooserCombo2.setSelectedDate(cal);
+        jTextField9.setText(String.valueOf(unCliente.getEdad()));
+        modificar=true;
     }
+
 }
