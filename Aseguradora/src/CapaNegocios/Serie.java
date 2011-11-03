@@ -122,25 +122,27 @@ public class Serie {
         return (correlativo+1);   
     }
 
-    public void nuevaSerie1(String serie, int maximo, int actual, java.util.Date fechaC, java.util.Date fechaV) throws SQLException {
-        Connection con = (Connection) Conexion.obtenerConexion();
-            java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Auto WRITE;");
+    public void nuevaSerie1(String serie, int maximo, int actual, java.sql.Date fechaC, java.sql.Date fechaV) throws SQLException {
+
+            Connection con = (Connection) Conexion.iniciarConexion();
+            java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Serie WRITE;");
             comandos.execute();
             String cadena = "INSERT INTO Serie (Serie, Maximo, actual, FechaCreacion, FechaVencimiento, Activo) VALUES ("
-                    +"'"+this.serie+"',"
-                    +"'"+this.maximo+"',"
-                    +"'"+this.actual+"',"
-                    +"'"+this.fechaCreacion+"',"
-                    +"'"+this.fechaVencimiento+"',"
-                    +"'"+this.activa+"',"
-                    +"?)";
+                    +"'"+serie+"',"
+                    +"'"+maximo+"',"
+                    +"'"+actual+"',"
+                    +"'"+fechaC+"',"
+                    +"'"+fechaV+"',"
+                    +"'"+1+"'"
+                    +")";
             comandos = con.prepareStatement(cadena);
             comandos.execute();
             ResultSet rs = comandos.executeQuery();
             rs.next();
             comandos = con.prepareStatement("UNLOCK TABLES;");
-            comandos.close();
-    }
+            comandos.close();}
+
+    
     
     }
     

@@ -73,7 +73,7 @@ public class DetalleFactura {
     }
 
     public void insertarNuevoDetalle(DetalleFactura detalle) throws SQLException{
-        Connection con = (Connection) Conexion.obtenerConexion();
+        Connection con = (Connection) Conexion.iniciarConexion();
         java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE DetalleFactura WRITE;");
         comandos.execute();
          String cadena = "INSERT INTO DetalleFactura (Recibo_idRecibo, ContratoAuto_idContratoAuto, ContratoVida_idContratoVida, ContratoHogar_idContratoHogar, subtotal) VALUES ("
@@ -89,7 +89,7 @@ public class DetalleFactura {
          comandos.close();
     }    
         public void insertarHistorialSeguro(DetalleFactura detalle, Date fecha, Time hora, String anotacion, int idagente, int idcliente) throws SQLException{
-        Connection con = (Connection) Conexion.obtenerConexion();
+        Connection con = (Connection) Conexion.iniciarConexion();
         java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE HistorialSeguro WRITE;");
         comandos.execute();
          String cadena = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente) VALUES ("

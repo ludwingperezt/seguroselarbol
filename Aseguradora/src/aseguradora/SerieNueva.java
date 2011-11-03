@@ -13,7 +13,7 @@ package aseguradora;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -30,6 +30,12 @@ public class SerieNueva extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+    public String fechaF(String fecha){
+        String [] datos = fecha.split("/");
+        String retorno = "";
+        retorno = retorno + "20"+datos[2]+"-"+datos[1]+"-"+datos[0];
+        return retorno;
     }
 
     /** This method is called from within the constructor to
@@ -199,9 +205,9 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
             // TODO add your handling code here:
-                String serie= this.jTextField2.toString();
-                int maximo= Integer.parseInt(this.jTextField3.toString());
-                int actual= Integer.parseInt(this.jTextField4.toString());;
+                String serie= this.jTextField2.getText();
+                int maximo= Integer.parseInt(this.jTextField3.getText());
+                int actual= Integer.parseInt(this.jTextField4.getText());;
                 String cl1 = this.dateChooserCombo1.getText();
                 String cl2 = this.dateChooserCombo2.getText();
                 int largo = cl1.length();
@@ -213,7 +219,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 if (largo==8)
                 {
-                    fecha1="20"+cl1.substring(largo-2,largo)+"/"+cl1.substring(largo-5,largo-3)+"/"+cl1.substring(largo-8,largo-6);
+                    fecha1="20"+cl1.substring(largo-2,largo)+"/"+cl1.substring(largo-5,largo-3)+"-"+cl1.substring(largo-8,largo-6);
                 }
                 if (largo2==7)
                 {
@@ -221,33 +227,24 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 if (largo2==8)
                 {
-                    fecha2="20"+cl1.substring(largo-2,largo)+"/"+cl1.substring(largo-5,largo-3)+"/"+cl1.substring(largo-8,largo-6);
+                    fecha2="20"+cl1.substring(largo-2,largo)+"-"+cl1.substring(largo-5,largo-3)+"-"+cl1.substring(largo-8,largo-6);
                 }
-                  SimpleDateFormat sdf;
-                  sdf = new SimpleDateFormat("yyy/MM/dd");
                   Date fechaC = null;
-                  try
-                    {
-                        fechaC = sdf.parse( fecha1 );
-                    }
-                    catch ( ParseException exFecha )
-                    { }
+                  fechaC= Date.valueOf(fecha1);
                   Date fechaV = null;
-                  try
-                    {
-                        fechaV = sdf.parse( fecha2 );
-                    }
-                    catch ( ParseException exFecha )
-                    {  }
+                  fechaV = Date.valueOf(fecha2);
                 Ser.setActiva(true);
                 Ser.setActual(actual);
         try {
-            Ser.nuevaSerie1(serie, maximo, actual, null,null);
+            Ser.nuevaSerie1(serie, maximo, actual, fechaC,fechaV);
+            JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             Logger.getLogger(SerieNueva.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "No se completo la conexion!","Error", JOptionPane.INFORMATION_MESSAGE);
+        
+            
         }
 
-        JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();            
       
 }//GEN-LAST:event_jButton1ActionPerformed
