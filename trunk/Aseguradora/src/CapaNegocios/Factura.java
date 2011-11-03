@@ -79,7 +79,7 @@ public class Factura {
         this.total = val;
     }
     public void insertarFactura(Factura datos) throws SQLException{
-        Connection con = (Connection) Conexion.obtenerConexion();
+        Connection con = (Connection) Conexion.iniciarConexion();
         java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Factura WRITE;");
         comandos.execute();
          String cadena = "INSERT INTO Factura (Cliente_idAgente, Serie_idSerie, correlativo, fecha, descuento, total) VALUES ("

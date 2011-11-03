@@ -128,6 +128,7 @@ public class AseguradoraView extends FrameView {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenuItem12 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -297,6 +298,16 @@ public class AseguradoraView extends FrameView {
                 jMenu7ActionPerformed(evt);
             }
         });
+
+        jMenuItem12.setText(resourceMap.getString("jMenuItem12.text")); // NOI18N
+        jMenuItem12.setName("jMenuItem12"); // NOI18N
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem12);
+
         menuBar.add(jMenu7);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
@@ -416,14 +427,17 @@ private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_jMenuItem4ActionPerformed
 
 private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu7ActionPerformed
-        try {
-            // TODO add your handling code here:
+
                 Factura lista= new Factura(this.getFrame(), true);
                 lista.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(AseguradoraView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 }//GEN-LAST:event_jMenu7ActionPerformed
+
+private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+// TODO add your handling code here:
+    Factura lista= new Factura(this.getFrame(), true);
+        lista.setVisible(true);
+}//GEN-LAST:event_jMenuItem12ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -436,6 +450,7 @@ private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

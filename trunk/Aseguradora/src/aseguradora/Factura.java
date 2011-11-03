@@ -29,17 +29,12 @@ public class Factura extends javax.swing.JDialog {
     CapaNegocios.Factura Fac=new CapaNegocios.Factura();
     CapaNegocios.DetalleFactura Det=new CapaNegocios.DetalleFactura();
     /** Creates new form Factura */
-    public Factura(java.awt.Frame parent, boolean modal) throws SQLException {
+    
+    public Factura(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        ArrayList<String> seriesActivas = new ArrayList<String>();
-        seriesActivas=Ser.getSeries();
-        int cantidad;
-        cantidad= seriesActivas.size();
-        this.jComboBox1.removeAllItems();
-        for (int x=0;x<cantidad;x++)
-            this.jComboBox1.addItem(seriesActivas.get(x));
+
     }
 
     /** This method is called from within the constructor to
@@ -100,6 +95,7 @@ public class Factura extends javax.swing.JDialog {
         jLabel16 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -278,6 +274,14 @@ public class Factura extends javax.swing.JDialog {
             }
         });
 
+        jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
+        jButton4.setName("jButton4"); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -310,7 +314,8 @@ public class Factura extends javax.swing.JDialog {
                                             .addComponent(jLabel5)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton4))
                                 .addGap(47, 47, 47)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
@@ -407,7 +412,8 @@ public class Factura extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -587,6 +593,21 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         
 }//GEN-LAST:event_jButton3ActionPerformed
 
+private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+// TODO add your handling code here:
+        ArrayList<String> seriesActivas = new ArrayList<String>();
+        try {
+            seriesActivas=Ser.getSeries();
+        } catch (SQLException ex) {
+            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int cantidad;
+        cantidad= seriesActivas.size();
+        this.jComboBox1.removeAllItems();
+        for (int x=0;x<cantidad;x++)
+            this.jComboBox1.addItem(seriesActivas.get(x));
+}//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -618,7 +639,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                try {
+
                     Factura dialog = new Factura(new javax.swing.JFrame(), true);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
@@ -628,9 +649,6 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         }
                     });
                     dialog.setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });
     }
@@ -639,6 +657,7 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
