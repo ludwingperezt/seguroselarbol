@@ -1,15 +1,20 @@
 package CapaNegocios;
 
 import java.sql.Date;
-import java.sql.ResultSet;
 import CapaDatos.Conexion;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 public class Serie {
 
     private int idSerie;
@@ -97,14 +102,51 @@ public class Serie {
     {
         Statement st=(Statement) Conexion.iniciarConexion().createStatement();
         int correlativo;
-        ResultSet rs=st.executeQuery("SELECT MAX(Correlativo) FROM FACTURA WHERE serie like '"+serie+"'");
+        ResultSet rs=st.executeQuery("SELECT MAX(Correlativo) FROM serie WHERE serie like '"+serie+"'");
         correlativo =rs.getInt(4); 
         return (correlativo);
+    }
+    public void setNuevo(String ser,int maximo,int actual,Date fc, Date fv){
+        this.activa=true;
+        this.actual=actual;
+        this.fechaCreacion=fc;
+        this.fechaVencimiento=fv;
+        this.maximo=maximo;
+        this.serie=ser;
+    }
+    public int getUltimoId() throws SQLException{
+        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+        int correlativo;
+        ResultSet rs=st.executeQuery("SELECT COUNT() FROM serie");
+        correlativo =rs.getInt(1); 
+        return (correlativo+1);   
+    }
+
+    public void nuevaSerie1(String serie, int maximo, int actual, java.util.Date fechaC, java.util.Date fechaV) throws SQLException {
+        Connection con = (Connection) Conexion.obtenerConexion();
+            java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Auto WRITE;");
+            comandos.execute();
+            String cadena = "INSERT INTO Serie (Serie, Maximo, actual, FechaCreacion, FechaVencimiento, Activo) VALUES ("
+                    +"'"+this.serie+"',"
+                    +"'"+this.maximo+"',"
+                    +"'"+this.actual+"',"
+                    +"'"+this.fechaCreacion+"',"
+                    +"'"+this.fechaVencimiento+"',"
+                    +"'"+this.activa+"',"
+                    +"?)";
+            comandos = con.prepareStatement(cadena);
+            comandos.execute();
+            ResultSet rs = comandos.executeQuery();
+            rs.next();
+            comandos = con.prepareStatement("UNLOCK TABLES;");
+            comandos.close();
+    }
+    
     }
     
 
 
 
 
-}
+
 
