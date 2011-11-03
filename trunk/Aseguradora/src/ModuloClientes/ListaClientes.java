@@ -53,8 +53,9 @@ public class ListaClientes extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(ListaClientes.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
+
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setToolTipText(resourceMap.getString("jButton1.toolTipText")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N

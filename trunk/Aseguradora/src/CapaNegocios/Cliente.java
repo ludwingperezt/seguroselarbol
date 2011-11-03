@@ -2,17 +2,11 @@ package CapaNegocios;
 
 //import java.util.*;
 import CapaDatos.Conexion;
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Cliente {
 
     
@@ -165,18 +159,21 @@ public class Cliente {
     public boolean guardarCliente() throws SQLException
     {
         java.sql.Connection con=Conexion.iniciarConexion();
+        Statement st=(Statement) con.createStatement();
         try {
-            con.setAutoCommit(false);
-            Statement st=(Statement) con.createStatement();
+            st.execute("begin");
             String w="INSERT INTO Cliente VALUES (null, "+this.getDPI()+", '"+this.getNIT()+"', '"+this.getNombres()+"', '"+this.getApellidos()+"', '"+
-                    this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+this.getFechaNacimiento().toString()+"', "+this.getEdad()+")";
-            st.executeUpdate(w);
-            Conexion.obtenerConexion().commit();
+                    this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+this.getFechaNacimiento().toString()+"', "+
+                    this.getEdad()+");";
+            st.execute(w);
         } catch (SQLException ex) {
-            con.rollback();
+            st.execute("Rollback;");
+            System.out.println("rollback");
             return false;
         }
-        con.commit();
+        System.out.println("commit");
+        st.execute("Commit;");
+        st.close();
         con.close();
         return true;
     }
@@ -209,6 +206,7 @@ public class Cliente {
         lista = ls.toArray(lista);        
         return lista;
     }
+    
     @Override
     public String toString()
     {
@@ -217,18 +215,20 @@ public class Cliente {
 
     public boolean modificar() throws SQLException {
         java.sql.Connection con=Conexion.iniciarConexion();
+        con.setAutoCommit(false);
+        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
         try {            
-            con.setAutoCommit(false);
-            Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-            st.executeUpdate("UPDATE Cliente SET (null, "+this.getDPI()+", "+this.getNIT()+", "+this.getNombres()+", "+this.getApellidos()+", "+
-                    this.getDireccion()+", "+this.getTelefono()+", "+this.getCelular()+", "+this.getFechaNacimiento().toString()+", "+
-                    this.getEdad()+") WHERE idCliente="+this.getIdCliente());
-            Conexion.obtenerConexion().commit();
+            st.execute("Begin");
+            st.execute("UPDATE Cliente SET DPI="+this.getDPI()+", NIT='"+this.getNIT()+"', Nombres='"+this.getNombres()+"', Apellidos='"+this.getApellidos()+
+                    "', Direccion='"+this.getDireccion()+"', Telefono='"+this.getTelefono()+"', Celular='"+this.getCelular()+
+                    "',FechaNacimiento='"+this.getFechaNacimiento().toString()+"', edad="+this.getEdad()+" WHERE idCliente="+this.getIdCliente()+";");
         } catch (SQLException ex) {
-            con.rollback();
+            st.execute("Rollback;");
+            System.out.println("rollback");
             return false;
         }
-        con.commit();
+        System.out.println("commit");
+        st.execute("commit;");
         con.close();
         return true;
     }
