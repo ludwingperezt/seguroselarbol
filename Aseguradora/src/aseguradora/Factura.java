@@ -34,6 +34,7 @@ public class Factura extends javax.swing.JFrame {
         seriesActivas=Ser.getSeries();
         int cantidad;
         cantidad= seriesActivas.size();
+        this.jComboBox1.removeAllItems();
         for (int x=0;x<cantidad;x++)
             this.jComboBox1.addItem(seriesActivas.get(x));
     }
@@ -381,17 +382,20 @@ private void jComboBox1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:ev
 
 private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 
-               String serie;
-               String cambio;
-               serie= Factura.this.jComboBox1.getSelectedItem().toString();
-               int correlativo=0;
+    String serie;
+    String cambio;
+    Object selex=jComboBox1.getSelectedItem();
+    if (selex!=null){
+        serie= selex.toString();
+        int correlativo=0;
         try {
             correlativo = Ser.getCorrelativoD(serie);
         } catch (SQLException ex) {
             Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
         }
-               Factura.this.jTextField1.setText(String.valueOf(correlativo));
-   
+
+        this.jTextField1.setText(String.valueOf(correlativo));
+    }
 }//GEN-LAST:event_jComboBox1ActionPerformed
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
