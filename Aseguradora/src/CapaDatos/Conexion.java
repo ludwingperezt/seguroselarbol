@@ -17,8 +17,10 @@ public class Conexion {
     private static String baseDatos = "seguroselarbol";
     private static String usuario = "elArbol";
     private static String password = "seguros";
-    private static String direccionServidor = "jdbc:mysql://ROLANDO-PC/"+baseDatos;
     private static String nombreServidor = "ROLANDO-PC";
+
+    //private static String direccionServidor = "jdbc:mysql://ROLANDO-PC/"+baseDatos;
+    
     private static Connection conexionDB = null;
     
     public static Connection iniciarConexion(){
@@ -26,7 +28,6 @@ public class Conexion {
         try {
             //Class.forName("com.mysql.jdbc.Driver");
             //conexionDB = DriverManager.getConnection(direccionServidor, usuario, password);
-
             MysqlDataSource origenDatos = new MysqlDataSource();
             origenDatos.setDatabaseName(baseDatos);
             origenDatos.setUser(usuario);
@@ -46,6 +47,14 @@ public class Conexion {
     public static Connection obtenerConexion()
     {
         return conexionDB;
+    }
+    public static void cambiarStringConexion(String servidor, String usuario, String pass, String baseDatos){
+        Conexion.nombreServidor=servidor;
+        Conexion.baseDatos=baseDatos;
+        Conexion.usuario=usuario;
+        Conexion.password=pass;
+        
+        Connection con = Conexion.iniciarConexion();
     }
 
 }

@@ -74,6 +74,25 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
         jList1.setModel(modelo);
     }
 
+    public String formatearFecha(String antigua){
+        String retorno = "20";
+        String[]datos = antigua.split("/");
+        
+        retorno += datos[2]+"-";
+        if (datos[1].length()<2){
+            retorno=retorno+"0"+datos[1]+"-";
+        }
+        else
+            retorno = retorno+datos[1]+"-";        
+        
+        if (datos[0].length()<2){
+            retorno=retorno +"0"+datos[0];
+        }
+        else
+            retorno = retorno +datos[0];
+        
+        return retorno;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -415,11 +434,11 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
                 }
                 else{            
                     ContratoHogar nuevoContrato = new ContratoHogar();
-                    nuevoContrato.setFechaContrato(Date.valueOf(jTextField7.getText()));
-                    nuevoContrato.setFechaPago(Date.valueOf(jTextField8.getText()));
+                    nuevoContrato.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
+                    nuevoContrato.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
                     nuevoContrato.setMora(Double.parseDouble(jTextField1.getText()));
                     nuevoContrato.setDescripcion(jTextField2.getText());
-                    nuevoContrato.setVencimiento(Date.valueOf(jTextField9.getText()));
+                    nuevoContrato.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
                     nuevoContrato.setValorInmueble(Double.parseDouble(jTextField3.getText()));
                     nuevoContrato.setValorMuebles(Double.parseDouble(jTextField4.getText()));
                     nuevoContrato.setNumeroPagos(Integer.parseInt(jTextField5.getText()));
