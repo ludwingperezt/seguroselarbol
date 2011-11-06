@@ -47,18 +47,14 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="dateChooserCombo3" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jTextField9" min="-2" pref="110" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="dateChooserCombo3" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="jTextField5" alignment="0" max="32767" attributes="1"/>
                                       <Component id="jTextField4" alignment="0" max="32767" attributes="1"/>
                                       <Component id="jTextField3" alignment="0" min="-2" pref="81" max="-2" attributes="1"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -79,16 +75,8 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jTextField2" pref="294" max="32767" attributes="0"/>
                                           <Component id="jTextField1" min="-2" pref="128" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="dateChooserCombo2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="jTextField8" pref="129" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="dateChooserCombo1" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="jTextField7" pref="129" max="32767" attributes="0"/>
-                                          </Group>
+                                          <Component id="dateChooserCombo2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dateChooserCombo1" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jComboBox2" alignment="0" min="-2" pref="268" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -148,13 +136,11 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="dateChooserCombo1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField7" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <Component id="dateChooserCombo2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField8" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -170,7 +156,6 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           <Component id="dateChooserCombo3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField9" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -430,24 +415,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField7">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jTextField7.text"/>
-        <Property name="name" type="java.lang.String" value="jTextField7" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField8">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jTextField8.text"/>
-        <Property name="name" type="java.lang.String" value="jTextField8" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField9">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jTextField9.text"/>
-        <Property name="name" type="java.lang.String" value="jTextField9" noResource="true"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

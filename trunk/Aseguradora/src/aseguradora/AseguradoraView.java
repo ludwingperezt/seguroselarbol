@@ -114,7 +114,7 @@ public class AseguradoraView extends FrameView {
         mainPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -165,14 +165,14 @@ public class AseguradoraView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
-        jMenu1.setName("jMenu1"); // NOI18N
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenu1);
+        fileMenu.add(jMenuItem1);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getActionMap(AseguradoraView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
@@ -361,12 +361,6 @@ public class AseguradoraView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        // TODO add your handling code here:
-         StringConexion cs = new StringConexion(null, true);
-         cs.setVisible(true);
-    }//GEN-LAST:event_jMenu1ActionPerformed
-
     private void mainPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mainPanelComponentShown
         // TODO add your handling code here:
          
@@ -440,14 +434,20 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         lista.setVisible(true);
 }//GEN-LAST:event_jMenuItem12ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        StringConexion sc = new StringConexion(null, true);
+        sc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
