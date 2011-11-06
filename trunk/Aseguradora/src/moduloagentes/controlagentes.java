@@ -567,12 +567,12 @@ public class controlagentes extends javax.swing.JFrame {
         if (jRadioButton5.isSelected()== true)
         {
             nuevoagente.setDPI(jTextField13.getText());
-            nuevoagente.buscaruno();
+            //nuevoagente.buscaruno();
 
         }
         else
         {
-          nuevoagente.buscar();
+          //nuevoagente.buscar();
 
         }
     }//GEN-LAST:event_jButton3ActionPerformed

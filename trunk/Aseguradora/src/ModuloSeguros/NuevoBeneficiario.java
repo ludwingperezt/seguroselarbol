@@ -31,6 +31,25 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
         this.setVisible(true);
         return this.nuevo;
     }
+    public String formatearFecha(String antigua){
+        String retorno = "20";
+        String[]datos = antigua.split("/");
+        
+        retorno += datos[2]+"-";
+        if (datos[1].length()<2){
+            retorno=retorno+"0"+datos[1]+"-";
+        }
+        else
+            retorno = retorno+datos[1]+"-";        
+        
+        if (datos[0].length()<2){
+            retorno=retorno +"0"+datos[0];
+        }
+        else
+            retorno = retorno +datos[0];
+        
+        return retorno;
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -57,6 +76,7 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
         jTextField7 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -144,6 +164,8 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -184,10 +206,12 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -215,7 +239,7 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
         nuevo.setDPI(jTextField1.getText());
         nuevo.setNombres(jTextField2.getText());
         nuevo.setApellidos(jTextField3.getText());
-        nuevo.setFechaNacimiento(Date.valueOf(jTextField4.getText()));
+        nuevo.setFechaNacimiento(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
         nuevo.setDireccion(jTextField5.getText());
         nuevo.setTelefono(jTextField6.getText());
         nuevo.setCelular(jTextField7.getText());
@@ -247,6 +271,7 @@ public class NuevoBeneficiario extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

@@ -4,6 +4,7 @@
 
 package aseguradora;
 
+import CapaDatos.Conexion;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import javax.swing.JFrame;
 import ModuloSeguros.*;
 import ModuloClientes.*;
 import CapaNegocios.*;
+import com.mysql.jdbc.Connection;
 /**
  * The application's main frame.
  */
@@ -85,6 +87,9 @@ public class AseguradoraView extends FrameView {
                 }
             }
         });
+         //StringConexion cs = new StringConexion(null, true);
+         //cs.setVisible(true);        
+        Connection con = (Connection) Conexion.iniciarConexion();
     }
 
     @Action
@@ -110,7 +115,6 @@ public class AseguradoraView extends FrameView {
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -169,10 +173,6 @@ public class AseguradoraView extends FrameView {
             }
         });
         fileMenu.add(jMenu1);
-
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        fileMenu.add(jMenuItem1);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getActionMap(AseguradoraView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
@@ -363,7 +363,8 @@ public class AseguradoraView extends FrameView {
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
         // TODO add your handling code here:
-         
+         StringConexion cs = new StringConexion(null, true);
+         cs.setVisible(true);
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void mainPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mainPanelComponentShown
@@ -447,7 +448,6 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
