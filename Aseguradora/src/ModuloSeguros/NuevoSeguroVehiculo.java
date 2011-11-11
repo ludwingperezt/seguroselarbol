@@ -11,18 +11,59 @@
 
 package ModuloSeguros;
 import CapaNegocios.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author HP G42
  */
 public class NuevoSeguroVehiculo extends javax.swing.JDialog {
-
+    
+    private boolean editarOInsertar = false; //si es true, la ventana se abre para editar, si es false, se abre para insertar
+    private SeguroAuto seguroAEditar = null;
     /** Creates new form NuevoSeguroVehiculo */
     public NuevoSeguroVehiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
+    
+    public void editarSeguro(SeguroAuto unS) throws SQLException{
 
+            
+            seguroAEditar = unS.seguroAutoEditable();
+            editarOInsertar = true;
+            this.jTextField1.setText(unS.getDescripcion());
+            this.jTextField2.setText(Double.toString(unS.getPrima()));
+            this.jTextField3.setText(unS.getSerie());      
+            this.jTextField4.setText(Integer.toString(unS.getCorrelativo()));
+            this.setVisible(true);
+       
+    }
+    
+    private void insertarEnBaseDatos(){
+        try{
+            SeguroAuto nuevo = new SeguroAuto();
+            nuevo.setTipoSeguro(jComboBox1.getSelectedIndex());
+            nuevo.setDescripcion(jTextField1.getText());
+            nuevo.setPrima(Double.parseDouble(jTextField2.getText()));
+            nuevo.setSerie(jTextField3.getText());
+            nuevo.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+
+            if (jTextField1.getText().isEmpty()||jTextField2.getText().isEmpty()){
+                JOptionPane.showMessageDialog(rootPane, "Los campos 'Descripcion' o 'Serie' no pueden quedar vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else{                        
+                nuevo.insertarEnBaseDeDatos();
+                JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. La ventana se cerrará", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            }                      
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -72,6 +113,11 @@ public class NuevoSeguroVehiculo extends javax.swing.JDialog {
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
+        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField4FocusGained(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preferencial", "Oro", "Plata" }));
         jComboBox1.setName("jComboBox1"); // NOI18N
@@ -157,24 +203,42 @@ public class NuevoSeguroVehiculo extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try{
-            SeguroAuto nuevo = new SeguroAuto();
-            nuevo.setTipoSeguro(jComboBox1.getSelectedIndex());
-            nuevo.setDescripcion(jTextField1.getText());
-            nuevo.setPrima(Double.parseDouble(jTextField2.getText()));
-            nuevo.setSerie(jTextField3.getText());
-            nuevo.setCorrelativo(Integer.parseInt(jTextField4.getText()));
-            nuevo.insertarEnBaseDeDatos();
-            this.dispose();
+            if (editarOInsertar){
+                    seguroAEditar.setTipoSeguro(jComboBox1.getSelectedIndex());
+                    seguroAEditar.setDescripcion(jTextField1.getText());
+                    seguroAEditar.setPrima(Double.parseDouble(jTextField2.getText()));
+                    seguroAEditar.setSerie(jTextField3.getText());
+                    seguroAEditar.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+                    
+                    if (jTextField1.getText().isEmpty()||jTextField2.getText().isEmpty()){
+                        JOptionPane.showMessageDialog(rootPane, "Los campos 'Descripcion' o 'Serie' no pueden quedar vacíos", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else{                        
+                        seguroAEditar.modificar();
+                        JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. La ventana se cerrará", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                    }
+            }
+            else{
+                insertarEnBaseDatos();
+                JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. La ventana se cerrará", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            }
         }
-        catch(Exception ex){
-            
+        catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4FocusGained
 
     /**
      * @param args the command line arguments
