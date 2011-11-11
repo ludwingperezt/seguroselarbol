@@ -116,6 +116,56 @@ public class SeguroAuto {
         a = lista.toArray(a);
         return a;
     }
+    
+    public static  SeguroAuto [] ListaSegurosParaEditar() throws SQLException{
+        ArrayList<SeguroAuto> lista = new ArrayList<SeguroAuto>();
+        
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        String consulta = "SELECT idSeguroAuto,Descripcion,Serie FROM SeguroAuto";
+        
+        ResultSet rs = st.executeQuery(consulta);
+        
+        while (rs.next()){
+            SeguroAuto i = new SeguroAuto();
+            i.setIdSeguroAuto((Integer)rs.getObject(1));
+            i.setDescripcion(rs.getString(2));
+            i.setSerie(rs.getString(3));
+            lista.add(i);
+        }
+        
+        SeguroAuto []a = new SeguroAuto[lista.size()];
+        a = lista.toArray(a);
+        return a;
+    }
+    public SeguroAuto seguroAutoEditable() throws SQLException{
+        String consulta = "SELECT TipoSeguro, Prima, Correlativo FROM SeguroAuto WHERE idSeguroAuto = "+Integer.toString(this.idSeguroAuto);
+        
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();        
+        ResultSet rs = st.executeQuery(consulta);
+        
+        while (rs.next()){
+            this.setTipoSeguro(rs.getInt(1));
+            this.setPrima(rs.getDouble(2));
+            this.setCorrelativo(rs.getInt(3));
+        }        
+        return this;
+    }
+
+    public void modificar() throws SQLException {
+        //idSeguroAuto, TipoSeguro, Descripcion, Prima, Serie, Correlativo
+        String cadena = "UPDATE SeguroAuto SET TipoSeguro = "
+                +Integer.toString(tipoSeguro)+","
+                +"Descripcion = '"+descripcion+"',"
+                +"Prima = "+Double.toString(prima)+","
+                +"Serie = '"+serie+"',"
+                +"Correlativo = "+Integer.toString(correlativo)
+                +" WHERE idSeguroAuto = "+Integer.toString(idSeguroAuto);
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        int executeUpdate = st.executeUpdate(cadena);
+    }
 
 }
 

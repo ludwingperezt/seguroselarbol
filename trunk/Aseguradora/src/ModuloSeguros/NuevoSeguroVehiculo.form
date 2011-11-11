@@ -137,6 +137,9 @@
         <Property name="text" type="java.lang.String" resourceKey="jTextField4.text"/>
         <Property name="name" type="java.lang.String" value="jTextField4" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextField4FocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
