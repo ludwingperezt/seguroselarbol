@@ -9,6 +9,7 @@
  * Created on 17/10/2011, 06:47:04 PM
  */
 package ModuloSeguros;
+import Varios.VisualizadorReportes;
 import CapaNegocios.*;
 import ModuloClientes.Clientes;
 import java.sql.Date;
@@ -409,7 +410,8 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
                 ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
                 ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
                 //hay que agregar un informe para imprimir con los datos de la nueva poliza!!!!!!!!!
-                JOptionPane.showMessageDialog(this.rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(this.rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                VisualizadorReportes.mostrarReportePolizaSeguroAuto(ca.getIdContratoAuto());
                 this.dispose();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

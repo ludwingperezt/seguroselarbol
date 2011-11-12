@@ -175,6 +175,7 @@ public class ContratoAuto {
                 ResultSet rs = cmd.getResultSet();
                 boolean next = rs.next();
                 int indexContrato = rs.getInt(1);
+                this.idContratoAuto = indexContrato;
                 //insertarTuplaSeguroAutoClienteSeguro(agente int, cliente int, contratoAuto int)
                 funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroAutoClienteSeguro(?,?,?)}");
                 funcion.setInt(1, aseguradora.AseguradoraView.idEmpleado);
