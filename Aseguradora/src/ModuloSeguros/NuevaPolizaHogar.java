@@ -10,6 +10,7 @@
  */
 package ModuloSeguros;
 
+import Varios.VisualizadorReportes;
 import CapaNegocios.*;
 import ModuloClientes.*;
 import java.sql.Date;
@@ -435,7 +436,9 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
                     nuevoContrato.setNumeroPagos(Integer.parseInt(jTextField5.getText()));
                     nuevoContrato.setMontoPagoseguro(Double.parseDouble(jTextField6.getText()));
                     nuevoContrato.insertarEnBaseDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiariosNuevos,listaBeneficiariosExistentes);
-                    JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    VisualizadorReportes.mostrarReportePolizaSeguroHogar(nuevoContrato.getIdContratoHogar());
                     this.dispose();
                 }
             }
@@ -451,8 +454,8 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox2.getItemCount()>0){
-            boolean add = listaBeneficiariosExistentes.add(listaBeneficiarios[jComboBox2.getSelectedIndex()]);
+        if (jComboBox3.getItemCount()>0){
+            boolean add = listaBeneficiariosExistentes.add(listaBeneficiarios[jComboBox3.getSelectedIndex()]);
             actualizarBeneficiarios();
         }
     }//GEN-LAST:event_jButton1ActionPerformed

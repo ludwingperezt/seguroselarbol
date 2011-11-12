@@ -10,6 +10,7 @@
  */
 package ModuloSeguros;
 
+import Varios.VisualizadorReportes;
 import CapaNegocios.*;
 import ModuloClientes.Clientes;
 import java.sql.Date;
@@ -483,7 +484,7 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                     
                     //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana ", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
                     int idContratoVidaInsertador = nuevaPoliza.getIdContratoVida();
-                    VisualizadorReportesSeguros.mostrarReportePolizaSeguroVida(idContratoVidaInsertador);
+                    VisualizadorReportes.mostrarReportePolizaSeguroVida(idContratoVidaInsertador);
                     this.dispose();
                     
                 }
