@@ -21,6 +21,11 @@ public class Conexion {
     private static String password = "seguros";
     private static String nombreServidor = "ROLANDO-PC";
     
+    //private static String baseDatos = "seguroselarbol";
+    //private static String usuario = "root";
+    //private static String password = "";
+    //private static String nombreServidor = "localhost";
+    
     //private static String direccionServidor = "jdbc:mysql://ROLANDO-PC/"+baseDatos;
     
     private static Connection conexionDB = null;

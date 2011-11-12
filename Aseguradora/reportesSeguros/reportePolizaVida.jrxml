@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportePolizaVida" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.1269722013523673"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idContratoVida" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     contratovida.`Identificacion` AS contratovida_Identificacion,
+     contratovida.`Descripcion` AS contratovida_Descripcion,
+     contratovida.`Profesion` AS contratovida_Profesion,
+     contratovida.`FechaContrato` AS contratovida_FechaContrato,
+     contratovida.`FechaPago` AS contratovida_FechaPago,
+     contratovida.`Mora` AS contratovida_Mora,
+     contratovida.`Vencimiento` AS contratovida_Vencimiento,
+     contratovida.`NumeroPagos` AS contratovida_NumeroPagos,
+     contratovida.`MontoPagoSeguro` AS contratovida_MontoPagoSeguro,
+     segurovida.`Descripcion` AS segurovida_Descripcion,
+     beneficiarios.`DPI` AS beneficiarios_DPI,
+     beneficiarios.`Nombres` AS beneficiarios_Nombres,
+     beneficiarios.`Apellidos` AS beneficiarios_Apellidos,
+     beneficiarios.`FechaNacimiento` AS beneficiarios_FechaNacimiento,
+     beneficiarios.`Direccion` AS beneficiarios_Direccion,
+     beneficiarios.`Telefono` AS beneficiarios_Telefono,
+     beneficiarios.`Celular` AS beneficiarios_Celular,
+     cliente.`DPI` AS cliente_DPI,
+     cliente.`NIT` AS cliente_NIT,
+     cliente.`Nombres` AS cliente_Nombres,
+     cliente.`Apellidos` AS cliente_Apellidos,
+     cliente.`Direccion` AS cliente_Direccion,
+     cliente.`Telefono` AS cliente_Telefono,
+     cliente.`Celular` AS cliente_Celular,
+     cliente.`FechaNacimiento` AS cliente_FechaNacimiento,
+     cliente.`edad` AS cliente_edad,
+     agente.`Nombre` AS agente_Nombre,
+     agente.`Telefono` AS agente_Telefono,
+     agente.`Celular` AS agente_Celular,
+     segurovida.`Prima` AS segurovida_Prima
+FROM
+     `segurovida` segurovida INNER JOIN `contratovida` contratovida ON segurovida.`idSeguroVida` = contratovida.`SeguroVida_idSeguroVida`
+     INNER JOIN `segurovidabeneficiarios` segurovidabeneficiarios ON contratovida.`idContratoVida` = segurovidabeneficiarios.`ContratoVida_idContratoVida`
+     INNER JOIN `clienteseguro` clienteseguro ON contratovida.`idContratoVida` = clienteseguro.`ContratoVida_idContratoVida`
+     INNER JOIN `cliente` cliente ON clienteseguro.`Cliente_idAgente` = cliente.`idCliente`
+     INNER JOIN `agente` agente ON clienteseguro.`Agente_idAgente` = agente.`idAgente`
+     INNER JOIN `beneficiarios` beneficiarios ON segurovidabeneficiarios.`Beneficiarios_idBeneficiarios` = beneficiarios.`idBeneficiarios`
+WHERE contratovida.`idContratoVida` = $P{idContratoVida}]]>
+	</queryString>
+	<field name="contratovida_Identificacion" class="java.lang.String"/>
+	<field name="contratovida_Descripcion" class="java.lang.String"/>
+	<field name="contratovida_Profesion" class="java.lang.String"/>
+	<field name="contratovida_FechaContrato" class="java.sql.Date"/>
+	<field name="contratovida_FechaPago" class="java.sql.Date"/>
+	<field name="contratovida_Mora" class="java.math.BigDecimal"/>
+	<field name="contratovida_Vencimiento" class="java.sql.Date"/>
+	<field name="contratovida_NumeroPagos" class="java.lang.Integer"/>
+	<field name="contratovida_MontoPagoSeguro" class="java.math.BigDecimal"/>
+	<field name="segurovida_Descripcion" class="java.lang.String"/>
+	<field name="beneficiarios_DPI" class="java.lang.String"/>
+	<field name="beneficiarios_Nombres" class="java.lang.String"/>
+	<field name="beneficiarios_Apellidos" class="java.lang.String"/>
+	<field name="beneficiarios_FechaNacimiento" class="java.sql.Date"/>
+	<field name="beneficiarios_Direccion" class="java.lang.String"/>
+	<field name="beneficiarios_Telefono" class="java.lang.String"/>
+	<field name="beneficiarios_Celular" class="java.lang.String"/>
+	<field name="cliente_DPI" class="java.lang.String"/>
+	<field name="cliente_NIT" class="java.lang.String"/>
+	<field name="cliente_Nombres" class="java.lang.String"/>
+	<field name="cliente_Apellidos" class="java.lang.String"/>
+	<field name="cliente_Direccion" class="java.lang.String"/>
+	<field name="cliente_Telefono" class="java.lang.String"/>
+	<field name="cliente_Celular" class="java.lang.String"/>
+	<field name="cliente_FechaNacimiento" class="java.sql.Date"/>
+	<field name="cliente_edad" class="java.lang.Integer"/>
+	<field name="agente_Nombre" class="java.lang.String"/>
+	<field name="agente_Telefono" class="java.lang.String"/>
+	<field name="agente_Celular" class="java.lang.String"/>
+	<field name="segurovida_Prima" class="java.math.BigDecimal"/>
+	<group name="contratovida_Identificacion">
+		<groupExpression><![CDATA[$F{contratovida_Identificacion}]]></groupExpression>
+		<groupHeader>
+			<band height="535">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="100" height="32" forecolor="#666666" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Contrato]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="100" y="0" width="455" height="32" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_Identificacion}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="-20" y="32" width="595" height="1" forecolor="#666666"/>
+				</line>
+				<staticText>
+					<reportElement mode="Opaque" x="14" y="289" width="153" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción de contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="188" width="66" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Profesión]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="14" y="329" width="132" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="19" y="353" width="97" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Pago]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="430" y="373" width="38" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Mora]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="263" y="329" width="145" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Vencimiento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="19" y="373" width="114" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Número de Pagos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="19" y="404" width="324" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto pago de seguro en caso de eventualidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="14" y="309" width="153" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo de seguro de vida]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="37" width="100" height="32" forecolor="#666666" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[DPI Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="163" width="29" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NIT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="99" width="61" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="119" width="61" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Apellido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="212" width="66" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Dirección]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="237" width="61" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Teléfono]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="306" y="237" width="49" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Celular]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="28" y="139" width="139" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Nacimiento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="343" y="139" width="49" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Edad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="29" y="455" width="65" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="29" y="478" width="65" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Teléfono]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="282" y="478" width="65" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Celular]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="234" y="373" width="50" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prima]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="180" y="289" width="358" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_Descripcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="188" width="353" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_Profesion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="148" y="329" width="108" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_FechaContrato}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="119" y="353" width="137" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_FechaPago}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="472" y="373" width="79" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_Mora}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="408" y="329" width="147" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_Vencimiento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="145" y="373" width="67" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_NumeroPagos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="347" y="404" width="168" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{contratovida_MontoPagoSeguro}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="180" y="309" width="358" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{segurovida_Descripcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement mode="Opaque" x="100" y="37" width="455" height="32" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="24" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_DPI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="168" width="247" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_NIT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="99" width="407" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_Nombres}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="116" y="119" width="399" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_Apellidos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="212" width="353" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_Direccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="100" y="237" width="163" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_Telefono}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="375" y="237" width="163" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_Celular}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="171" y="139" width="172" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_FechaNacimiento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="395" y="139" width="120" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cliente_edad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="100" y="455" width="396" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{agente_Nombre}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="100" y="478" width="163" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{agente_Telefono}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="355" y="478" width="141" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{agente_Celular}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="292" y="373" width="126" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{segurovida_Prima}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="71" width="555" height="1"/>
+				</line>
+				<staticText>
+					<reportElement mode="Opaque" x="180" y="75" width="195" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Datos de cliente]]></text>
+				</staticText>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="19" y="260" width="515" height="1"/>
+				</line>
+				<staticText>
+					<reportElement mode="Opaque" x="197" y="265" width="195" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Detalles del contrato]]></text>
+				</staticText>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="19" y="428" width="515" height="1"/>
+				</line>
+				<staticText>
+					<reportElement mode="Opaque" x="222" y="432" width="144" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Información de Agente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="197" y="509" width="198" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Beneficiarios]]></text>
+				</staticText>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="23" y="502" width="515" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="beneficiarios_DPI">
+		<groupExpression><![CDATA[$F{beneficiarios_DPI}]]></groupExpression>
+		<groupHeader>
+			<band height="2"/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="78">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699"/>
+				<staticText>
+					<reportElement x="20" y="20" width="408" height="43" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Contrato Seguro de Vida]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="158">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="150" width="555" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="25" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_Nombres}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="45" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_Apellidos}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="65" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_FechaNacimiento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="85" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_Direccion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="105" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_Telefono}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="125" width="247" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_Celular}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="125" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular beneficiario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="5" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DPI beneficiario]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="183" y="5" width="247" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiarios_DPI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="25" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre beneficiario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="45" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos beneficicario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="65" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de nacimiento beneficiario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="85" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección beneficiario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="14" y="105" width="157" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono beneficiario]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
