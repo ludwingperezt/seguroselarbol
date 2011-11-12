@@ -189,12 +189,27 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
 
         jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+        });
 
         jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
         jTextField2.setName("jTextField2"); // NOI18N
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField2FocusGained(evt);
+            }
+        });
 
         jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
         jTextField3.setName("jTextField3"); // NOI18N
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField3FocusGained(evt);
+            }
+        });
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
@@ -447,7 +462,11 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
         int r = JOptionPane.showConfirmDialog(rootPane,"Cuando ingrese un nuevo cliente ya no podrá seleccionar a otro de la lista", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION);
         if (r==JOptionPane.YES_OPTION){
             Clientes nc = new Clientes(null, true);
-            clienteSeleccionado = nc.mostrar();
+            try {
+                clienteSeleccionado = nc.mostrar();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
             jComboBox1.setEnabled(false);
         }
         //JOptionPane.showMessageDialog(rootPane, "Cuando ingrese un nuevo cliente ya no podrá seleccionar a otro de la lista", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -469,6 +488,24 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
             clienteSeleccionado = listaClientes[jComboBox1.getSelectedIndex()];
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+        // TODO add your handling code here:
+        jTextField2.setSelectionStart(0);
+        jTextField2.setSelectionEnd(jTextField2.getText().length());
+    }//GEN-LAST:event_jTextField2FocusGained
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+        jTextField1.setSelectionStart(0);
+        jTextField1.setSelectionEnd(jTextField1.getText().length());
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
+        // TODO add your handling code here:
+        jTextField3.setSelectionStart(0);
+        jTextField3.setSelectionEnd(jTextField3.getText().length());
+    }//GEN-LAST:event_jTextField3FocusGained
 
     /**
      * @param args the command line arguments
