@@ -22,8 +22,11 @@ import javax.swing.JOptionPane;
  */
 public class NuevoSeguroVida extends javax.swing.JDialog {
     private SeguroVida sv = new SeguroVida();
+    private SeguroVida modSeguro=null;
 
     /** Creates new form NuevoSeguroVida */
+    
+    
     public NuevoSeguroVida(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -80,15 +83,35 @@ public class NuevoSeguroVida extends javax.swing.JDialog {
 
         jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+        });
 
         jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
         jTextField2.setName("jTextField2"); // NOI18N
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField2FocusGained(evt);
+            }
+        });
 
         jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
         jTextField3.setName("jTextField3"); // NOI18N
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField3FocusGained(evt);
+            }
+        });
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
+        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField4FocusGained(evt);
+            }
+        });
 
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
@@ -173,25 +196,66 @@ public class NuevoSeguroVida extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:            
-            sv.setTipoSeguro(jComboBox1.getSelectedIndex());
-            sv.setDescripcion(jTextField1.getText());
-            sv.setPrima(Double.parseDouble(jTextField2.getText()));
-            sv.setSerie(jTextField3.getText());
-            sv.setCorrelativo(Integer.parseInt(jTextField4.getText()));            
-            sv.insertarEnBaseDeDatos();
-            JOptionPane.showMessageDialog(rootPane, "Ya puede cerrar esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error de insersión", JOptionPane.ERROR_MESSAGE);
+        boolean valido=true;
+        if (modSeguro==null)
+            try {
+                // TODO add your handling code here:            
+                sv.setTipoSeguro(jComboBox1.getSelectedIndex());
+                sv.setDescripcion(jTextField1.getText());
+                sv.setPrima(Double.parseDouble(jTextField2.getText()));
+                sv.setSerie(jTextField3.getText());
+                sv.setCorrelativo(Integer.parseInt(jTextField4.getText()));            
+                sv.insertarEnBaseDeDatos();
+                JOptionPane.showMessageDialog(rootPane, "Ya puede cerrar esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error de insersión", JOptionPane.ERROR_MESSAGE);
+                valido=false;
+            }
+        else{
+            try {
+                modSeguro.setTipoSeguro(jComboBox1.getSelectedIndex());
+                modSeguro.setDescripcion(jTextField1.getText());
+                modSeguro.setPrima(Double.parseDouble(jTextField2.getText()));
+                modSeguro.setSerie(jTextField3.getText());
+                modSeguro.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+                modSeguro.modificar();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error de modificación", JOptionPane.ERROR_MESSAGE);
+                valido=false;
+            }
         }
-        
+        if (valido)
+            this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+        jTextField1.setSelectionStart(0);
+        jTextField1.setSelectionEnd(jTextField1.getText().length());
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+        // TODO add your handling code here:
+        jTextField2.setSelectionStart(0);
+        jTextField2.setSelectionEnd(jTextField2.getText().length());
+    }//GEN-LAST:event_jTextField2FocusGained
+
+    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
+        // TODO add your handling code here:
+        jTextField3.setSelectionStart(0);
+        jTextField3.setSelectionEnd(jTextField3.getText().length());
+    }//GEN-LAST:event_jTextField3FocusGained
+
+    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
+        // TODO add your handling code here:
+        jTextField4.setSelectionStart(0);
+        jTextField4.setSelectionEnd(jTextField4.getText().length());
+    }//GEN-LAST:event_jTextField4FocusGained
 
     /**
      * @param args the command line arguments
@@ -225,4 +289,13 @@ public class NuevoSeguroVida extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
+
+    public void editarSeguro(SeguroVida seleccionado) throws SQLException {
+        modSeguro=seleccionado;
+        jTextField1.setText(seleccionado.getDescripcion());
+        jTextField2.setText(String.valueOf(seleccionado.getPrima()));
+        jTextField3.setText(seleccionado.getSerie());
+        jTextField4.setText(String.valueOf(seleccionado.getCorrelativo()));
+        this.setVisible(true);
+    }
 }

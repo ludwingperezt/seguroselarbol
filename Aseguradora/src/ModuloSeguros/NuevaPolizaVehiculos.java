@@ -213,18 +213,43 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
 
         jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+        });
 
         jTextField5.setText(resourceMap.getString("jTextField5.text")); // NOI18N
         jTextField5.setName("jTextField5"); // NOI18N
+        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField5FocusGained(evt);
+            }
+        });
 
         jTextField6.setText(resourceMap.getString("jTextField6.text")); // NOI18N
         jTextField6.setName("jTextField6"); // NOI18N
+        jTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField6FocusGained(evt);
+            }
+        });
 
         jTextField8.setText(resourceMap.getString("jTextField8.text")); // NOI18N
         jTextField8.setName("jTextField8"); // NOI18N
+        jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField8FocusGained(evt);
+            }
+        });
 
         jTextField9.setText(resourceMap.getString("jTextField9.text")); // NOI18N
         jTextField9.setName("jTextField9"); // NOI18N
+        jTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField9FocusGained(evt);
+            }
+        });
 
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setName("jButton4"); // NOI18N
@@ -399,7 +424,11 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         aseguradora.Cliente nc = new aseguradora.Cliente();
         nc.setVisible(true);*/
         Clientes nc = new Clientes(null, true);
-        this.actualCliente = nc.mostrar();
+        try {
+            this.actualCliente = nc.mostrar();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
         JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo cliente se usarán para la insersión", "Cliente", JOptionPane.INFORMATION_MESSAGE);
         jComboBox2.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -457,6 +486,36 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+        jTextField1.setSelectionStart(0);
+        jTextField1.setSelectionEnd(jTextField1.getText().length());
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
+        // TODO add your handling code here:
+        jTextField5.setSelectionStart(0);
+        jTextField5.setSelectionEnd(jTextField5.getText().length());
+    }//GEN-LAST:event_jTextField5FocusGained
+
+    private void jTextField6FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusGained
+        // TODO add your handling code here:
+        jTextField6.setSelectionStart(0);
+        jTextField6.setSelectionEnd(jTextField6.getText().length());
+    }//GEN-LAST:event_jTextField6FocusGained
+
+    private void jTextField8FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusGained
+        // TODO add your handling code here:
+        jTextField8.setSelectionStart(0);
+        jTextField8.setSelectionEnd(jTextField8.getText().length());
+    }//GEN-LAST:event_jTextField8FocusGained
+
+    private void jTextField9FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusGained
+        // TODO add your handling code here:
+        jTextField9.setSelectionStart(0);
+        jTextField9.setSelectionEnd(jTextField9.getText().length());
+    }//GEN-LAST:event_jTextField9FocusGained
 
     /**
      * @param args the command line arguments

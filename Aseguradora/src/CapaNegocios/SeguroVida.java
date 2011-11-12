@@ -97,19 +97,38 @@ public class SeguroVida {
         st.execute("UNLOCK TABLES;");
         st.close();
     }
+    
+    public void modificar() throws SQLException {
+        Connection con = (Connection) Conexion.obtenerConexion();        
+        Statement st = (Statement) con.createStatement();
+        //idSeguroVida, TipoSeguro, Descripcion, Prima, Serie, Correlativo
+        String sentencia = "UPDATE SeguroVida SET TipoSeguro="
+                +String.valueOf(this.tipoSeguro+1)+", Descripcion="
+                +"'"+this.descripcion+"', Prima="
+                +String.valueOf(prima)+", Serie="
+                +"'"+this.serie+"', Correlativo="
+                +String.valueOf(this.correlativo) +" WHERE idSeguroVida="+ String.valueOf(this.getIdSeguroVida());        
+        st.executeUpdate(sentencia);
+        st.close();
+    }
+    
     public static  SeguroVida [] consultarListaSegurosVida() throws SQLException{
         ArrayList<SeguroVida> lista = new ArrayList<SeguroVida>();
         
         Connection con = (Connection) Conexion.obtenerConexion();
         Statement st = (Statement) con.createStatement();
-        String consulta = "SELECT idSeguroVida,Descripcion FROM SeguroVida";
+        String consulta = "SELECT * FROM SeguroVida";
         
         ResultSet rs = st.executeQuery(consulta);
         
         while (rs.next()){
             SeguroVida i = new SeguroVida();
-            i.setIdSeguroVida((Integer)rs.getObject(1));
-            i.setDescripcion(rs.getString(2));
+            i.setIdSeguroVida(rs.getInt(1));
+            i.setTipoSeguro(rs.getInt(2));
+            i.setDescripcion(rs.getString(3));
+            i.setPrima(rs.getInt(4));
+            i.setSerie(rs.getString(5));
+            i.setCorrelativo(rs.getInt(6));
             lista.add(i);
         }
         
