@@ -435,8 +435,8 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox2.getItemCount()>0){
-            boolean add = listaBeneficiariosExistentes.add(todosBeneficiarios[jComboBox2.getSelectedIndex()]);
+        if (jComboBox3.getItemCount()>0){
+            boolean add = listaBeneficiariosExistentes.add(todosBeneficiarios[jComboBox3.getSelectedIndex()]);
             actualizarBeneficiarios();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -480,8 +480,12 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                     nuevaPoliza.setNumeroPagos(Integer.parseInt(jTextField7.getText()));
                     nuevaPoliza.setMontoPagoSeguro(Double.parseDouble(jTextField8.getText()));
                     nuevaPoliza.insertarEnBaseDeDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiariosNuevos,listaBeneficiariosExistentes);
-                    JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana ", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    int idContratoVidaInsertador = nuevaPoliza.getIdContratoVida();
+                    VisualizadorReportesSeguros.mostrarReportePolizaSeguroVida(idContratoVidaInsertador);
                     this.dispose();
+                    
                 }
             }
         } catch (SQLException ex) {
