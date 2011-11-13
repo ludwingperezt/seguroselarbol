@@ -340,6 +340,11 @@ public class AseguradoraView extends FrameView {
 
         jMenuItem17.setText(resourceMap.getString("jMenuItem17.text")); // NOI18N
         jMenuItem17.setName("jMenuItem17"); // NOI18N
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem17);
 
         jSeparator3.setName("jSeparator3"); // NOI18N
@@ -562,8 +567,13 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         // TODO add your handling code here:
-        
+        VisualizadorReportes.mostrarReporteBeneficiariosPorSeguroVida();
     }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        // TODO add your handling code here:
+        VisualizadorReportes.mostrarReporteBeneficiariosPorSeguroHogar();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;

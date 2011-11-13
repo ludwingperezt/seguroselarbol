@@ -143,7 +143,7 @@ public class ContratoHogar {
         this.cliente=unCliente;
     }
     public Cliente getCliente(){
-        return this.getCliente();
+        return this.cliente;
     }
     public void setIdentificacion(String identificacion){
         this.identificacion = identificacion;
