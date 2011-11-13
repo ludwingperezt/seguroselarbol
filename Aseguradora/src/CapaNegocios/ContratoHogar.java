@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 public class ContratoHogar {
 
+    
     private int idContratoHogar;
 
     private int idSeguroHogar;
@@ -34,6 +35,10 @@ public class ContratoHogar {
     private boolean activo;
 
     private double montoPagoseguro;
+    
+    private Cliente cliente=null;
+    
+    private String identificacion;
 
     public ContratoHogar () {
     }
@@ -133,6 +138,19 @@ public class ContratoHogar {
     public void setVencimiento (Date val) {
         this.vencimiento = val;
     }
+    
+    public void setCliente(Cliente unCliente){
+        this.cliente=unCliente;
+    }
+    public Cliente getCliente(){
+        return this.getCliente();
+    }
+    public void setIdentificacion(String identificacion){
+        this.identificacion = identificacion;
+    }
+    public String getIdentificacion(){
+        return this.identificacion;
+    }
 
     public void insertarEnBaseDatos(Cliente clienteSeleccionado, SeguroHogar seguroSeleccionado, ArrayList<Beneficiario> listaBeneficiariosNuevos, ArrayList<Beneficiario> listaBeneficiariosExistentes) throws SQLException {
         Connection con = (Connection) Conexion.obtenerConexion();            
@@ -199,5 +217,33 @@ public class ContratoHogar {
                  boolean execute = comando.execute("ROLLBACK");
             }
     }
+
+    public static ContratoHogar[] listaPolizasHogar() throws SQLException {
+        ArrayList<ContratoHogar> lista = new ArrayList<ContratoHogar>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CH.idContratoHogar, CH.Identificacion,CH.Descripcion,Cl.Nombres,Cl.Apellidos,Cl.NIT,Cl.DPI FROM ContratoHogar AS CH INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente;";
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoHogar i = new ContratoHogar();
+            Cliente ci = new Cliente();            
+            i.setIdContratoHogar(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            ci.setNombres(rs.getString(4));
+            ci.setApellidos(rs.getString(5));
+            ci.setNIT(rs.getString(6));
+            ci.setDPI(rs.getString(7));
+            i.setCliente(ci);            
+            lista.add(i);
+        }      
+        ContratoHogar [] ls = new ContratoHogar[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
+
 }
 

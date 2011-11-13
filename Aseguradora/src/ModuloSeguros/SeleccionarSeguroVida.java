@@ -205,7 +205,7 @@ public class SeleccionarSeguroVida extends javax.swing.JDialog {
             }
             if (indiceEncontrado>=0){
                 encontrado = listaSeguros[indiceEncontrado];
-                JOptionPane.showMessageDialog(rootPane, encontrado.getSerie(),"buscado",JOptionPane.INFORMATION_MESSAGE);
+                jTable1.setRowSelectionInterval(indiceEncontrado, indiceEncontrado);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -214,7 +214,6 @@ public class SeleccionarSeguroVida extends javax.swing.JDialog {
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
         encontrado = listaSeguros[selectedRow];
-        JOptionPane.showMessageDialog(rootPane, encontrado.getSerie(),"seleccionado",JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
