@@ -134,10 +134,12 @@ public class AseguradoraView extends FrameView {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -295,6 +297,15 @@ public class AseguradoraView extends FrameView {
         jSeparator2.setName("jSeparator2"); // NOI18N
         jMenu3.add(jSeparator2);
 
+        jMenuItem16.setText(resourceMap.getString("jMenuItem16.text")); // NOI18N
+        jMenuItem16.setName("jMenuItem16"); // NOI18N
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem16);
+
         jMenuItem14.setText(resourceMap.getString("jMenuItem14.text")); // NOI18N
         jMenuItem14.setName("jMenuItem14"); // NOI18N
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
@@ -326,6 +337,10 @@ public class AseguradoraView extends FrameView {
             }
         });
         jMenu4.add(jMenuItem9);
+
+        jMenuItem17.setText(resourceMap.getString("jMenuItem17.text")); // NOI18N
+        jMenuItem17.setName("jMenuItem17"); // NOI18N
+        jMenu4.add(jMenuItem17);
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         jMenu4.add(jSeparator3);
@@ -545,6 +560,11 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         VisualizadorReportes.mostrarReporteBeneficiariosPorCliente();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -559,6 +579,8 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

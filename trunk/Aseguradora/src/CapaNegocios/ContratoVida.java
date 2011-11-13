@@ -34,6 +34,10 @@ public class ContratoVida {
     private boolean activo;
 
     private double montoPagoSeguro;
+    
+    private Cliente cliente=null;
+    
+    private String identificacion;
 
     public ContratoVida () {
     }
@@ -126,6 +130,18 @@ public class ContratoVida {
         this.vencimiento = val;
     }
 
+    public void setCliente (Cliente unCliente){
+        this.cliente = unCliente;
+    }
+    public Cliente getCliente(){
+        return this.cliente;
+    }
+    public void setIdentificacion(String identificacion){
+        this.identificacion=identificacion;
+    }
+    public String getIdentificacion(){
+        return this.identificacion;
+    }
     public void insertarEnBaseDeDatos(Cliente clienteSeleccionado, SeguroVida seguroSeleccionado, ArrayList<Beneficiario> listaBeneficiariosNuevos,ArrayList<Beneficiario> listaBeneficiariosExistenetes) throws SQLException{
 
             Connection con = (Connection) Conexion.obtenerConexion();            
@@ -191,6 +207,37 @@ public class ContratoVida {
             boolean execute = comando.execute("rollback;");
             Logger.getLogger(ContratoVida.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static ContratoVida[] listaPolizasVida() throws SQLException{
+        ArrayList<ContratoVida> lista = new ArrayList<ContratoVida>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CV.idContratoVida,CV.Identificacion,CV.Descripcion,"
+                + "Cl.Nombres,Cl.Apellidos,Cl.NIT,Cl.DPI "
+                + "FROM ContratoVida AS CV "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoVida_idContratoVida = CV.idContratoVida "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente";
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoVida i = new ContratoVida();
+            Cliente ci = new Cliente();            
+            i.setIdContratoVida(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            ci.setNombres(rs.getString(4));
+            ci.setApellidos(rs.getString(5));
+            ci.setNIT(rs.getString(6));
+            ci.setDPI(rs.getString(7));
+            i.setCliente(ci);            
+            lista.add(i);
+        }      
+        ContratoVida [] ls = new ContratoVida[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
     }
 
 }
