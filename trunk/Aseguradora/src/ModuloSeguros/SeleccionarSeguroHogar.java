@@ -8,9 +8,8 @@
  *
  * Created on 10/11/2011, 07:38:35 PM
  */
-package ModuloClientes;
+package ModuloSeguros;
 
-import ModuloSeguros.*;
 import CapaNegocios.*;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -22,28 +21,28 @@ import javax.swing.table.TableModel;
  *
  * @author HP G42
  */
-public class SeleccionarCliente extends javax.swing.JDialog {
+public class SeleccionarSeguroHogar extends javax.swing.JDialog {
 
-    private Cliente[] listaClientes = null;
-    private Cliente encontrado = null;
+    private SeguroHogar[] listaSeguros = null;
+    private SeguroHogar encontrado = null;
     /** Creates new form SeleccionarSeguro */
-    public SeleccionarCliente(java.awt.Frame parent, boolean modal) {
+    public SeleccionarSeguroHogar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         try {
-            listaClientes = Cliente.consultarListaClientes();
+            listaSeguros = SeguroHogar.consultarListaSegurosHogar();
             jTable1.removeAll();
             
             jTable1.addColumn(new TableColumn(0));
             DefaultTableModel modelo = new DefaultTableModel();
-            modelo.addColumn("DPI");
-            modelo.addColumn("Cliente");
+            modelo.addColumn("Serie");
+            modelo.addColumn("Descripcion");
             
-            for (Cliente i: listaClientes){
+            for (SeguroHogar i: listaSeguros){
                 Object []fila = new Object[2];
                 
-                fila[0]=i.getDPI();
-                fila[1]=i.getNombres()+" "+i.getApellidos();
+                fila[0]=i.getSerie();
+                fila[1]=i.getDescripcion();
                 
                 modelo.addRow(fila);
                 
@@ -54,7 +53,7 @@ public class SeleccionarCliente extends javax.swing.JDialog {
         }
     }
     
-    public Cliente seleccionarCliente(){
+    public SeguroHogar seleccionarSeguro(){
         this.setVisible(true);
         return this.encontrado;
     }
@@ -78,9 +77,10 @@ public class SeleccionarCliente extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarSeguroHogar.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarCliente.class);
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +113,6 @@ public class SeleccionarCliente extends javax.swing.JDialog {
         jPanel1.setName("jPanel1"); // NOI18N
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setToolTipText(resourceMap.getString("jLabel2.toolTipText")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
         jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
@@ -149,7 +148,6 @@ public class SeleccionarCliente extends javax.swing.JDialog {
         );
 
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setEnabled(false);
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,7 +165,7 @@ public class SeleccionarCliente extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 252, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 270, Short.MAX_VALUE)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)))
@@ -196,35 +194,27 @@ public class SeleccionarCliente extends javax.swing.JDialog {
             String buscado = jTextField2.getText();
             TableModel model = jTable1.getModel();
             Object valorDeIteracion;
-            Object valorDeIteracion2;
             int filas;
             int indiceEncontrado = -1;
             filas = model.getRowCount();
             for (int i=0; i<filas; i++){
-                    valorDeIteracion = model.getValueAt(i,0);
-                    valorDeIteracion2= model.getValueAt(i,1);
-                if (buscado.equals(valorDeIteracion.toString()) || valorDeIteracion2.toString().toLowerCase().contains(buscado.toLowerCase())){
+                valorDeIteracion = model.getValueAt(i,0);
+                if (buscado.equals(valorDeIteracion.toString())){
                     indiceEncontrado = i;
                     break;
                 }
             }
             if (indiceEncontrado>=0){
-                encontrado = listaClientes[indiceEncontrado];
-                jButton3.setEnabled(true);
+                encontrado = listaSeguros[indiceEncontrado];
                 jTable1.setRowSelectionInterval(indiceEncontrado, indiceEncontrado);
-                //JOptionPane.showMessageDialog(rootPane, encontrado.getSerie(),"buscado",JOptionPane.INFORMATION_MESSAGE);
             }
-            else
-                jButton3.setEnabled(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
-        encontrado = listaClientes[selectedRow];
-        //JOptionPane.showMessageDialog(rootPane, encontrado.getSerie(),"seleccionado",JOptionPane.INFORMATION_MESSAGE);
-        jButton3.setEnabled(true);
+        encontrado = listaSeguros[selectedRow];
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -235,7 +225,6 @@ public class SeleccionarCliente extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         encontrado = null;
-        jButton3.setEnabled(false);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -256,13 +245,13 @@ public class SeleccionarCliente extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarSeguroHogar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarSeguroHogar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarSeguroHogar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarSeguroHogar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -270,7 +259,7 @@ public class SeleccionarCliente extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                SeleccionarCliente dialog = new SeleccionarCliente(new javax.swing.JFrame(), true);
+                SeleccionarSeguroHogar dialog = new SeleccionarSeguroHogar(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override

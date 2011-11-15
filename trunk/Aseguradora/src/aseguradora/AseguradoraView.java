@@ -141,6 +141,7 @@ public class AseguradoraView extends FrameView {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem18 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
@@ -349,6 +350,15 @@ public class AseguradoraView extends FrameView {
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         jMenu4.add(jSeparator3);
+
+        jMenuItem18.setText(resourceMap.getString("jMenuItem18.text")); // NOI18N
+        jMenuItem18.setName("jMenuItem18"); // NOI18N
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem18);
 
         menuBar.add(jMenu4);
 
@@ -575,6 +585,21 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         VisualizadorReportes.mostrarReporteBeneficiariosPorSeguroHogar();
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        // TODO add your handling code here:
+        SeleccionarSeguroHogar ssh = new SeleccionarSeguroHogar(null, true);
+        SeguroHogar seleccionado = ssh.seleccionarSeguro();
+        if (seleccionado !=null){
+            try {
+                NuevoSeguroHogar nsh = new NuevoSeguroHogar(null, true);
+                nsh.editarSeguro(seleccionado);
+            } catch (SQLException ex) {
+                //;
+                JOptionPane.showMessageDialog(mainPanel, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -591,6 +616,7 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

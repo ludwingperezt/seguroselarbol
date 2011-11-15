@@ -98,6 +98,28 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         jTable1.setModel(modelo);
     }
     
+    private void llenarTablaPolizasAuto()
+    {
+        jTable1.removeAll();
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Numero de póliza");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("DPI cliente");
+        modelo.addColumn("NIT cliente");
+        modelo.addColumn("Nombre");
+        
+        for (ContratoHogar i:listaPolizasHogar){
+            Object [] fila = new Object[5];
+            fila[0]=i.getIdentificacion();
+            fila[1]=i.getDescripcion();
+            fila[2]=i.getCliente().getDPI();
+            fila[3]=i.getCliente().getNIT();
+            fila[4]=i.getCliente().getNombres()+" "+i.getCliente().getApellidos();
+            modelo.addRow(fila);
+        }
+        
+        jTable1.setModel(modelo);
+    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -117,6 +139,8 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarPolizaSeguro.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -140,7 +164,6 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarPolizaSeguro.class);
         jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
 

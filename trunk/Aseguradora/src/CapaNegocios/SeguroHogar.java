@@ -87,6 +87,19 @@ public class SeguroHogar {
         st.execute("UNLOCK TABLES;");
         st.close();
     }
+     
+     
+    public void modificar() throws SQLException {
+        Connection con = (Connection) Conexion.obtenerConexion();        
+        Statement st = (Statement) con.createStatement();
+        //idSeguroVida, TipoSeguro, Descripcion, Prima, Serie, Correlativo
+        String sentencia = "UPDATE SeguroHogar SET TipoSeguro='" +String.valueOf(this.tipoSeguro+1)+
+                "', Descripcion='" +this.descripcion+"',Prima='" +String.valueOf(prima)+"',Serie='"+this.serie+"',Correlativo='"    
+                +String.valueOf(this.correlativo) +"' where idSeguroHogar="+String.valueOf(this.getIdSeguroHogar())+";";        
+        st.executeUpdate(sentencia);
+        st.close();
+    }
+     
     public static  SeguroHogar [] consultarListaSegurosHogar() throws SQLException{
         ArrayList<SeguroHogar> lista = new ArrayList<SeguroHogar>();
         

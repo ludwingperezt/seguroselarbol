@@ -292,6 +292,7 @@ public class NuevoSeguroVida extends javax.swing.JDialog {
 
     public void editarSeguro(SeguroVida seleccionado) throws SQLException {
         modSeguro=seleccionado;
+        jComboBox1.setSelectedIndex(seleccionado.getTipoSeguro()-1);
         jTextField1.setText(seleccionado.getDescripcion());
         jTextField2.setText(String.valueOf(seleccionado.getPrima()));
         jTextField3.setText(seleccionado.getSerie());

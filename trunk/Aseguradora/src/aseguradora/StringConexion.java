@@ -67,6 +67,7 @@ public class StringConexion extends javax.swing.JDialog {
         jTextField2.setName("jTextField2"); // NOI18N
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
+        jTextField4.setToolTipText(resourceMap.getString("jTextField4.toolTipText")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
 
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
@@ -126,7 +127,7 @@ public class StringConexion extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
