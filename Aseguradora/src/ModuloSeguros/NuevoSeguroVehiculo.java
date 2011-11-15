@@ -34,6 +34,7 @@ public class NuevoSeguroVehiculo extends javax.swing.JDialog {
             
             seguroAEditar = unS.seguroAutoEditable();
             editarOInsertar = true;
+            jComboBox1.setSelectedIndex(seguroAEditar.getTipoSeguro()-1);
             this.jTextField1.setText(unS.getDescripcion());
             this.jTextField2.setText(Double.toString(unS.getPrima()));
             this.jTextField3.setText(unS.getSerie());      
@@ -87,9 +88,10 @@ public class NuevoSeguroVehiculo extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevoSeguroVehiculo.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevoSeguroVehiculo.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 

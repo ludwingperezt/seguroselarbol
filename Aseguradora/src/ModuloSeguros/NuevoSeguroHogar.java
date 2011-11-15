@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
  */
 public class NuevoSeguroHogar extends javax.swing.JDialog {
     
-    private SeguroHogar nuevoSeguro = null;
-
+    private SeguroHogar seguro = null;
+    
     /** Creates new form NuevoSeguroHogar */
     public NuevoSeguroHogar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -53,9 +53,10 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevoSeguroHogar.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevoSeguroHogar.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -187,7 +188,7 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,19 +200,35 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            nuevoSeguro = new SeguroHogar();
-            nuevoSeguro.setTipoSeguro(jComboBox1.getSelectedIndex());
-            nuevoSeguro.setDescripcion(jTextField1.getText());
-            nuevoSeguro.setPrima(Double.parseDouble(jTextField2.getText()));
-            nuevoSeguro.setSerie(jTextField3.getText());
-            nuevoSeguro.setCorrelativo(Integer.parseInt(jTextField4.getText()));
-            nuevoSeguro.insertarEnBaseDeDatos();
-            JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        if (seguro==null){
+            try {
+                // TODO add your handling code here:
+                seguro = new SeguroHogar();
+                seguro.setTipoSeguro(jComboBox1.getSelectedIndex());
+                seguro.setDescripcion(jTextField1.getText());
+                seguro.setPrima(Double.parseDouble(jTextField2.getText()));
+                seguro.setSerie(jTextField3.getText());
+                seguro.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+                seguro.insertarEnBaseDeDatos();
+                JOptionPane.showMessageDialog(rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Operación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else
+        {
+            seguro.setTipoSeguro(jComboBox1.getSelectedIndex());
+            seguro.setDescripcion(jTextField1.getText());
+            seguro.setPrima(Double.parseDouble(jTextField2.getText()));
+            seguro.setSerie(jTextField3.getText());
+            seguro.setCorrelativo(Integer.parseInt(jTextField4.getText()));
+            try {
+                seguro.modificar();
+                this.dispose();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -275,4 +292,14 @@ public class NuevoSeguroHogar extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
+
+    public void editarSeguro(SeguroHogar seleccionado) throws SQLException {
+        seguro=seleccionado;
+        jComboBox1.setSelectedIndex(seguro.getTipoSeguro()-1);
+        jTextField1.setText(seguro.getDescripcion());
+        jTextField2.setText(String.valueOf(seguro.getPrima()));
+        jTextField3.setText(seguro.getSerie());
+        jTextField4.setText(String.valueOf(seguro.getCorrelativo()));
+        this.setVisible(true);
+    }
 }
