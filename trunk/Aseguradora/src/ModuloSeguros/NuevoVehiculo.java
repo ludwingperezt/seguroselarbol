@@ -267,6 +267,7 @@ public class NuevoVehiculo extends javax.swing.JDialog {
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            this.esteAuto = null;
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
