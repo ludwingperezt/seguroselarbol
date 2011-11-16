@@ -13,6 +13,7 @@ package ModuloSeguros;
 import Varios.VisualizadorReportes;
 import CapaNegocios.*;
 import ModuloClientes.Clientes;
+import ModuloClientes.SeleccionarCliente;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -47,15 +49,7 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
             listaSeguros = SeguroVida.consultarListaSegurosVida();
             todosBeneficiarios = Beneficiario.listaBeneficiarios();
             
-            if (listaClientes.length>0){
-                jComboBox1.removeAllItems();
-                for (Cliente c:listaClientes){
-                    jComboBox1.addItem(c.getNombres()+" "+c.getApellidos());
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(parent, "Aun no existen clientes que mostrar. Debe ingresar un cliente nuevo", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
+            
             
             if (listaSeguros.length>0){
                 jComboBox2.removeAllItems();
@@ -67,34 +61,52 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(parent, "Debe solicitar al administrador la insersión de un nuevo seguro, actualmente no exiten seguros en la base de datos", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
             
-            if (todosBeneficiarios.length>0){
-                jComboBox3.removeAllItems();
-                for (Beneficiario b:todosBeneficiarios){
-                    jComboBox3.addItem(b.getNombres()+" "+b.getApellidos());
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(parent, "Aun no existen beneficiarios que mostrar, debe ingresar al menos un beneficiario nuevo", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                jButton1.setEnabled(false);
-            }
+            
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(parent, ex.getMessage(), "Error en llenado de datos", JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    public void actualizarBeneficiarios(){
-        int maxSelectionIndex = jList1.getMaxSelectionIndex();
-        jList1.removeSelectionInterval(0, maxSelectionIndex);
-        DefaultListModel modelo = new DefaultListModel();
+    public void actualizarBeneficiariosNuevos(){       
+        jTable2.removeAll();
+              
+        DefaultTableModel modeloNuevos = new DefaultTableModel();
+        modeloNuevos.addColumn("DPI");
+        modeloNuevos.addColumn("Nombre");
+        modeloNuevos.addColumn("Apellido");
+
+        for (Beneficiario i: listaBeneficiariosNuevos){
+            Object []fila = new Object[3];
+
+            fila[0]=i.getDPI();
+            fila[1]=i.getNombres();
+            fila[2]=i.getApellidos();
+            modeloNuevos.addRow(fila);
+
+        }
+        jTable2.setModel(modeloNuevos);
+              
+    }
         
-        for (Beneficiario i:listaBeneficiariosNuevos){
-            modelo.addElement(i.getNombres()+" "+i.getApellidos());
+    public void actualizarBeneficiariosExistentes(){       
+        jTable1.removeAll();
+        //nuevos            
+        DefaultTableModel modeloExistentes = new DefaultTableModel();
+        modeloExistentes.addColumn("DPI");
+        modeloExistentes.addColumn("Nombre");
+        modeloExistentes.addColumn("Apellido");
+
+        for (Beneficiario i: listaBeneficiariosExistentes){
+            Object []fila = new Object[3];
+
+            fila[0]=i.getDPI();
+            fila[1]=i.getNombres();
+            fila[2]=i.getApellidos();
+            modeloExistentes.addRow(fila);
+
         }
-        for (Beneficiario j:listaBeneficiariosExistentes){
-            modelo.addElement(j.getNombres()+" "+j.getApellidos());
-        }
-        jList1.setModel(modelo);
+        jTable1.setModel(modeloExistentes);        
     }
     
      public String formatearFecha(String antigua){
@@ -126,7 +138,6 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -141,31 +152,29 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         jTextField5 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jComboBox3 = new javax.swing.JComboBox();
-        jLabel11 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jLabel12 = new javax.swing.JLabel();
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton9 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
-
-        jComboBox1.setName("jComboBox1"); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevaPolizaVida.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -230,14 +239,6 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         jTextField8.setText(resourceMap.getString("jTextField8.text")); // NOI18N
         jTextField8.setName("jTextField8"); // NOI18N
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jComboBox2.setName("jComboBox2"); // NOI18N
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,19 +254,6 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jComboBox3.setName("jComboBox3"); // NOI18N
-
-        jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
-        jLabel11.setName("jLabel11"); // NOI18N
-
-        jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setName("jButton3"); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
         });
 
@@ -285,34 +273,164 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
             }
         });
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
+        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane1.setViewportView(jList1);
+        jPanel2.setName("jPanel2"); // NOI18N
 
-        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
-        jLabel12.setName("jLabel12"); // NOI18N
+        jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
+        jButton6.setName("jButton6"); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText(resourceMap.getString("jButton8.text")); // NOI18N
+        jButton8.setName("jButton8"); // NOI18N
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable2.setName("jTable2"); // NOI18N
+        jScrollPane3.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton8)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton8))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        jButton7.setText(resourceMap.getString("jButton7.text")); // NOI18N
+        jButton7.setName("jButton7"); // NOI18N
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setName("jTable1"); // NOI18N
+        jScrollPane2.setViewportView(jTable1);
+
+        jButton9.setText(resourceMap.getString("jButton9.text")); // NOI18N
+        jButton9.setName("jButton9"); // NOI18N
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton9)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7)
+                    .addComponent(jButton9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton4)
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel10))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox2, 0, 314, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addGap(46, 46, 46)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                        .addGap(22, 22, 22))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
@@ -323,7 +441,7 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                                     .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE))
+                                .addGap(110, 110, 110))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
@@ -331,53 +449,36 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField8)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(179, 179, 179))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox2, 0, 202, Short.MAX_VALUE)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 202, Short.MAX_VALUE)
-                                            .addComponent(jComboBox3, 0, 202, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)))
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(87, 87, 87))
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jButton2)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jButton1)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -410,14 +511,15 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(84, 84, 84))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
-                    .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -431,27 +533,7 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        jComboBox1.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if (jComboBox3.getItemCount()>0){
-            boolean add = listaBeneficiariosExistentes.add(todosBeneficiarios[jComboBox3.getSelectedIndex()]);
-            actualizarBeneficiarios();
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        NuevoBeneficiario nb = new NuevoBeneficiario(null, true);
-        Beneficiario n = nb.obtenerDatosNuevoBeneficiario();
-        if (n!=null){
-            listaBeneficiariosNuevos.add(n);
-            actualizarBeneficiarios();
-        }
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -464,6 +546,9 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
             seguroSeleccionado= listaSeguros[jComboBox2.getSelectedIndex()];
             if (seguroSeleccionado==null){
                 JOptionPane.showMessageDialog(rootPane, "Debe seleccionar un tipo de seguro", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (clienteSeleccionado==null){
+                JOptionPane.showMessageDialog(rootPane, "Debe seleccionar o crear un cliente", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else
             {
@@ -495,13 +580,6 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-        if (jComboBox1.isEnabled()){
-            clienteSeleccionado = listaClientes[jComboBox1.getSelectedIndex()];
-        }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
@@ -530,6 +608,64 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
         jTextField7.setSelectionEnd(jTextField7.getText().length());
     }//GEN-LAST:event_jTextField7FocusGained
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        NuevoBeneficiario nb = new NuevoBeneficiario(null, true);
+        Beneficiario n = nb.obtenerDatosNuevoBeneficiario();
+        if (n!=null){
+            listaBeneficiariosNuevos.add(n);
+            actualizarBeneficiariosNuevos();
+        }
+    }
+    
+        // TODO add your handling code here:         NuevoBeneficiario nb = new NuevoBeneficiario(null, true);         Beneficiario n = nb.obtenerDatosNuevoBeneficiario();         if (n != null) {             listaBeneficiariosNuevos.add(n);             actualizarBeneficiariosNuevos();         }     }//GEN-LAST:event_jButton6ActionPerformed
+
+        private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+            ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();
+            int[] selectedRows = jTable2.getSelectedRows();
+            for (int i:selectedRows){
+                //eliminar de beneficiarios nuevos
+                listaEliminar.add(listaBeneficiariosNuevos.get(i));
+            }
+            listaBeneficiariosNuevos.removeAll(listaEliminar);
+            actualizarBeneficiariosNuevos();
+        }
+        
+        // TODO add your handling code here:         ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();         int[] selectedRows = jTable2.getSelectedRows();         for (int i : selectedRows) {             //eliminar de beneficiarios nuevos             listaEliminar.add(listaBeneficiariosNuevos.get(i));         }         listaBeneficiariosNuevos.removeAll(listaEliminar);         actualizarBeneficiariosNuevos();     }//GEN-LAST:event_jButton8ActionPerformed
+
+        private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+            SeleccionarBeneficiario sb = new SeleccionarBeneficiario(null, true);
+            ArrayList<Beneficiario> beneficiariosSeleccionados = sb.beneficiariosSeleccionados();
+            if (listaBeneficiariosExistentes!=null){
+                listaBeneficiariosExistentes.addAll(beneficiariosSeleccionados);
+                actualizarBeneficiariosExistentes();
+            }
+        }
+        
+        // TODO add your handling code here:         /*         if (jComboBox3.getItemCount()>0){         boolean add = listaBeneficiariosExistentes.add(listaBeneficiarios[jComboBox3.getSelectedIndex()]);         actualizarBeneficiarios();         }*/         SeleccionarBeneficiario sb = new SeleccionarBeneficiario(null, true);         ArrayList<Beneficiario> beneficiariosSeleccionados = sb.beneficiariosSeleccionados();         if (listaBeneficiariosExistentes != null) {             listaBeneficiariosExistentes.addAll(beneficiariosSeleccionados);             actualizarBeneficiariosExistentes();         }      }//GEN-LAST:event_jButton7ActionPerformed
+
+        private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+            ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();
+            int[] selectedRows = jTable1.getSelectedRows();
+            for (int i:selectedRows){
+                //eliminar de beneficiarios nuevos
+                //listaBeneficiariosExistentes.remove(i);
+                listaEliminar.add(listaBeneficiariosExistentes.get(i));
+            }
+            listaBeneficiariosExistentes.removeAll(listaEliminar);
+            actualizarBeneficiariosExistentes();
+        }
+        
+        // TODO add your handling code here:         ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();         int[] selectedRows = jTable1.getSelectedRows();         for (int i : selectedRows) {             //eliminar de beneficiarios nuevos             //listaBeneficiariosExistentes.remove(i);             listaEliminar.add(listaBeneficiariosExistentes.get(i));         }         listaBeneficiariosExistentes.removeAll(listaEliminar);         actualizarBeneficiariosExistentes();     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        SeleccionarCliente sc = new SeleccionarCliente(null, true);
+        this.clienteSeleccionado = sc.seleccionarCliente();
+        if (this.clienteSeleccionado==null){
+            JOptionPane.showMessageDialog(rootPane, "Debe seleccionar al menos un cliente o insertar los datos de un cliente nuevo", "Seleccionar cliente", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+        
     /**
      * @param args the command line arguments
      */
@@ -554,16 +690,15 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -572,8 +707,13 @@ public class NuevaPolizaVida extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField5;

@@ -10,16 +10,60 @@
  */
 package ModuloSeguros;
 
+import CapaNegocios.Beneficiario;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author HP G42
  */
 public class SeleccionarBeneficiario extends javax.swing.JDialog {
+    
+    private Beneficiario[] lista = null;
+    private Beneficiario seleccionado = null;
+    private ArrayList<Beneficiario> listaSeleccionados = new ArrayList<Beneficiario>();
 
     /** Creates new form SeleccionarBeneficiario */
     public SeleccionarBeneficiario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        try {
+            lista = Beneficiario.listaCortaBeneficiarios();
+            
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("DPI");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Apellido");
+            
+            for (Beneficiario i: lista){
+                Object []fila = new Object[3];
+                
+                fila[0]=i.getDPI();
+                fila[1]=i.getNombres();
+                fila[2]=i.getApellidos();
+                modelo.addRow(fila);
+                
+            }
+            jTable1.setModel(modelo);
+            
+            
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            //Logger.getLogger(SeleccionarBeneficiario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public ArrayList<Beneficiario> beneficiariosSeleccionados(){
+        this.setVisible(true);
+        return this.listaSeleccionados;
     }
 
     /** This method is called from within the constructor to
@@ -56,17 +100,37 @@ public class SeleccionarBeneficiario extends javax.swing.JDialog {
             }
         ));
         jTable1.setName("jTable1"); // NOI18N
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarBeneficiario.class);
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
@@ -77,7 +141,6 @@ public class SeleccionarBeneficiario extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 658, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,7 +153,7 @@ public class SeleccionarBeneficiario extends javax.swing.JDialog {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)
@@ -98,7 +161,6 @@ public class SeleccionarBeneficiario extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 386, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -114,6 +176,52 @@ public class SeleccionarBeneficiario extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here: 
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int[] selectedRows = jTable1.getSelectedRows();
+        listaSeleccionados.clear();
+        for (int i:selectedRows){
+            listaSeleccionados.add(lista[i]);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField1.getText().isEmpty()){
+            String buscado = jTextField1.getText();
+            TableModel model = jTable1.getModel();
+            Object valorDeIteracion;
+            Object valorDeIteracion2;
+            int filas;
+            int indiceEncontrado = -1;
+            filas = model.getRowCount();
+            for (int i=0; i<filas; i++){
+                    valorDeIteracion = model.getValueAt(i,0);
+                    valorDeIteracion2= model.getValueAt(i,1);
+                if (buscado.equals(valorDeIteracion.toString()) || valorDeIteracion2.toString().toLowerCase().contains(buscado.toLowerCase())){
+                    indiceEncontrado = i;
+                    break;
+                }
+            }
+            if (indiceEncontrado>=0){
+                //encontrado = listaClientes[indiceEncontrado];
+                jTable1.setRowSelectionInterval(indiceEncontrado, indiceEncontrado);
+                //JOptionPane.showMessageDialog(rootPane, encontrado.getSerie(),"buscado",JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        //listaSeleccionados=null;
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
