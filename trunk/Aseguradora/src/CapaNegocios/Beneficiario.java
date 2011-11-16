@@ -83,5 +83,27 @@ public class Beneficiario extends Cliente {
         lista = ls.toArray(lista);
         return lista;
     }
+    public static Beneficiario[] listaCortaBeneficiarios() throws SQLException{
+        Beneficiario [] lista;
+        ArrayList<Beneficiario> ls = new ArrayList<Beneficiario>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT distinct idBeneficiarios,DPI,Nombres,Apellidos FROM Beneficiarios";
+        
+        ResultSet rs = cmd.executeQuery(consulta);
+
+        while (rs.next()){
+            Beneficiario bf = new Beneficiario();
+            bf.setIdBeneficiario(rs.getInt(1));
+            bf.setDPI(rs.getString(2));
+            bf.setNombres(rs.getString(3));
+            bf.setApellidos(rs.getString(4));
+            ls.add(bf);
+        }
+        cmd.close();
+        lista = new Beneficiario[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;
+    }
 }
 
