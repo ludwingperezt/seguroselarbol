@@ -55,6 +55,13 @@ public class Conexion {
     }
     public static Connection obtenerConexion()
     {
+        try {
+            if (conexionDB.isClosed()){
+                return Conexion.iniciarConexion();
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return conexionDB;
     }
     public static void cambiarStringConexion(String servidor, String usuario, String pass, String baseDatos){
