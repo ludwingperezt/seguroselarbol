@@ -129,6 +129,7 @@ public class AseguradoraView extends FrameView {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -262,6 +263,15 @@ public class AseguradoraView extends FrameView {
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         jMenu2.add(jSeparator1);
+
+        jMenuItem19.setText(resourceMap.getString("jMenuItem19.text")); // NOI18N
+        jMenuItem19.setName("jMenuItem19"); // NOI18N
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem19);
 
         jMenuItem13.setText(resourceMap.getString("jMenuItem13.text")); // NOI18N
         jMenuItem13.setName("jMenuItem13"); // NOI18N
@@ -600,6 +610,11 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        // TODO add your handling code here:
+        VisualizadorReportes.mostrarReporteMarcasMasAseguradas();
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -617,6 +632,7 @@ private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
