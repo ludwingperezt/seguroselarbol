@@ -32,7 +32,7 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
     private Cliente [] listaClientes;
     
     private SeguroHogar seguroSeleccionado;
-    private Cliente clienteSeleccionado;
+    private Cliente clienteSeleccionado = null;
     private ArrayList<Beneficiario> listaBeneficiariosNuevos = new ArrayList<Beneficiario>();
     private ArrayList<Beneficiario> listaBeneficiariosExistentes = new ArrayList<Beneficiario>();
 
@@ -41,7 +41,7 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         try {
-            jComboBox1.removeAllItems();
+            
             jComboBox2.removeAllItems();
             jComboBox3.removeAllItems();
             listaSeguros = SeguroHogar.consultarListaSegurosHogar();
@@ -51,10 +51,6 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
             listaBeneficiarios = Beneficiario.listaBeneficiarios();
             for (Beneficiario j: listaBeneficiarios){
                 jComboBox3.addItem(j.getNombres()+" "+j.getApellidos());
-            }
-            listaClientes = Cliente.consultarListaClientes();
-            for (Cliente k:listaClientes){
-                jComboBox1.addItem(k.getNombres()+" "+k.getApellidos());
             }
         } catch (SQLException ex) {
             Logger.getLogger(NuevaPolizaHogar.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +100,6 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
     private void initComponents() {
 
         dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
-        jComboBox1 = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -136,16 +131,10 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
         jLabel13 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
-
-        jComboBox1.setName("jComboBox1"); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(NuevaPolizaHogar.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -269,6 +258,14 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
             }
         });
 
+        jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
+        jButton6.setName("jButton6"); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -312,16 +309,16 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
                                             .addComponent(jLabel1))
                                         .addGap(31, 31, 31)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
                                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(jLabel13)
                                         .addGap(86, 86, 86)
-                                        .addComponent(jComboBox1, 0, 189, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton6)
+                                        .addGap(18, 18, 18)
                                         .addComponent(jButton5)))
                                 .addGap(23, 23, 23)))
                         .addGap(30, 30, 30)
@@ -348,7 +345,7 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel13)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton6)
                                 .addComponent(jButton5)))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -470,7 +467,7 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            jComboBox1.setEnabled(false);
+            
         }
         //JOptionPane.showMessageDialog(rootPane, "Cuando ingrese un nuevo cliente ya no podrá seleccionar a otro de la lista", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -484,13 +481,6 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
             actualizarBeneficiarios();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-        if (jComboBox1.isEnabled()){
-            clienteSeleccionado = listaClientes[jComboBox1.getSelectedIndex()];
-        }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
         // TODO add your handling code here:
@@ -509,6 +499,15 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
         jTextField3.setSelectionStart(0);
         jTextField3.setSelectionEnd(jTextField3.getText().length());
     }//GEN-LAST:event_jTextField3FocusGained
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        SeleccionarCliente sc = new SeleccionarCliente(null, true);
+        this.clienteSeleccionado = sc.seleccionarCliente();
+        if (this.clienteSeleccionado==null){
+            JOptionPane.showMessageDialog(rootPane, "Debe seleccionar al menos un cliente o insertar los datos de un cliente nuevo", "Seleccionar cliente", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -538,7 +537,7 @@ public class NuevaPolizaHogar extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
