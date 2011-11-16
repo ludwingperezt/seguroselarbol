@@ -121,43 +121,49 @@ public class Auto {
     public void setTipoVehiculo (String val) {
         this.tipoVehiculo = val;
     }
-    public Auto insertarAutoEnBD() throws SQLException {
+    public Auto insertarAutoEnBD() throws FileNotFoundException, IOException, SQLException {
         FileInputStream bf = null;
-        try {
-            Connection con = (Connection) Conexion.obtenerConexion();
-            bf = new FileInputStream(fotografia);
-            java.sql.PreparedStatement comandos = con.prepareStatement("LOCK TABLE Auto WRITE;");
-            comandos.execute();
-            String cadena = "INSERT INTO Auto (TipoVehiculo, Marca, Modelo, Placas, NumeroMotor, NumeroChasis, Color, NumeroEjes, Fotografia) VALUES ("
-                    +"'"+this.tipoVehiculo+"',"
-                    +"'"+this.marca+"',"
-                    +"'"+this.modelo+"',"
-                    +"'"+this.placas+"',"
-                    +"'"+this.NumeroMotor+"',"
-                    +"'"+this.NumeroChasis+"',"
-                    +"'"+this.Color+"',"
-                    +"'"+Integer.toString(this.Ejes)+"',"
-                    +"?)";
-            comandos = con.prepareStatement(cadena);
-            comandos.setBlob(1, bf);
-            comandos.execute();
-            comandos = con.prepareStatement("SELECT max(idAuto) FROM Auto");
-            ResultSet rs = comandos.executeQuery();
-            rs.next();
-            this.idAuto = rs.getInt(1);
-            comandos = con.prepareStatement("UNLOCK TABLES;");
-            comandos.close();
-            
+        Auto nuevo = this;
+        Connection con = (Connection) Conexion.obtenerConexion();
+        bf = new FileInputStream(fotografia);
+        java.sql.PreparedStatement comandos = con.prepareStatement("ROLLBACK");
+        
+        try{    
+                
+                comandos.execute();
+                comandos.execute("LOCK TABLE Auto WRITE");
+                String cadena = "INSERT INTO Auto (TipoVehiculo, Marca, Modelo, Placas, NumeroMotor, NumeroChasis, Color, NumeroEjes, Fotografia) VALUES ("
+                        +"'"+this.tipoVehiculo+"',"
+                        +"'"+this.marca+"',"
+                        +"'"+this.modelo+"',"
+                        +"'"+this.placas+"',"
+                        +"'"+this.NumeroMotor+"',"
+                        +"'"+this.NumeroChasis+"',"
+                        +"'"+this.Color+"',"
+                        +"'"+Integer.toString(this.Ejes)+"',"
+                        +"?)";
+                comandos = con.prepareStatement(cadena);
+                comandos.setBlob(1, bf);
+                comandos.execute();
+                comandos = con.prepareStatement("SELECT max(idAuto) FROM Auto");
+                ResultSet rs = comandos.executeQuery();
+                rs.next();
+                this.idAuto = rs.getInt(1);
+                comandos = con.prepareStatement("UNLOCK TABLES");
+                comandos.execute();
+                comandos.execute("COMMIT");
+                comandos.close();
+                
                 bf.close();
-             
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } 
-        catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        return this;
+                nuevo = this;
+                
+        }
+        catch (SQLException ex){
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+            comandos.execute("ROLLBACK");
+            nuevo = null;
+        }
+            return nuevo;
     }
     
     public static Auto[] consultarAutoPorCliente(Cliente actualCliente) throws SQLException {

@@ -415,6 +415,7 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
                 this.dispose();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(NuevaPolizaVehiculos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -428,11 +429,12 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         Clientes nc = new Clientes(null, true);
         try {
             this.actualCliente = nc.mostrar();
+            JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo cliente se usarán para la insersión", "Cliente", JOptionPane.INFORMATION_MESSAGE);
+            jComboBox2.setEnabled(false);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo cliente se usarán para la insersión", "Cliente", JOptionPane.INFORMATION_MESSAGE);
-        jComboBox2.setEnabled(false);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
@@ -469,8 +471,10 @@ public class NuevaPolizaVehiculos extends javax.swing.JDialog {
         // TODO add your handling code here:
         NuevoVehiculo nv = new NuevoVehiculo(null, true);
         this.actual = nv.insertarYDevolver();
-        JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo vehiculo se usarán para la insersión", "Vehiculo", JOptionPane.INFORMATION_MESSAGE);
-        jComboBox3.setEnabled(false);
+        if (this.actual!=null){
+            JOptionPane.showMessageDialog(rootPane, "Los datos del nuevo vehiculo se usarán para la insersión", "Vehiculo", JOptionPane.INFORMATION_MESSAGE);
+            jComboBox3.setEnabled(false);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

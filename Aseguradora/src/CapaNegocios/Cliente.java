@@ -162,13 +162,13 @@ public class Cliente {
         Statement st=(Statement) con.createStatement();
         try {
             st.execute("begin");
-            String w="INSERT INTO Cliente VALUES (null, "+this.getDPI()+", '"+this.getNIT()+"', '"+this.getNombres()+"', '"+this.getApellidos()+"', '"+
+            String w="INSERT INTO Cliente (DPI, NIT, Nombres, Apellidos, Direccion, Telefono, Celular, FechaNacimiento, edad) VALUES ('"+this.getDPI()+"', '"+this.getNIT()+"', '"+this.getNombres()+"', '"+this.getApellidos()+"', '"+
                     this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+this.getFechaNacimiento().toString()+"', "+
                     this.getEdad()+");";
             st.execute(w);
         } catch (SQLException ex) {
             st.execute("Rollback;");
-            System.out.println("rollback");
+            System.out.println(ex.getMessage());
             return false;
         }
         System.out.println("commit");

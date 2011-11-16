@@ -4,9 +4,12 @@ import CapaDatos.Conexion;
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ContratoAuto {
 
     private int idContratoAuto;
@@ -143,11 +146,11 @@ public class ContratoAuto {
     }
 
     public void insertarContraroAuto(SeguroAuto actualSeguro, Cliente actualCliente, Auto actual, ContratoAuto ca) throws SQLException {
-       Connection con = (Connection) Conexion.obtenerConexion();
-
-            
-            PreparedStatement cmd = (PreparedStatement) con.prepareStatement("SELECT insersionNuevaPolizaAutoRetorno(?,?,?,?,?,?,?,?,?,?)");
-            CallableStatement funcion;
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement bloqueo = (Statement) con.createStatement();
+        PreparedStatement cmd = (PreparedStatement) con.prepareStatement("SELECT insersionNuevaPolizaAutoRetorno(?,?,?,?,?,?,?,?,?,?)");
+        CallableStatement funcion;
+        try {
             /*
              * 1 idSeguro int,
              * 2 idAuto int,
@@ -170,19 +173,23 @@ public class ContratoAuto {
             cmd.setDate(8, vencimiento);
             cmd.setInt(9, numeroPagos);
             cmd.setDouble(10, montoPagoSeguro);
-           
-            if (cmd.execute()){
-                ResultSet rs = cmd.getResultSet();
-                boolean next = rs.next();
-                int indexContrato = rs.getInt(1);
-                this.idContratoAuto = indexContrato;
-                //insertarTuplaSeguroAutoClienteSeguro(agente int, cliente int, contratoAuto int)
-                funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroAutoClienteSeguro(?,?,?)}");
-                funcion.setInt(1, aseguradora.AseguradoraView.idEmpleado);
-                funcion.setInt(2, actualCliente.getIdCliente());
-                funcion.setInt(3, indexContrato);
-                boolean execute = funcion.execute();
-            }  
+            //bloqueo.execute("ROLLBACK");
+            //bloqueo.execute("LOCK TABLE ContratoAuto WRITE");
+            ResultSet rs = cmd.executeQuery();          
+            boolean next = rs.next();
+            int indexContrato = rs.getInt(1);
+            this.idContratoAuto = indexContrato;
+            //bloqueo.execute("UNLOCK TABLES");
+            //insertarTuplaSeguroAutoClienteSeguro(agente int, cliente int, contratoAuto int)
+            funcion = (CallableStatement) con.prepareCall("{CALL insertarTuplaSeguroAutoClienteSeguro(?,?,?)}");
+            funcion.setInt(1, aseguradora.AseguradoraView.idEmpleado);
+            funcion.setInt(2, actualCliente.getIdCliente());
+            funcion.setInt(3, indexContrato);
+            boolean execute = funcion.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(ContratoAuto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
        
 
     }
