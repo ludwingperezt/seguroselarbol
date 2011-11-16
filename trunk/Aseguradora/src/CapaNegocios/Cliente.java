@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 public class Cliente {
 
     
@@ -161,14 +162,22 @@ public class Cliente {
         java.sql.Connection con=Conexion.iniciarConexion();
         Statement st=(Statement) con.createStatement();
         try {
-            st.execute("begin");
+            boolean execute = st.execute("begin");
+            st.execute("LOCK TABLE Cliente WRITE");
             String w="INSERT INTO Cliente (DPI, NIT, Nombres, Apellidos, Direccion, Telefono, Celular, FechaNacimiento, edad) VALUES ('"+this.getDPI()+"', '"+this.getNIT()+"', '"+this.getNombres()+"', '"+this.getApellidos()+"', '"+
                     this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+this.getFechaNacimiento().toString()+"', "+
                     this.getEdad()+");";
             st.execute(w);
+            
+            ResultSet rs = st.executeQuery("Select max(idCliente) from Cliente");            
+            rs.next();
+            int index = rs.getInt(1);
+            this.setIdCliente(index);
+            st.execute("UNLOCK TABLES");
         } catch (SQLException ex) {
             st.execute("Rollback;");
             System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             return false;
         }
         System.out.println("commit");

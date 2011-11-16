@@ -189,6 +189,29 @@ public class Auto {
         lista = ls.toArray(lista);
         return lista;        
     }
+    
+    public static Auto[] consultarTodosLosAutos() throws SQLException{
+        ArrayList<Auto> ls = new ArrayList<Auto>();
+        
+        String consulta = "select distinct idAuto,TipoVehiculo,Marca,Modelo,Placas from auto";
+        
+        Connection cn = (Connection) Conexion.obtenerConexion();
+        PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
+        ResultSet rs =  ps.executeQuery();
+        
+        while(rs.next()){
+            Auto x = new Auto();
+            x.setIdAuto(rs.getInt(1));
+            x.setTipoVehiculo(rs.getString(2));
+            x.setMarca(rs.getString(3));
+            x.setModelo(rs.getString(4));
+            x.setPlacas(rs.getString(5));
+            ls.add(x);
+        }
+        Auto [] lista = new Auto[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;        
+    }
 
 
 }
