@@ -37,7 +37,7 @@ public class Auto {
 
     private int Ejes;
 
-    private File fotografia;
+    private File fotografia = null;
 
     public Auto () {
     }
@@ -122,6 +122,10 @@ public class Auto {
         this.tipoVehiculo = val;
     }
     public Auto insertarAutoEnBD() throws FileNotFoundException, IOException, SQLException {
+        if (fotografia==null){
+            String dirTemp = System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"nf.jpg";
+            fotografia = new File(dirTemp);
+        }
         FileInputStream bf = null;
         Auto nuevo = this;
         Connection con = (Connection) Conexion.obtenerConexion();
