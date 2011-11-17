@@ -570,9 +570,8 @@ public class controlagentes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
 
-        try {             // TODO add your handling code here:             CapaNegocios.Cliente unCliente = new CapaNegocios.Cliente();             unCliente.setDPI(jTextField1.getText());             unCliente.setNIT(jTextField2.getText());             unCliente.setNombres(jTextField3.getText());             unCliente.setApellidos(jTextField4.getText());             unCliente.setDireccion(jTextField5.getText());             unCliente.setTelefono(jFormattedTextField1.getText());             unCliente.setCelular(jTextField5.getText());             unCliente.setFechaNacimiento(jFormattedTextField1.getText());             unCliente.setEdad(Integer.valueOf(jTextField6.getText())); //calcular edad????             unCliente.setCliente();         } catch (SQLException ex) {             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);         }     }                                        
-            // TODO add your handling code here:
-            
+        try {           
+                        
             nuevoagente.setNombre(jTextField1.getText());
             nuevoagente.setDireccion(jTextField2.getText());
             nuevoagente.setDPI(jTextField3.getText());
@@ -583,7 +582,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
             nuevoagente.setSueldoBase(Integer.valueOf(jTextField8.getText()));
             nuevoagente.setUsuario(jTextField9.getText());
             nuevoagente.setContraseña(jPasswordField1.getText()); // compara  contraseña en el confirmacion 
-            nuevoagente.setNivelAcceso(Integer.valueOf(jTextField10.getText()));
+            nuevoagente.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
             nuevoagente.setActivo(false);
             nuevoagente.guardarAgente();
             JOptionPane.showMessageDialog(null, "Por defaul el nuevo agente esta inactivo");

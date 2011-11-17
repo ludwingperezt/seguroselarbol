@@ -155,7 +155,7 @@ public class Agente {
 
     public void setContraseña (String val) {
         try {
-            this.Contraseña = Criptografia.obtenerCodigoHash(val);
+            this.Contraseña = Criptografia.obtenerCodigoHash(val).toString();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -222,7 +222,7 @@ public class Agente {
     {
         Connection conn = Conexion.obtenerConexion();
         Statement st = conn.createStatement();
-        String pass2="";
+        byte[] pass2 = null;
         try {
             pass2 = Criptografia.obtenerCodigoHash(pass);
         } catch (NoSuchAlgorithmException ex) {
