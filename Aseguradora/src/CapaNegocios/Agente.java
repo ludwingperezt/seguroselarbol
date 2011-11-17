@@ -14,7 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Agente {
-
+/**
+     * administrador 1
+     * agente 2
+     * cajero 3
+     * invitado 4
+     */
     private int idAgente;
 
     private String DPI;
