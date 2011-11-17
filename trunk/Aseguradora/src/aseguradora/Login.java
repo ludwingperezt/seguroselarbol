@@ -10,6 +10,18 @@
  */
 package aseguradora;
 
+import CapaNegocios.Agente;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
 /**
  *
  * @author HP G42
@@ -17,6 +29,7 @@ package aseguradora;
 public class Login extends javax.swing.JDialog {
     
     private int nivelDeAcceso = 1;
+    private Agente log; 
 
     /** Creates new form Login */
     public Login(java.awt.Frame parent, boolean modal) {
@@ -24,9 +37,9 @@ public class Login extends javax.swing.JDialog {
         initComponents();
     }
 
-    public int autenticacion(){
+    public Agente autenticacion(){
         this.setVisible(true);
-        return nivelDeAcceso;
+        return log;
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -45,9 +58,15 @@ public class Login extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setName("Form"); // NOI18N
-
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(Login.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
+        setName("Form"); // NOI18N
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
+
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -121,13 +140,33 @@ public class Login extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        Agente ag=new Agente();
+        try {
+            if (ag.login(jTextField1.getText(), jPasswordField1.getText())){
+                JOptionPane.showMessageDialog(this, "Bienvenido "+ ag.getNombre());
+                log=ag;
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+                log=null;
+            }
+        } catch (SQLException ex) {
+            log=null;
+            JOptionPane.showMessageDialog(this,"NO SE HA INICIADO SESION!\n"+ ex);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments

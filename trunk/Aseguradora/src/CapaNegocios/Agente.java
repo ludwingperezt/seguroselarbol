@@ -1,11 +1,13 @@
 package CapaNegocios;
 
 import CapaDatos.Conexion;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+import Utilidades.Criptografia;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -152,26 +154,31 @@ public class Agente {
     }
 
     public void setContraseña (String val) {
-        this.Contraseña = val;
+        try {
+            this.Contraseña = Criptografia.obtenerCodigoHash(val);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void llenarAgente(int id) throws SQLException
     {
-        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-        ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE id="+id);
-        this.setIdAgente(rs.getInt("IdAgente"));
+        Statement st= Conexion.iniciarConexion().createStatement();
+        ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE idAgente="+id);
+        rs.first();
+        this.setIdAgente(rs.getInt("idAgente"));
         this.setDPI(rs.getString("DPI"));
         this.setNIT(rs.getString("NIT"));
         this.setNombre(rs.getString("Nombre"));
-        this.setDireccion(rs.getString("Direccion("));
+        this.setDireccion(rs.getString("Direccion"));
         this.setTelefono(rs.getString("Telefono"));
         this.setCelular(rs.getString("Celular"));
         this.setComision(rs.getInt("Comision"));
         this.setSueldoBase(rs.getInt("SueldoBase"));
         this.setUsuario(rs.getString("Usuario"));
-        this.setContraseña(rs.getString("Contraseña"));
+        this.Contraseña=rs.getString("Contraseña");
         this.setActivo(rs.getBoolean("Activo"));
-        this.setNivelAcceso(rs.getInt("NiveAcceso"));
+        this.setNivelAcceso(rs.getInt("NivelAcceso"));
 
     }
 
@@ -210,7 +217,26 @@ public class Agente {
         ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE DPI like '"+DPI+"'");
         //return rs;
     }
-
+    
+    public boolean login (String usuario, String pass)throws SQLException 
+    {
+        Connection conn = Conexion.obtenerConexion();
+        Statement st = conn.createStatement();
+        String pass2="";
+        try {
+            pass2 = Criptografia.obtenerCodigoHash(pass);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ResultSet rs=st.executeQuery("select * from agente where usuario like '"+usuario+"' and contraseña like '" +pass2 +"';");
+        
+        if (rs.first()){
+            this.llenarAgente(Integer.valueOf(rs.getObject("idAgente").toString()));
+            return true;
+        }
+        return false;
+    }
+    
     public void buscar()  throws SQLException {
         throw new UnsupportedOperationException("Not yet implemented");
          //Agente[] lista;

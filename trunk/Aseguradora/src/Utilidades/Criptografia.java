@@ -13,15 +13,21 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Criptografia {
     
-    public static byte[] obtenerCodigoHash(String pass) throws NoSuchAlgorithmException{
-        byte[] resumen;
-        byte[] mensaje = pass.getBytes();
-        
-        MessageDigest cifrador = MessageDigest.getInstance("SHA-1");
-        cifrador.reset();
-        cifrador.update(mensaje);
-        resumen = cifrador.digest();
-        
-        return resumen;
+    public static String obtenerCodigoHash(String pass) throws NoSuchAlgorithmException{
+        MessageDigest md;
+        byte[] buffer, digest;
+        String hash = "";
+        buffer = pass.getBytes();
+        md = MessageDigest.getInstance("SHA1");
+        md.update(buffer);
+        digest = md.digest();
+
+        for(byte aux : digest) {
+            int b = aux & 0xff;
+            if (Integer.toHexString(b).length() == 1) hash += "0";
+            hash += Integer.toHexString(b);
+        }
+
+        return hash;
     }    
 }
