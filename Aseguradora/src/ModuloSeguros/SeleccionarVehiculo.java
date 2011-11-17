@@ -88,6 +88,8 @@ public class SeleccionarVehiculo extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarVehiculo.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -111,7 +113,6 @@ public class SeleccionarVehiculo extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarVehiculo.class);
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {

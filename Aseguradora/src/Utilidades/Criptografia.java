@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Criptografia {
     
-    public static String obtenerCodigoHash(String pass) throws NoSuchAlgorithmException{
+    public static byte [] obtenerCodigoHash(String pass) throws NoSuchAlgorithmException{
         MessageDigest md;
         byte[] buffer, digest;
         String hash = "";
@@ -22,12 +22,6 @@ public class Criptografia {
         md.update(buffer);
         digest = md.digest();
 
-        for(byte aux : digest) {
-            int b = aux & 0xff;
-            if (Integer.toHexString(b).length() == 1) hash += "0";
-            hash += Integer.toHexString(b);
-        }
-
-        return hash;
+        return  digest;
     }    
 }
