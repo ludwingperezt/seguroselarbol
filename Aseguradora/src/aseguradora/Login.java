@@ -13,7 +13,10 @@ package aseguradora;
 import CapaNegocios.Agente;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -142,14 +145,20 @@ public class Login extends javax.swing.JDialog {
         // TODO add your handling code here:
         Agente ag=new Agente();
         try {
-            if (ag.login(jTextField1.getText(), jPasswordField1.getText())){
-                JOptionPane.showMessageDialog(this, "Bienvenido "+ ag.getNombre());
-                log=ag;
-                this.dispose();
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
-                log=null;
+            try {
+                if (ag.login(jTextField1.getText(), jPasswordField1.getText())){
+                    JOptionPane.showMessageDialog(this, "Bienvenido "+ ag.getNombre());
+                    log=ag;
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+                    log=null;
+                }
+            } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Bienvenido "+ ag.getNombre()+"\n¡No se logró cargar la fotografia!");
+                    log=ag;
+                    this.dispose();
             }
         } catch (SQLException ex) {
             log=null;
