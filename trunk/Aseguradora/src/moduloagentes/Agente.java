@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ROLANDO
@@ -33,6 +34,9 @@ public class Agente extends javax.swing.JDialog {
         nuevo = new CapaNegocios.Agente();
         img[0]=new ImageIcon(System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"noOK.jpg");
         img[1]=new ImageIcon(System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"ok.png");
+        cargarFoto(new File(System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"nofoto.gif"));
+        lblIcon.setIcon(new ImageIcon(img[0].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));            
+        lblIcon1.setIcon(new ImageIcon(img[0].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));            
     }
 
     /** This method is called from within the constructor to
@@ -74,6 +78,7 @@ public class Agente extends javax.swing.JDialog {
         lblIcon = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        lblIcon1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -105,6 +110,7 @@ public class Agente extends javax.swing.JDialog {
         jLabel11.setName("jLabel11"); // NOI18N
 
         jTextField9.setText(resourceMap.getString("jTextField9.text")); // NOI18N
+        jTextField9.setToolTipText(resourceMap.getString("jTextField9.toolTipText")); // NOI18N
         jTextField9.setName("jTextField9"); // NOI18N
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,6 +128,11 @@ public class Agente extends javax.swing.JDialog {
 
         jPasswordField1.setText(resourceMap.getString("jPasswordField1.text")); // NOI18N
         jPasswordField1.setName("jPasswordField1"); // NOI18N
+        jPasswordField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jPasswordField1FocusLost(evt);
+            }
+        });
 
         jLabel13.setText(resourceMap.getString("jLabel13.text")); // NOI18N
         jLabel13.setName("jLabel13"); // NOI18N
@@ -201,6 +212,9 @@ public class Agente extends javax.swing.JDialog {
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
+        lblIcon1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        lblIcon1.setName("lblIcon1"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,7 +249,10 @@ public class Agente extends javax.swing.JDialog {
                                         .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lblIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -248,9 +265,7 @@ public class Agente extends javax.swing.JDialog {
                                                         .addComponent(jLabel14)))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addGap(159, 159, 159)))))
+                                    .addComponent(jLabel13))))
                         .addGap(17, 17, 17)
                         .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -360,12 +375,14 @@ public class Agente extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addComponent(jLabel13)
-                                .addGap(4, 4, 4))
+                                .addComponent(jLabel13))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(2, 2, 2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -409,48 +426,76 @@ public class Agente extends javax.swing.JDialog {
         int resultado = selector.showOpenDialog(lblFoto);
         if (resultado==JFileChooser.APPROVE_OPTION){
             File imagen = selector.getSelectedFile();
-            nuevo.setFotografia(imagen);
-            Image imI=new ImageIcon(imagen.getAbsolutePath()).getImage().getScaledInstance(lblFoto.getSize().width-2, lblFoto.getSize().height-2, Image.SCALE_DEFAULT);
-            lblFoto.setIcon(new ImageIcon(imI));
-            lblFoto.setSize(lblFoto.getIcon().getIconWidth(), lblFoto.getIcon().getIconHeight());
+            cargarFoto(imagen);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void cargarFoto(File f)
+    {
+        nuevo.setFotografia(f);
+        Image imI=new ImageIcon(f.getAbsolutePath()).getImage().getScaledInstance(lblFoto.getSize().width-2, lblFoto.getSize().height-2, Image.SCALE_DEFAULT);
+        lblFoto.setIcon(new ImageIcon(imI));
+        lblFoto.setSize(lblFoto.getIcon().getIconWidth(), lblFoto.getIcon().getIconHeight());
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-        nuevo.setDPI(jTextField3.getText());
-        nuevo.setNIT(jTextField4.getText());
-        nuevo.setNombre(jTextField1.getText());
-        nuevo.setDireccion(jTextField2.getText());
-        nuevo.setTelefono(jTextField5.getText());
-        nuevo.setCelular(jTextField6.getText());
-        nuevo.setComision(Double.valueOf(jTextField3.getText()));
-        nuevo.setSueldoBase(Double.valueOf(jTextField3.getText()));
-        nuevo.setUsuario(jTextField9.getText());
-        nuevo.setContraseña(jPasswordField1.getText());
-        nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
-        nuevo.setActivo(1);
-        try {
-            nuevo.guardarAgente();
-        } catch (SQLException ex) {
-            Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+        if (listo){
+            nuevo.setDPI(jTextField3.getText());
+            nuevo.setNIT(jTextField4.getText());
+            nuevo.setNombre(jTextField1.getText());
+            nuevo.setDireccion(jTextField2.getText());
+            nuevo.setTelefono(jTextField5.getText());
+            nuevo.setCelular(jTextField6.getText());
+            nuevo.setComision(Double.valueOf(jTextField3.getText()));
+            nuevo.setSueldoBase(Double.valueOf(jTextField3.getText()));
+            nuevo.setUsuario(jTextField9.getText());
+            nuevo.setContraseña(jPasswordField1.getText());
+            nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
+            nuevo.setActivo(1);
+            try {
+                nuevo.guardarAgente();
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        else        
+            JOptionPane.showMessageDialog(rootPane, "No se ha completado el ingreso del agente. Verifique datos.");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPasswordField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2FocusLost
         // TODO add your handling code here:
-        if (jPasswordField1.getPassword()!=jPasswordField2.getPassword())
+        if (!jPasswordField1.getText().equals(jPasswordField2.getText()))
         {
             jPasswordField1.requestFocus();
             listo=false;
+            lblIcon1.setIcon(new ImageIcon(img[0].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));            
         }
-        else
+        else{
             listo=true;
+            lblIcon1.setIcon(new ImageIcon(img[1].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));
+        }
     }//GEN-LAST:event_jPasswordField2FocusLost
+
+    private void jPasswordField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusLost
+        // TODO add your handling code here:
+                
+        
+        if (jPasswordField2.getPassword().length!=0)
+            if (!jPasswordField1.getText().equals(jPasswordField2.getText()))
+            {
+                jPasswordField2.requestFocus();
+                listo=false;
+                lblIcon1.setIcon(new ImageIcon(img[0].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));            
+            }
+        else{
+                listo=true;
+                lblIcon1.setIcon(new ImageIcon(img[1].getImage().getScaledInstance(lblIcon.getSize().width-2, lblIcon.getSize().height-2, Image.SCALE_DEFAULT)));
+            }
+    }//GEN-LAST:event_jPasswordField1FocusLost
 
       
     /**
@@ -527,5 +572,6 @@ public class Agente extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblIcon;
+    private javax.swing.JLabel lblIcon1;
     // End of variables declaration//GEN-END:variables
 }

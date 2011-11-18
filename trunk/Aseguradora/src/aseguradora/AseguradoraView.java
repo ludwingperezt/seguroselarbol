@@ -26,7 +26,10 @@ import Varios.VisualizadorReportes;
 import com.mysql.jdbc.Connection;
 //import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl; // QUIEN FUE EL GENIO Q USO ESTO??? 
 import java.awt.Component;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 /**
  * The application's main frame.
  */
@@ -38,7 +41,7 @@ public class AseguradoraView extends FrameView {
     public AseguradoraView(SingleFrameApplication app) {
         super(app);
         initComponents();
-
+        
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
@@ -93,11 +96,15 @@ public class AseguradoraView extends FrameView {
             }
         });
          //StringConexion cs = new StringConexion(null, true);
-         //cs.setVisible(true);        
+         //cs.setVisible(true);    
+        jTabbedPane1.setVisible(false);
+        lblFoto.setVisible(false);
         Connection con = (Connection) Conexion.iniciarConexion();
         this.getFrame().setTitle("ASEGURADORA EL ARBOL");
         //Login lg = new Login(null, true);
         //this.idEmpleado = lg.autenticacion();
+        
+       
     }
 
     @Action
@@ -108,9 +115,7 @@ public class AseguradoraView extends FrameView {
             aboutBox.setLocationRelativeTo(mainFrame);
         }
         AseguradoraApp.getApplication().show(aboutBox);
-        for (Component c:jTabbedPane1.getComponents())
-            c.setEnabled(false);
-        jTabbedPane1.updateUI();
+        
     }
 
     /** This method is called from within the constructor to
@@ -166,6 +171,7 @@ public class AseguradoraView extends FrameView {
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        lblFoto = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -195,6 +201,7 @@ public class AseguradoraView extends FrameView {
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
+        jPanel1.setFocusable(false);
         jPanel1.setName("jPanel1"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(AseguradoraView.class);
@@ -357,6 +364,7 @@ public class AseguradoraView extends FrameView {
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        jPanel1.getAccessibleContext().setAccessibleParent(jTabbedPane1);
 
         jPanel4.setName("jPanel4"); // NOI18N
 
@@ -399,6 +407,7 @@ public class AseguradoraView extends FrameView {
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
+        jPanel4.getAccessibleContext().setAccessibleParent(jTabbedPane1);
 
         jPanel3.setName("jPanel3"); // NOI18N
 
@@ -652,19 +661,30 @@ public class AseguradoraView extends FrameView {
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel7.TabConstraints.tabTitle"), jPanel7); // NOI18N
 
+        lblFoto.setText(resourceMap.getString("lblFoto.text")); // NOI18N
+        lblFoto.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblFoto.setName("lblFoto"); // NOI18N
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1043, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addGap(11, 11, 11))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(231, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -757,11 +777,11 @@ public class AseguradoraView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 1057, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 1179, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 887, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1009, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -801,12 +821,16 @@ public class AseguradoraView extends FrameView {
         }
         this.getFrame().setTitle("Bienvenido "+logueado.getNombre());
         ControlUsuario();
+        lblFoto.setVisible(true);
+        ImageIcon imgI=new ImageIcon(logueado.getFotografia().getScaledInstance(108, 138, Image.SCALE_DEFAULT));
+        lblFoto.setIcon(imgI);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void ControlUsuario(){        
+    private void ControlUsuario(){      
+        lblFoto.setVisible(false);
         jTabbedPane1.setVisible(true);
-        for (Component c:jTabbedPane1.getComponents())
-            c.setEnabled(false);
+        while (jTabbedPane1.getComponentCount()>0)
+            jTabbedPane1.remove(0);
         switch(logueado.getNivelAcceso())
         {
             case 1:
@@ -821,7 +845,6 @@ public class AseguradoraView extends FrameView {
             case 4:
                 invitado();
         }
-        jTabbedPane1.updateUI();
     }
     
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -1028,6 +1051,7 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -1044,44 +1068,50 @@ public class AseguradoraView extends FrameView {
 
     private JDialog aboutBox;
 
-    private void administrador() {
-        jTabbedPane1.setVisible(true);
-        for (Component c:jTabbedPane1.getComponents())
-            c.setEnabled(true);
+    private void administrador() {        
+        jTabbedPane1.add(jPanel1);        
+        jTabbedPane1.add(jPanel2);        
+        jTabbedPane1.add(jPanel3);        
+        jTabbedPane1.add(jPanel4);
+        jTabbedPane1.add(jPanel5);        
+        jTabbedPane1.add(jPanel6);        
+        jTabbedPane1.add(jPanel7);        
+        jTabbedPane1.add(jPanel8);
+        
+        jTabbedPane1.setTitleAt(0, "Tareas de Administrador");
+        jTabbedPane1.setTitleAt(1, "Renovación de Pólizas");
+        jTabbedPane1.setTitleAt(2, "Modificación de Pólizas");
+        jTabbedPane1.setTitleAt(3, "Facturación y Caja");
+        jTabbedPane1.setTitleAt(4, "Nuevas Pólizas");
+        jTabbedPane1.setTitleAt(5, "Cancelar Pólizas");
+        jTabbedPane1.setTitleAt(6, "Reportes Beneficiarios");
+        jTabbedPane1.setTitleAt(7, "Manejo de Empleados");
     }
 
     private void agente() {
-        jTabbedPane1.getTabComponentAt(2).setVisible(true);
-        jTabbedPane1.getTabComponentAt(3).setVisible(true);
-        jTabbedPane1.getTabComponentAt(4).setVisible(true);
-        jTabbedPane1.getTabComponentAt(7).setVisible(true);
-        int i=0;
-        for (Component c:jTabbedPane1.getComponents()){
-            if (i==2 || i==3 || i==4 || i==7)  
-                c.setEnabled(true);
-            i++;
-        }
+        jTabbedPane1.add(jPanel2);
+        jTabbedPane1.add(jPanel3);
+        jTabbedPane1.add(jPanel5);
+        jTabbedPane1.add(jPanel7);
+        jTabbedPane1.setTitleAt(0, "Renovación de Pólizas");
+        jTabbedPane1.setTitleAt(1, "Modificación de Pólizas");
+        jTabbedPane1.setTitleAt(2, "Nuevas Pólizas");
+        jTabbedPane1.setTitleAt(3, "Reportes Beneficiarios");
         
     }
     
     private void cajero()
     {
-        int i=0;
-        for (Component c:jTabbedPane1.getComponents()){
-            if (i==1 || i==7)  
-                c.setEnabled(true);
-            i++;
-        }
+        jTabbedPane1.add(jPanel4);
+        jTabbedPane1.add(jPanel7);
+        jTabbedPane1.setTitleAt(0, "Facturación y Caja");
+        jTabbedPane1.setTitleAt(1, "Reportes Beneficiarios");
         
     }
 
     private void invitado()
     {
-        int i=0;
-        for (Component c:jTabbedPane1.getComponents()){
-            if (i==7)  
-                c.setEnabled(true);
-            i++;
-        }
+        jTabbedPane1.add(jPanel7);
+        jTabbedPane1.setTitleAt(0, "Reportes Beneficiarios");
     }
 }

@@ -2,19 +2,26 @@ package CapaNegocios;
 
 import CapaDatos.Conexion;
 import Utilidades.Criptografia;
-import com.mysql.jdbc.Blob;
+import com.lowagie.text.pdf.codec.Base64.InputStream;
 import com.mysql.jdbc.PreparedStatement;
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.sql.rowset.serial.SerialBlob;
 
 public class Agente {
@@ -53,6 +60,8 @@ public class Agente {
     private int activo;
 
     private File fotografia;
+    
+    private Image foto;
 
     public Agente () {
     }
@@ -121,14 +130,14 @@ public class Agente {
         this.activo = val;
     }
 
-    public File getFotografia () {
-        return fotografia;
+    public Image getFotografia () {
+        return foto;
     }
 
     public void setFotografia (File val) {
         this.fotografia = val;
     }
-
+    
     public int getIdAgente () {
         return idAgente;
     }
@@ -172,7 +181,7 @@ public class Agente {
         }
     }
 
-    public void llenarAgente(int id) throws SQLException
+    public void llenarAgente(int id) throws SQLException, IOException
     {
         Statement st= Conexion.iniciarConexion().createStatement();
         ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE idAgente="+id);
@@ -190,6 +199,9 @@ public class Agente {
         //this.Contraseña=rs.getString("Contraseña"); //NO SE GUARDARÁ LA CONTRASEÑA EN EL OBJETO!
         this.setActivo(rs.getInt("Activo"));
         this.setNivelAcceso(rs.getInt("NivelAcceso"));
+        byte[] img = rs.getBytes("Fotografia");
+        foto=getImage(img, false);        
+        
 
     }
 
@@ -240,7 +252,7 @@ public class Agente {
         //return rs;
     }
     
-    public boolean login (String usuario, String pass)throws SQLException 
+    public boolean login (String usuario, String pass)throws SQLException, IOException 
     {
         Connection conn = Conexion.obtenerConexion();
         Statement st = conn.createStatement();
@@ -306,5 +318,23 @@ public class Agente {
         Statement st=cn.createStatement();
         ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE Usuario like '"+usuario+"';");
         return rs.first();
+    }
+    
+    
+    public static Image getImage(byte[] bytes, boolean isThumbnail) throws IOException {
+        if (bytes!=null){                
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+            Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
+            ImageReader reader = (ImageReader) readers.next();
+            Object source = bis; // File or InputStream
+            ImageInputStream iis = ImageIO.createImageInputStream(source);
+            reader.setInput(iis, true);
+            ImageReadParam param = reader.getDefaultReadParam();
+            if (isThumbnail) {
+                param.setSourceSubsampling(4, 4, 0, 0);
+            }
+            return reader.read(0, param);
+        }
+        return null;
     }
 }
