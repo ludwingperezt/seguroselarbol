@@ -108,6 +108,9 @@ public class AseguradoraView extends FrameView {
             aboutBox.setLocationRelativeTo(mainFrame);
         }
         AseguradoraApp.getApplication().show(aboutBox);
+        for (Component c:jTabbedPane1.getComponents())
+            c.setEnabled(false);
+        jTabbedPane1.updateUI();
     }
 
     /** This method is called from within the constructor to
@@ -189,6 +192,7 @@ public class AseguradoraView extends FrameView {
             }
         });
 
+        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
         jPanel1.setName("jPanel1"); // NOI18N
@@ -269,6 +273,11 @@ public class AseguradoraView extends FrameView {
 
         jButton30.setText(resourceMap.getString("jButton30.text")); // NOI18N
         jButton30.setName("jButton30"); // NOI18N
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
 
         jButton34.setText(resourceMap.getString("jButton34.text")); // NOI18N
         jButton34.setName("jButton34"); // NOI18N
@@ -317,7 +326,7 @@ public class AseguradoraView extends FrameView {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -784,25 +793,35 @@ public class AseguradoraView extends FrameView {
         // TODO add your handling code here:
         Login ini=new Login(this.getFrame(), true);
         logueado=ini.autenticacion();
-        idEmpleado=logueado.getIdAgente();
+        if (logueado!=null)
+            idEmpleado=logueado.getIdAgente();
+        else{
+            logueado=new Agente();
+            logueado.setNivelAcceso(0);
+        }
         this.getFrame().setTitle("Bienvenido "+logueado.getNombre());
+        ControlUsuario();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void ControlUsuario(){        
         jTabbedPane1.setVisible(true);
         for (Component c:jTabbedPane1.getComponents())
-            c.setVisible(false);
-        switch(logueado.getIdAgente())
+            c.setEnabled(false);
+        switch(logueado.getNivelAcceso())
         {
             case 1:
                 administrador();
+                break;
             case 2:
                 agente();
+                break;
             case 3:
                 cajero();
+                break;
             case 4:
                 invitado();
         }
+        jTabbedPane1.updateUI();
     }
     
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -951,6 +970,12 @@ public class AseguradoraView extends FrameView {
         lista.setVisible(true);
     }//GEN-LAST:event_jButton24ActionPerformed
 
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
+        // TODO add your handling code here:
+        moduloagentes.Agente ag=new moduloagentes.Agente(this.getFrame(),true);
+        ag.setVisible(true);
+    }//GEN-LAST:event_jButton30ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -1022,7 +1047,7 @@ public class AseguradoraView extends FrameView {
     private void administrador() {
         jTabbedPane1.setVisible(true);
         for (Component c:jTabbedPane1.getComponents())
-            c.setVisible(true);
+            c.setEnabled(true);
     }
 
     private void agente() {
@@ -1030,17 +1055,33 @@ public class AseguradoraView extends FrameView {
         jTabbedPane1.getTabComponentAt(3).setVisible(true);
         jTabbedPane1.getTabComponentAt(4).setVisible(true);
         jTabbedPane1.getTabComponentAt(7).setVisible(true);
+        int i=0;
+        for (Component c:jTabbedPane1.getComponents()){
+            if (i==2 || i==3 || i==4 || i==7)  
+                c.setEnabled(true);
+            i++;
+        }
         
     }
     
     private void cajero()
     {
-        jTabbedPane1.getTabComponentAt(1).setVisible(true);
-        jTabbedPane1.getTabComponentAt(7).setVisible(true);
+        int i=0;
+        for (Component c:jTabbedPane1.getComponents()){
+            if (i==1 || i==7)  
+                c.setEnabled(true);
+            i++;
+        }
+        
     }
 
     private void invitado()
     {
-        jTabbedPane1.getTabComponentAt(7).setVisible(true);
+        int i=0;
+        for (Component c:jTabbedPane1.getComponents()){
+            if (i==7)  
+                c.setEnabled(true);
+            i++;
+        }
     }
 }

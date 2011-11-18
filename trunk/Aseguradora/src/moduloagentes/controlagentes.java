@@ -11,6 +11,7 @@
 
 package moduloagentes;
 import CapaNegocios.Agente;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -583,8 +584,12 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
             nuevoagente.setUsuario(jTextField9.getText());
             nuevoagente.setContraseña(jPasswordField1.getText()); // compara  contraseña en el confirmacion 
             nuevoagente.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
-            nuevoagente.setActivo(false);
-            nuevoagente.guardarAgente();
+            //nuevoagente.setActivo(false);
+            try {
+                nuevoagente.guardarAgente();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(controlagentes.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null, "Por defaul el nuevo agente esta inactivo");
         } catch (SQLException ex) {
             Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);

@@ -2,18 +2,24 @@ package CapaNegocios;
 
 import CapaDatos.Conexion;
 import Utilidades.Criptografia;
+import com.mysql.jdbc.Blob;
+import com.mysql.jdbc.PreparedStatement;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.rowset.serial.SerialBlob;
 
 public class Agente {
+
+    
 /**
      * administrador 1
      * agente 2
@@ -40,13 +46,13 @@ public class Agente {
 
     private String usuario;
 
-    private String Contraseña;
+    private byte[] Contraseña;
 
     private int nivelAcceso;
 
-    private boolean activo;
+    private int activo;
 
-    private byte fotografia;
+    private File fotografia;
 
     public Agente () {
     }
@@ -107,19 +113,19 @@ public class Agente {
         this.Telefono = val;
     }
 
-    public boolean getActivo () {
+    public int getActivo () {
         return activo;
     }
 
-    public void setActivo (boolean val) {
+    public void setActivo (int val) {
         this.activo = val;
     }
 
-    public byte getFotografia () {
+    public File getFotografia () {
         return fotografia;
     }
 
-    public void setFotografia (byte val) {
+    public void setFotografia (File val) {
         this.fotografia = val;
     }
 
@@ -154,13 +160,13 @@ public class Agente {
     public void setUsuario (String val) {
         this.usuario = val;
     }
-    public String getContraseña () {
+    public byte[] getContraseña () {
         return Contraseña;
     }
 
     public void setContraseña (String val) {
         try {
-            this.Contraseña = Criptografia.obtenerCodigoHash(val).toString();
+            this.Contraseña = Criptografia.obtenerCodigoHash(val);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -181,24 +187,35 @@ public class Agente {
         this.setComision(rs.getInt("Comision"));
         this.setSueldoBase(rs.getInt("SueldoBase"));
         this.setUsuario(rs.getString("Usuario"));
-        this.Contraseña=rs.getString("Contraseña");
-        this.setActivo(rs.getBoolean("Activo"));
+        //this.Contraseña=rs.getString("Contraseña"); //NO SE GUARDARÁ LA CONTRASEÑA EN EL OBJETO!
+        this.setActivo(rs.getInt("Activo"));
         this.setNivelAcceso(rs.getInt("NivelAcceso"));
 
     }
 
-     public boolean guardarAgente() throws SQLException
+     public boolean guardarAgente() throws SQLException, FileNotFoundException
     {
+        Connection conn=Conexion.obtenerConexion();
+        conn.setAutoCommit(false);
+        PreparedStatement ps = (PreparedStatement) conn.prepareStatement("INSERT INTO Agente VALUES (null, '"+
+                this.getDPI()+"', '"+this.getNIT()+"', '"+this.getNombre()+"', '"+
+                this.getDireccion()+"', '"+this.getTelefono()+"', '"+this.getCelular()+"', '"+
+                this.getComision()+"', '"+this.getSueldoBase()+"', ?,'"+this.getUsuario()+"',?,'"+
+                this.getNivelAcceso()+"','"+this.getActivo()+"');");
         try {
-            Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-            st.executeUpdate("INSERT INTO Agente VALUES (null, "+this.getDPI()+", "+this.getNIT()+", "+this.getNombre()+", "+
-                    this.getDireccion()+", "+this.getTelefono()+", "+this.getCelular()+", "+this.getComision()+", "+this.getSueldoBase()+","+this.getUsuario()+","+this.getContraseña()+","+this.getActivo()+","+this.getNivelAcceso()+",");
-            Conexion.obtenerConexion().commit();
+            FileInputStream fis = new FileInputStream(fotografia);
+            ps.setBinaryStream(1, fis, (int) fotografia.length());
+            ps.setBlob(2, new SerialBlob(Contraseña));
+            ps.execute();
+            ResultSet rs = ps.executeQuery("Select max(idAgente) from agente");            
+            rs.next();
+            int index = rs.getInt(1);
+            this.setIdAgente(index);
+            conn.commit();
         } catch (SQLException ex) {
-            Conexion.obtenerConexion().rollback();
+            conn.rollback();
             return false;
         }
-        Conexion.obtenerConexion().close();
         return true;
     }
 
@@ -227,17 +244,31 @@ public class Agente {
     {
         Connection conn = Conexion.obtenerConexion();
         Statement st = conn.createStatement();
-        byte[] pass2 = null;
-        try {
-            pass2 = Criptografia.obtenerCodigoHash(pass);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ResultSet rs=st.executeQuery("select * from agente where usuario like '"+usuario+"' and contraseña like '" +pass2 +"';");
-        
-        if (rs.first()){
-            this.llenarAgente(Integer.valueOf(rs.getObject("idAgente").toString()));
-            return true;
+        ResultSet rs=st.executeQuery("select * from agente where usuario like '"+usuario+"';");
+        if  (rs.first())
+        {
+            byte[] passw=rs.getBytes("contraseña");
+            byte[] pass2 = null;
+            try {
+                pass2 = Criptografia.obtenerCodigoHash(pass);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            boolean iwales=true;
+            if (passw.length==pass2.length){
+                for (int i =0; i<passw.length;i++)
+                    if (pass2[i]!=passw[i]){
+                        iwales=false;
+                        break;
+                    }
+            }
+            else
+                iwales=false;
+            
+            if (iwales){
+                this.llenarAgente(Integer.valueOf(rs.getObject("idAgente").toString()));
+                return true;
+            }
         }
         return false;
     }
@@ -268,5 +299,12 @@ public class Agente {
         //lista = ls.toArray(lista);
         //return lista;
     }
+    
+    
+    public static boolean existeUsuario(String usuario) throws SQLException {
+        Connection cn = Conexion.obtenerConexion();
+        Statement st=cn.createStatement();
+        ResultSet rs=st.executeQuery("SELECT * FROM AGENTE WHERE Usuario like '"+usuario+"';");
+        return rs.first();
+    }
 }
-
