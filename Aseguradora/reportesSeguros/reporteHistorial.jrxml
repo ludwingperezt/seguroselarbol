@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteHistorial" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+    'Póliza de seguro de vida' as 'Tipo de seguro',
+    h.Anotacion,
+    h.Fecha,
+    h.Hora,
+    cv.Identificacion,
+    cv.Descripcion as 'Descripcion contrato',
+    cv.FechaContrato,
+    cv.Vencimiento,
+    cv.NumeroPagos,
+    cv.MontoPagoSeguro,
+    sv.Descripcion as 'Tipo de poliza',
+    sv.Prima,
+    c.DPI,
+    C.NIT,
+    C.Nombres,
+    c.Apellidos,
+    c.Celular,
+    c.Telefono,
+    c.Direccion,
+    a.Nombre as 'Agente'
+from HistorialSeguro as h
+inner join ContratoVida as cv on h.idSeguroVida = cv.idContratoVida
+inner join SeguroVida as sv on cv.SeguroVida_idSeguroVida = sv.idSeguroVida
+inner join Agente as a on a.idAgente = h.Agente_idAgente
+inner join Cliente as c on c.idCliente = h.Cliente_idCliente
+where h.fecha = $P{fecha}
+union
+select
+'Póliza de seguro de hogar'as 'Tipo de seguro',
+    h.Anotacion,
+    h.Fecha,
+    h.Hora,
+    ch.Identificacion,
+    ch.Descripcion as 'Descripcion contrato',
+    ch.FechaContrato,
+    ch.Vencimiento,
+    ch.NumeroPagos,
+    ch.MontoPagoSeguro,
+    sh.Descripcion as 'Tipo de poliza',
+    sh.Prima,
+    c.DPI,
+    C.NIT,
+    C.Nombres,
+    c.Apellidos,
+    c.Celular,
+    c.Telefono,
+    c.Direccion,
+    a.Nombre as 'Agente'
+from HistorialSeguro as h
+inner join ContratoHogar as ch on h.idSeguroHogar = ch.idContratoHogar
+inner join SeguroHogar as sh on ch.SeguroHogar_idSeguroHogar = sh.idSeguroHogar
+inner join Agente as a on a.idAgente = h.Agente_idAgente
+inner join Cliente as c on c.idCliente = h.Cliente_idCliente
+where h.fecha = $P{fecha}
+union
+select
+'Póliza de seguro de vehículo'as 'Tipo de seguro',
+    h.Anotacion,
+    h.Fecha,
+    h.Hora,
+    ca.Identificacion,
+    ca.Descripcion as 'Descripcion poliza',
+    ca.FechaContrato,
+    ca.Vencimiento,
+    ca.NumeroPagos,
+    ca.MontoPagoSeguro,
+    sa.Descripcion as 'Tipo de seguro',
+    sa.Prima,
+    c.DPI,
+    C.NIT,
+    C.Nombres,
+    c.Apellidos,
+    c.Celular,
+    c.Telefono,
+    c.Direccion,
+    a.Nombre as 'Agente'
+from HistorialSeguro as h
+inner join ContratoAuto as ca on h.idSeguroAuto = ca.idContratoAuto
+inner join SeguroAuto as sa on ca.SeguroAuto_idSeguroAuto = sa.idSeguroAuto
+inner join Agente as a on a.idAgente = h.Agente_idAgente
+inner join Cliente as c on c.idCliente = h.Cliente_idCliente
+where h.fecha = $P{fecha};]]>
+	</queryString>
+	<field name="Tipo de seguro" class="java.lang.String"/>
+	<field name="Anotacion" class="java.lang.String"/>
+	<field name="Fecha" class="java.sql.Date"/>
+	<field name="Hora" class="java.sql.Time"/>
+	<field name="Identificacion" class="java.lang.String"/>
+	<field name="Descripcion contrato" class="java.lang.String"/>
+	<field name="FechaContrato" class="java.sql.Date"/>
+	<field name="Vencimiento" class="java.sql.Date"/>
+	<field name="NumeroPagos" class="java.lang.Integer"/>
+	<field name="MontoPagoSeguro" class="java.math.BigDecimal"/>
+	<field name="Tipo de poliza" class="java.lang.String"/>
+	<field name="Prima" class="java.math.BigDecimal"/>
+	<field name="DPI" class="java.lang.String"/>
+	<field name="NIT" class="java.lang.String"/>
+	<field name="Nombres" class="java.lang.String"/>
+	<field name="Apellidos" class="java.lang.String"/>
+	<field name="Celular" class="java.lang.String"/>
+	<field name="Telefono" class="java.lang.String"/>
+	<field name="Direccion" class="java.lang.String"/>
+	<field name="Agente" class="java.lang.String"/>
+	<group name="Tipo de seguro">
+		<groupExpression><![CDATA[$F{Tipo de seguro}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<line>
+					<reportElement x="-19" y="1" width="595" height="1" forecolor="#666666"/>
+				</line>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="6" width="100" height="32" forecolor="#666666" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Tipo de seguro]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="100" y="6" width="455" height="32" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Tipo de seguro}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Identificacion">
+		<groupExpression><![CDATA[$F{Identificacion}]]></groupExpression>
+		<groupHeader>
+			<band height="367">
+				<textField>
+					<reportElement x="136" y="0" width="419" height="32" forecolor="#006699"/>
+					<textElement>
+						<font size="18" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Identificacion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="412" y="65" width="135" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Hora}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="183" y="45" width="362" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Anotacion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="141" y="65" width="142" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="284" y="65" width="128" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Hora de Modificaciòn]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="136" height="20" forecolor="#666666"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Identificacion de Seguro]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="5" y="45" width="163" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Anotación de Modificación]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="7" y="65" width="134" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Modificación]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="194" y="99" width="349" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Descripcion contrato}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="243" y="119" width="198" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{FechaContrato}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="243" y="139" width="198" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Vencimiento}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="410" y="199" width="120" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NumeroPagos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="241" y="159" width="300" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MontoPagoSeguro}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="241" y="179" width="300" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Tipo de poliza}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="124" y="199" width="149" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Prima}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="18" y="99" width="163" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripcion del contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="110" y="119" width="120" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="33" y="139" width="197" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Vencimiento de contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="282" y="199" width="120" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Numero de Pagos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="82" y="159" width="148" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto Pago de Seguro]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="110" y="179" width="120" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo de poliza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="67" y="199" width="43" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prima]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="235" width="149" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DPI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="361" y="235" width="149" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NIT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="255" width="300" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Nombres}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="275" width="300" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Apellidos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="295" width="163" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Celular}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="376" y="295" width="163" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Telefono}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="108" y="315" width="431" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Direccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="241" y="345" width="300" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Agente}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="31" y="235" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DPI Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="271" y="235" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NIT Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="31" y="255" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombres]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="31" y="275" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Apellidos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="31" y="295" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Celular]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="291" y="295" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Telefono]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="31" y="315" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Direccion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="164" y="345" width="70" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Agente]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699"/>
+				<staticText>
+					<reportElement x="20" y="20" width="360" height="43" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Historial de Seguros]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="2"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="4">
+			<line>
+				<reportElement x="-20" y="2" width="595" height="1" forecolor="#666666"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="7">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="5" width="555" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
