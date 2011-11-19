@@ -10,6 +10,7 @@
  */
 package ModuloSeguros;
 
+import CapaNegocios.ContratoAuto;
 import CapaNegocios.ContratoHogar;
 import CapaNegocios.ContratoVida;
 import java.sql.SQLException;
@@ -24,8 +25,10 @@ import javax.swing.table.TableModel;
 public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
 
     private boolean seguroVida = true; //determina si lo que se quiere seleccionar es seguro de vida o seguro de hogar.
+    private int tipoPolizas = 0;  //0 es para seguro de hogar, 1 es para seguro de vida, 2 es para seguro de autos
     private ContratoVida[] listaPolizasVida = null;
     private ContratoHogar[] listaPolizasHogar = null;
+    private ContratoAuto[] listaPolizasAuto = null;
     private Object seleccionado = null;
     /** Creates new form SeleccionarPolizaSeguroHogar */
     public SeleccionarPolizaSeguro(java.awt.Frame parent, boolean modal) {
@@ -37,6 +40,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         seguroVida = bandera;
         
         try{
+            //eliminar esto
             if (seguroVida){ //si se esta buscando un seguro de vida
                 listaPolizasVida = ContratoVida.listaPolizasVida();
                 llenarTablaPolizasVida();
@@ -46,6 +50,21 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
                 listaPolizasHogar = ContratoHogar.listaPolizasHogar();
                 llenarTablaPolizasHogar();
             }
+            // fin eliminar
+            if (tipoPolizas==1){ //si se esta buscando un seguro de vida
+                listaPolizasVida = ContratoVida.listaPolizasVida();
+                llenarTablaPolizasVida();
+                
+            }
+            else if (tipoPolizas==0){ //o si se esta seleccionado un seguro de hogar.
+                listaPolizasHogar = ContratoHogar.listaPolizasHogar();
+                llenarTablaPolizasHogar();
+            }
+            else if (tipoPolizas==2){
+                listaPolizasAuto = ContratoAuto.listaPolizasAuto();
+                llenarTablaPolizasAuto();
+            }
+            
         }
         catch (SQLException ex){
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -108,7 +127,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         modelo.addColumn("NIT cliente");
         modelo.addColumn("Nombre");
         
-        for (ContratoHogar i:listaPolizasHogar){
+        for (ContratoAuto i:listaPolizasAuto){
             Object [] fila = new Object[5];
             fila[0]=i.getIdentificacion();
             fila[1]=i.getDescripcion();
@@ -248,12 +267,25 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
                 }
             }            
             if (indiceEncontrado>=0){
+                //eliminar esto
                 if (seguroVida){
                     seleccionado = listaPolizasVida[indiceEncontrado];
                 }
                 else{                    
                     seleccionado = listaPolizasHogar[indiceEncontrado];
                 }
+                //fin eliminar
+                
+                if (tipoPolizas==1){
+                    seleccionado = listaPolizasVida[indiceEncontrado];                    
+                }
+                else if (tipoPolizas==0){
+                    seleccionado = listaPolizasHogar[indiceEncontrado];                    
+                }
+                else if (tipoPolizas==2){
+                    seleccionado = listaPolizasAuto[indiceEncontrado];                    
+                }
+                
                 jTable1.setRowSelectionInterval(indiceEncontrado, indiceEncontrado);
             }           
         }        
@@ -262,11 +294,23 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
+        //eliminar
         if (seguroVida){
             seleccionado = listaPolizasVida[selectedRow];
         }
         else{
             seleccionado = listaPolizasHogar[selectedRow];
+        }
+        //fin eliminar
+        
+        if (tipoPolizas==1){
+            seleccionado = listaPolizasVida[selectedRow];                    
+        }
+        else if (tipoPolizas==0){
+            seleccionado = listaPolizasHogar[selectedRow];                    
+        }
+        else if (tipoPolizas==2){
+            seleccionado = listaPolizasAuto[selectedRow];                    
         }
     }//GEN-LAST:event_jTable1MouseClicked
 

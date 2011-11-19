@@ -40,9 +40,9 @@ public class Conexion {
                 origenDatos.setDatabaseName(baseDatos);
                 origenDatos.setUser(usuario);
                 origenDatos.setPassword(password);
-                origenDatos.setServerName(nombreServidor);
-                System.out.println("Conexion establecida con la base de datos");
+                origenDatos.setServerName(nombreServidor);                
                 conexionDB = origenDatos.getConnection();
+                System.out.println("Conexion establecida con la base de datos");
                 //bandera="Conexion establecida con la base de datos";
 
         } catch (SQLException ex) {
