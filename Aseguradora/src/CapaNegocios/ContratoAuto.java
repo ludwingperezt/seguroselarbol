@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class ContratoAuto {
+    
 
     private int idContratoAuto;
 
@@ -37,6 +38,10 @@ public class ContratoAuto {
     private boolean activo;
 
     private double montoPagoSeguro;
+    
+    private Cliente cliente=null;
+    
+    private String identificacion;
 
     public ContratoAuto () {
     }
@@ -192,6 +197,24 @@ public class ContratoAuto {
         
        
 
+    }
+
+    public String getIdentificacion() {
+        return this.identificacion;
+    }
+    public void setIdentificacion(String id){
+        this.identificacion = id;
+    }
+
+    public Cliente getCliente() {
+        return this.cliente;
+    }
+    public void setCliente(Cliente unCliente){
+        this.cliente = unCliente;
+    }
+    
+    public static ContratoAuto[] listaPolizasAuto() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

@@ -822,8 +822,10 @@ public class AseguradoraView extends FrameView {
         this.getFrame().setTitle("Bienvenido "+logueado.getNombre());
         ControlUsuario();
         lblFoto.setVisible(true);
-        ImageIcon imgI=new ImageIcon(logueado.getFotografia().getScaledInstance(108, 138, Image.SCALE_DEFAULT));
-        lblFoto.setIcon(imgI);
+        if (logueado.getFotografia()!=null){
+            ImageIcon imgI=new ImageIcon(logueado.getFotografia().getScaledInstance(108, 138, Image.SCALE_DEFAULT));
+            lblFoto.setIcon(imgI);
+        }        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void ControlUsuario(){      
