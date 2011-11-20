@@ -33,7 +33,21 @@ public class Serie {
 
     public Serie () {
     }
-
+    public Serie(String ser) throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT * FROM SERIE WHERE Serie like '"+ser+"';";
+        Statement query = (Statement) con.createStatement();
+        ResultSet rs = query.executeQuery(consulta);
+         while (rs.next()){
+        this.setIdSerie(rs.getInt(1));
+        this.setSerie(rs.getString(2));
+        this.setMaximo(rs.getInt(3));
+        this.setActual(rs.getInt(4));
+        this.setFechaCreacion(rs.getDate(5));
+        this.setFechaVencimiento(rs.getDate(6));
+        this.setActiva(rs.getBoolean(7));
+         }
+    }
     public boolean getActiva () {
         return activa;
     }
@@ -101,10 +115,9 @@ public class Serie {
     public int getCorrelativoD(String serie) throws SQLException
     {
         Statement st=(Statement) Conexion.iniciarConexion().createStatement();
-        int correlativo;
-        ResultSet rs=st.executeQuery("SELECT MAX(Correlativo) FROM serie WHERE serie like '"+serie+"'");
-        correlativo =rs.getInt(4); 
-        return (correlativo);
+        ResultSet rs=st.executeQuery("SELECT actual FROM SERIE WHERE serie like '"+serie+"'");
+        return(rs.getInt(1));
+        
     }
     public void setNuevo(String ser,int maximo,int actual,Date fc, Date fv){
         this.activa=true;
