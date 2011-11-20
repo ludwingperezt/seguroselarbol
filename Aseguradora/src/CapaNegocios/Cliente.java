@@ -133,7 +133,6 @@ public class Cliente {
         this.setFechaNacimiento(rs.getString("Celular"));
         this.setEdad(rs.getInt("Edad"));
     }
-    
     public ResultSet obtenerClientes(int id) throws SQLException
     {
         Statement st=(Statement) Conexion.iniciarConexion().createStatement();
@@ -155,7 +154,7 @@ public class Cliente {
         ResultSet rs=st.executeQuery("SELECT * FROM CLIENTE WHERE DPI like '"+DPI+"'");
         return rs;
     }
-    
+
     
     public boolean guardarCliente() throws SQLException
     {
