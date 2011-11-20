@@ -447,8 +447,8 @@ public class Agente extends javax.swing.JDialog {
             nuevo.setDireccion(jTextField2.getText());
             nuevo.setTelefono(jTextField5.getText());
             nuevo.setCelular(jTextField6.getText());
-            nuevo.setComision(Double.valueOf(jTextField3.getText()));
-            nuevo.setSueldoBase(Double.valueOf(jTextField3.getText()));
+            nuevo.setComision(Double.valueOf(jTextField7.getText()));
+            nuevo.setSueldoBase(Double.valueOf(jTextField8.getText()));
             nuevo.setUsuario(jTextField9.getText());
             nuevo.setContraseña(jPasswordField1.getText());
             nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
