@@ -324,6 +324,13 @@ public class ContratoAuto {
         }      
         this.setCliente(ci);
     }
+    
+    public static void desactivarSegurosVencidos() throws SQLException{
+        Connection con  = (Connection) Conexion.obtenerConexion();
+        CallableStatement cs = (CallableStatement) con.prepareCall("{CALL desactivarSegurosVencidos()}");
+        boolean execute = cs.execute();
+        cs.close();
+    }
 
 }
 

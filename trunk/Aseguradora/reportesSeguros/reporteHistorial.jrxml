@@ -156,10 +156,11 @@ where h.fecha = $P{fecha};]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Hora}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement x="183" y="45" width="362" height="20"/>
-					<textElement>
-						<font size="12"/>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="170" y="32" width="377" height="33" forecolor="#006699" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Anotacion}]]></textFieldExpression>
 				</textField>
@@ -185,7 +186,7 @@ where h.fecha = $P{fecha};]]>
 					<text><![CDATA[Identificacion de Seguro]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="5" y="45" width="163" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<reportElement mode="Opaque" x="7" y="32" width="163" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement textAlignment="Center">
 						<font size="12" isBold="true"/>
 					</textElement>

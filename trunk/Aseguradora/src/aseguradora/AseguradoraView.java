@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import ModuloSeguros.*;
 import ModuloClientes.*;
 import CapaNegocios.*;
+import Varios.SeleccionarFechas;
 import Varios.VisualizadorReportes;
 import com.mysql.jdbc.Connection;
 //import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl; // QUIEN FUE EL GENIO Q USO ESTO??? 
@@ -143,6 +144,8 @@ public class AseguradoraView extends FrameView {
         jButton27 = new javax.swing.JButton();
         jButton30 = new javax.swing.JButton();
         jButton34 = new javax.swing.JButton();
+        jButton35 = new javax.swing.JButton();
+        jButton37 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jButton24 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
@@ -167,6 +170,7 @@ public class AseguradoraView extends FrameView {
         jButton21 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
+        jButton36 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
@@ -294,6 +298,22 @@ public class AseguradoraView extends FrameView {
             }
         });
 
+        jButton35.setText(resourceMap.getString("jButton35.text")); // NOI18N
+        jButton35.setName("jButton35"); // NOI18N
+        jButton35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton35ActionPerformed(evt);
+            }
+        });
+
+        jButton37.setText(resourceMap.getString("jButton37.text")); // NOI18N
+        jButton37.setName("jButton37"); // NOI18N
+        jButton37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton37ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -329,7 +349,10 @@ public class AseguradoraView extends FrameView {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25)
-                                .addComponent(jButton6))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButton35, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton37, javax.swing.GroupLayout.Alignment.LEADING)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -356,9 +379,13 @@ public class AseguradoraView extends FrameView {
                     .addComponent(jButton27)
                     .addComponent(jButton6))
                 .addGap(34, 34, 34)
-                .addComponent(jButton8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton8)
+                    .addComponent(jButton35))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton10)
+                    .addComponent(jButton37))
                 .addGap(68, 68, 68)
                 .addComponent(jButton15))
         );
@@ -588,17 +615,27 @@ public class AseguradoraView extends FrameView {
         jButton23.setText(resourceMap.getString("jButton23.text")); // NOI18N
         jButton23.setName("jButton23"); // NOI18N
 
+        jButton36.setText(resourceMap.getString("jButton36.text")); // NOI18N
+        jButton36.setName("jButton36"); // NOI18N
+        jButton36.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton36ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(831, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton36))
+                .addContainerGap(829, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -609,7 +646,9 @@ public class AseguradoraView extends FrameView {
                 .addComponent(jButton22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton23)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton36)
+                .addContainerGap(221, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel6.TabConstraints.tabTitle"), jPanel6); // NOI18N
@@ -626,6 +665,11 @@ public class AseguradoraView extends FrameView {
 
         jButton29.setText(resourceMap.getString("jButton29.text")); // NOI18N
         jButton29.setName("jButton29"); // NOI18N
+        jButton29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton29ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
@@ -1003,6 +1047,28 @@ public class AseguradoraView extends FrameView {
         ag.setVisible(true);
     }//GEN-LAST:event_jButton30ActionPerformed
 
+    private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
+        // TODO add your handling code here:
+        VisualizadorReportes.mostrarReporteBeneficiariosPorSeguroHogar();
+    }//GEN-LAST:event_jButton29ActionPerformed
+
+    private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
+        // TODO add your handling code here:
+        SeleccionarFechas sf = new SeleccionarFechas(null, true);
+        sf.setVisible(true);
+    }//GEN-LAST:event_jButton35ActionPerformed
+
+    private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton36ActionPerformed
+        // TODO add your handling code here:
+        VisualizadorReportes.desactivarSegurosVencidosHoy();
+    }//GEN-LAST:event_jButton36ActionPerformed
+
+    private void jButton37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton37ActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(mainPanel, "Si desea desactivar las pólizas que vencen hoy, dirijase al panel 'Cancelar Pólizas' en esta ventana ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        VisualizadorReportes.verSegurosAVencerProximosSieteDias();
+    }//GEN-LAST:event_jButton37ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -1032,6 +1098,9 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
+    private javax.swing.JButton jButton35;
+    private javax.swing.JButton jButton36;
+    private javax.swing.JButton jButton37;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
