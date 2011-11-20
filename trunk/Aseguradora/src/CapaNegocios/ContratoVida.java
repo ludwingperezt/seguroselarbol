@@ -212,8 +212,15 @@ public class ContratoVida {
     public static ContratoVida[] listaPolizasVida() throws SQLException{
         ArrayList<ContratoVida> lista = new ArrayList<ContratoVida>();
         Connection con = (Connection) Conexion.obtenerConexion();
-        String consulta = "SELECT CV.idContratoVida,CV.Identificacion,CV.Descripcion,"
-                + "Cl.Nombres,Cl.Apellidos,Cl.NIT,Cl.DPI "
+        String consulta = 
+                "SELECT "
+                + "CV.idContratoVida,"
+                + "CV.Identificacion,"
+                + "CV.Descripcion,"
+                + "Cl.Nombres,"
+                + "Cl.Apellidos,"
+                + "Cl.NIT,"
+                + "Cl.DPI "
                 + "FROM ContratoVida AS CV "
                 + "INNER JOIN ClienteSeguro as CS on CS.ContratoVida_idContratoVida = CV.idContratoVida "
                 + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente";
@@ -239,6 +246,58 @@ public class ContratoVida {
         ls = lista.toArray(ls);
         return ls;
     }
+    public void completarDatos() throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        
+        String consulta = "SELECT "
+                + "CV.SeguroVida_idSeguroVida,"
+                + "CV.Profesion,"
+                + "CV.FechaContrato,"
+                + "CV.FechaPago,"
+                + "CV.Mora,"
+                
+                + "CV.Vencimiento,"
+                + "CV.NumeroPagos,"
+                + "CV.MontoPagoSeguro,"
+                
+                + "Cl.Direccion,"
+                + "Cl.Telefono,"
+                + "Cl.Celular,"
+                + "Cl.FechaNacimiento,"
+                + "Cl.edad"
+                
+                + "FROM ContratoVida AS CV "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoVida_idContratoVida = CV.idContratoVida "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente"
+                + "WHERE CV.idContratoVida = "
+                + Integer.toString(this.idContratoVida);
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            
+            Cliente ci = this.cliente;
+            this.setCliente(ci);
 
+            this.idSeguroVida = rs.getInt(1);
+            this.profesion = rs.getString(2);
+            this.fechaContrato = rs.getDate(3);
+            this.fechaPago = rs.getDate(4);
+            this.mora = rs.getDouble(5);
+
+            this.vencimiento = rs.getDate(6);
+            this.numeroPagos = rs.getInt(7);
+            this.montoPagoSeguro = rs.getDouble(8);
+
+            ci.setDireccion(rs.getString(9));
+            ci.setTelefono(rs.getString(10));
+            ci.setCelular(rs.getString(11));
+            ci.setFechaNacimiento(rs.getDate(12));
+            ci.setEdad(rs.getInt(13));
+            this.cliente=ci;
+        }
+    }
 }
 

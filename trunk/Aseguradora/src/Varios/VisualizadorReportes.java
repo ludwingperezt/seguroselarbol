@@ -113,8 +113,8 @@ public class VisualizadorReportes {
     public static void mostrarReporteBeneficiariosPorSeguroVida(){
         ContratoVida seleccionado;
         SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-        seleccionado = (ContratoVida) sps.cargarSeguros(true);
-        
+        //seleccionado = (ContratoVida) sps.cargarSeguros(true);
+        seleccionado = (ContratoVida) sps.cargarSeguros(SeleccionarPolizaSeguro.SELECCIONAR_POLIZAS_SEGURO_VIDA);
         String identificacion = seleccionado.getIdentificacion();
         try {
             String direccionReporte = System.getProperty("user.dir")+File.separator+"reportesSeguros"+File.separator+"reporteBeneficiariosPorSeguroVida.jasper"; //obtiene la direccion del fichero compilado del reporte. Este tiene extension .jasper y está en la carpeta del proyecto, en la subcarpeta reportesSeguros
@@ -138,7 +138,8 @@ public class VisualizadorReportes {
     public static void mostrarReporteBeneficiariosPorSeguroHogar(){
         ContratoHogar seleccionado;
         SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-        seleccionado = (ContratoHogar) sps.cargarSeguros(false);
+        //seleccionado = (ContratoHogar) sps.cargarSeguros(false);
+        seleccionado = (ContratoHogar) sps.cargarSeguros(SeleccionarPolizaSeguro.SELECCIONAR_POLIZAS_SEGURO_HOGAR);
         
         String identificacion = seleccionado.getIdentificacion();
         try {
