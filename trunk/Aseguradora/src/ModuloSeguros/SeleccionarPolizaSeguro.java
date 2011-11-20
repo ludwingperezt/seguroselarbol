@@ -31,7 +31,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     public static int SELECCIONAR_POLIZAS_SEGURO_HOGAR = 0;
     public static int SELECCIONAR_POLIZAS_SEGURO_AUTO = 2;
 
-    private boolean seguroVida = true; //determina si lo que se quiere seleccionar es seguro de vida o seguro de hogar.
+    
     private int tipoPolizas = 0;  //0 es para seguro de hogar, 1 es para seguro de vida, 2 es para seguro de autos
     private ContratoVida[] listaPolizasVida = null;
     private ContratoHogar[] listaPolizasHogar = null;
@@ -41,43 +41,6 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     public SeleccionarPolizaSeguro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
-
-    public Object cargarSeguros(boolean bandera){
-        seguroVida = bandera;
-        
-        try{
-            //eliminar esto
-            if (seguroVida){ //si se esta buscando un seguro de vida
-                listaPolizasVida = ContratoVida.listaPolizasVida();
-                llenarTablaPolizasVida();
-                
-            }
-            else{ //o si se esta seleccionado un seguro de hogar.
-                listaPolizasHogar = ContratoHogar.listaPolizasHogar();
-                llenarTablaPolizasHogar();
-            }
-            // fin eliminar
-            if (tipoPolizas==1){ //si se esta buscando un seguro de vida
-                listaPolizasVida = ContratoVida.listaPolizasVida();
-                llenarTablaPolizasVida();
-                
-            }
-            else if (tipoPolizas==0){ //o si se esta seleccionado un seguro de hogar.
-                listaPolizasHogar = ContratoHogar.listaPolizasHogar();
-                llenarTablaPolizasHogar();
-            }
-            else if (tipoPolizas==2){
-                listaPolizasAuto = ContratoAuto.listaPolizasAuto();
-                llenarTablaPolizasAuto();
-            }
-            
-        }
-        catch (SQLException ex){
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        this.setVisible(true);
-        return this.seleccionado;
     }
     
     public Object cargarSeguros(int bandera){
