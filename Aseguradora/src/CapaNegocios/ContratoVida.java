@@ -299,5 +299,8 @@ public class ContratoVida {
             this.cliente=ci;
         }
     }
+    public static void desactivarSegurosVencidos() throws SQLException{
+        ContratoAuto.desactivarSegurosVencidos();
+    }
 }
 

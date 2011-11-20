@@ -302,6 +302,9 @@ public class ContratoHogar {
             this.setCliente(ci);            
         }
     }
+    public static void desactivarSegurosVencidos() throws SQLException{
+        ContratoAuto.desactivarSegurosVencidos();
+    }
 
 }
 
