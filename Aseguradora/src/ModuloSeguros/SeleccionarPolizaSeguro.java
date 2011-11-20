@@ -23,6 +23,10 @@ import javax.swing.table.TableModel;
  * @author HP G42
  */
 public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
+    
+    public static int SELECCIONAR_POLIZAS_SEGURO_VIDA = 1;
+    public static int SELECCIONAR_POLIZAS_SEGURO_HOGAR = 0;
+    public static int SELECCIONAR_POLIZAS_SEGURO_AUTO = 2;
 
     private boolean seguroVida = true; //determina si lo que se quiere seleccionar es seguro de vida o seguro de hogar.
     private int tipoPolizas = 0;  //0 es para seguro de hogar, 1 es para seguro de vida, 2 es para seguro de autos

@@ -244,6 +244,64 @@ public class ContratoHogar {
         ls = lista.toArray(ls);
         return ls;
     }
+    
+    public void completarDatos() throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT "
+                + "CH.SeguroHogar_idSeguroHogar,"
+                + "CH.FechaContrato,"
+                + "CH.FechaPago,"
+                + "CH.Mora,"
+                + "CH.Vencimiento,"
+                
+                + "CH.ValorInmueble,"
+                + "CH.ValorMueble,"
+                + "CH.NumeroPagos,"
+                + "CH.MontoPagoSeguro,"               
+                + "Cl.idCliente,"
+                
+                + "Cl.Direccion,"
+                + "Cl.Telefono,"
+                + "Cl.Celular,"
+                + "Cl.FechaNacimiento,"
+                + "Cl.edad"
+                
+                + "FROM ContratoHogar AS CH "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente"
+                + "WHERE CH.idContratoHogar = "
+                + Integer.toString(this.idContratoHogar);
+        
+        // SeguroHogar_idSeguroHogar, FechaContrato, FechaPago, Mora,  Vencimiento, ValorInmueble, ValorMueble, NumeroPagos, Activo, MontoPagoSeguro
+        //idCliente, DPI, NIT, Nombres, Apellidos, Direccion, Telefono, Celular, FechaNacimiento, edad
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            
+            Cliente ci = this.getCliente();            
+
+            this.setIdSeguroHogar(rs.getInt(1));
+            this.setFechaContrato(rs.getDate(2));
+            this.setFechaPago(rs.getDate(3));
+            this.setMora(rs.getDouble(4));
+            this.vencimiento=rs.getDate(5);
+            
+            this.valorInmueble = rs.getDouble(6);
+            this.valorMuebles = rs.getDouble(7);
+            this.numeroPagos = rs.getInt(8);
+            this.montoPagoseguro = rs.getDouble(9);
+            ci.setIdCliente(rs.getInt(10));
+
+            ci.setDireccion(rs.getString(11));
+            ci.setTelefono(rs.getString(12));
+            ci.setCelular(rs.getString(13));
+            ci.setFechaNacimiento(rs.getDate(14));
+            ci.setEdad(rs.getInt(15));
+            this.setCliente(ci);            
+        }
+    }
 
 }
 

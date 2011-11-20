@@ -8,6 +8,7 @@ import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class ContratoAuto {
@@ -213,8 +214,115 @@ public class ContratoAuto {
         this.cliente = unCliente;
     }
     
-    public static ContratoAuto[] listaPolizasAuto() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public static ContratoAuto[] listaPolizasAuto() throws SQLException {
+        
+        ArrayList<ContratoAuto> lista = new ArrayList<ContratoAuto>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "select "
+                + "ca.idContratoAuto,"                
+                + "ca.Identificacion, "
+                + "ca.Descripcion,"
+                + "c.IdCliente,"
+                + "c.DPI,"
+                + "c.NIT,"
+                + "c.Nombres,"
+                + "c.Apellidos"
+                + "from ContratoAuto as ca "
+                + "inner join ClienteSeguro as cs on ca.idContratoAuto = cs.ContratoAuto_idContratoAuto "
+                + "inner join Cliente as c on c.idCliente = cs.Cliente_idAgente";      
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoAuto i = new ContratoAuto();
+            Cliente ci = new Cliente();            
+            i.setIdContratoAuto(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            ci.setIdCliente(rs.getInt(4));
+            ci.setDPI(rs.getString(5));
+            ci.setNIT(rs.getString(6));
+            ci.setNombres(rs.getString(7));
+            ci.setApellidos(rs.getString(8));
+
+            i.setCliente(ci);            
+            lista.add(i);
+        }      
+        ContratoAuto [] ls = new ContratoAuto[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
+    
+    public void completarDatos() throws SQLException{
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "select "
+                + "ca.idContratoAuto,"
+                + "ca.SeguroAuto_idSeguroAuto,"
+                + "ca.Auto_idAuto,"
+                + "ca.Identificacion, "
+                + "ca.Descripcion,"
+                + "ca.FechaContrato,"
+                + "ca.FechaPago,"
+                + "ca.Año,"
+                + "ca.Mora,"
+                + "ca.Valor,"
+                + "ca.Vencimiento,"
+                + "ca.NumeroPagos,"
+                + "ca.MontoPagoSeguro,"
+                + "c.IdCliente,"
+                + "c.DPI,"
+                + "c.NIT,"
+                + "c.Nombres,"
+                + "c.Apellidos,"
+                + "c.Direccion,"
+                + "c.Telefono,"
+                + "c.Celular,"
+                + "c.FechaNacimiento,"
+                + "c.Edad "
+                + "from ContratoAuto as ca "
+                + "inner join ClienteSeguro as cs on ca.idContratoAuto = cs.ContratoAuto_idContratoAuto "
+                + "inner join Cliente as c on c.idCliente = cs.Cliente_idAgente "
+                + "WHERE ca.idContratoAuto = "
+                + Integer.toString(this.getIdContratoAuto());      
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        Cliente ci = null;
+        while (rs.next()){
+            
+            ci = new Cliente();            
+            this.setIdContratoAuto(rs.getInt(1));
+            this.setIdSeguroAuto(rs.getInt(2));
+            this.setIdAuto(rs.getInt(3));
+            this.setIdentificacion(rs.getString(4));
+            this.setDescripcion(rs.getString(5));
+            this.setFechaContrato(rs.getDate(6));
+            this.setFechaPago(rs.getDate(7));
+            this.setAño(rs.getDate(8));
+            this.setMora(rs.getDouble(9));
+            this.setValor(rs.getDouble(10));
+            this.setVencimiento(rs.getDate(11));
+            
+            this.setNumeroPagos(rs.getInt(12));
+            this.setMontoPagoSeguro(rs.getDouble(13));
+
+            ci.setIdCliente(rs.getInt(14));
+            ci.setNIT(rs.getString(15));
+            ci.setDPI(rs.getString(16));
+            ci.setNombres(rs.getString(17));
+            ci.setApellidos(rs.getString(18));
+            ci.setDireccion(rs.getString(19));
+            ci.setTelefono(rs.getString(20));
+            ci.setCelular(rs.getString(21));
+            ci.setFechaNacimiento(rs.getDate(22));
+            ci.setEdad(rs.getInt(23));
+
+        }      
+        this.setCliente(ci);
     }
 
 }
