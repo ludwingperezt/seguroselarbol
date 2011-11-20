@@ -990,9 +990,11 @@ public class AseguradoraView extends FrameView {
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-        // TODO add your handling code here:
-        Factura lista= new Factura(this.getFrame(), true);
+        // TODO add your handling code here
+        SeleccionarCliente lista= new SeleccionarCliente(this.getFrame(), true);
         lista.setVisible(true);
+        FacturaF ls= new FacturaF(this.getFrame(), true);
+        ls.setVisible(true);
     }//GEN-LAST:event_jButton24ActionPerformed
 
     private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
