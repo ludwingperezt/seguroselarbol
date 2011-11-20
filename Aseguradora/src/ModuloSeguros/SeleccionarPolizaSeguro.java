@@ -77,6 +77,32 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         return this.seleccionado;
     }
     
+    public Object cargarSeguros(int bandera){
+        this.tipoPolizas = bandera;
+        
+        try{
+            if (tipoPolizas==1){ //si se esta buscando un seguro de vida
+                listaPolizasVida = ContratoVida.listaPolizasVida();
+                llenarTablaPolizasVida();
+                
+            }
+            else if (tipoPolizas==0){ //o si se esta seleccionado un seguro de hogar.
+                listaPolizasHogar = ContratoHogar.listaPolizasHogar();
+                llenarTablaPolizasHogar();
+            }
+            else if (tipoPolizas==2){
+                listaPolizasAuto = ContratoAuto.listaPolizasAuto();
+                llenarTablaPolizasAuto();
+            }
+            
+        }
+        catch (SQLException ex){
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        this.setVisible(true);
+        return this.seleccionado;
+    }
+    
     private void llenarTablaPolizasVida(){
         jTable1.removeAll();
         DefaultTableModel modelo = new DefaultTableModel();
@@ -270,16 +296,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
                     break;
                 }
             }            
-            if (indiceEncontrado>=0){
-                //eliminar esto
-                if (seguroVida){
-                    seleccionado = listaPolizasVida[indiceEncontrado];
-                }
-                else{                    
-                    seleccionado = listaPolizasHogar[indiceEncontrado];
-                }
-                //fin eliminar
-                
+            if (indiceEncontrado>=0){                
                 if (tipoPolizas==1){
                     seleccionado = listaPolizasVida[indiceEncontrado];                    
                 }
@@ -298,15 +315,6 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
-        //eliminar
-        if (seguroVida){
-            seleccionado = listaPolizasVida[selectedRow];
-        }
-        else{
-            seleccionado = listaPolizasHogar[selectedRow];
-        }
-        //fin eliminar
-        
         if (tipoPolizas==1){
             seleccionado = listaPolizasVida[selectedRow];                    
         }
