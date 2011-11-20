@@ -1,6 +1,7 @@
 package CapaNegocios;
 
 import CapaDatos.Conexion;
+import aseguradora.AseguradoraView;
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class ContratoAuto {
+
     
 
     private int idContratoAuto;
@@ -331,6 +333,53 @@ public class ContratoAuto {
         boolean execute = cs.execute();
         cs.close();
     }
-
+    
+    public static ContratoAuto[] polizasPorCliente(Cliente unCliente) throws SQLException {
+        ArrayList<ContratoAuto> lista = new ArrayList<ContratoAuto>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CA.idContratoAuto, "
+                + "CA.Identificacion,"
+                + "CA.Descripcion "
+                + "FROM ContratoAuto AS CA "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoAuto_idContratoAuto = CA.idContratoAuto"
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente WHERE "
+                + "Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoAuto i = new ContratoAuto();          
+            i.setIdContratoAuto(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            i.setCliente(unCliente);            
+            lista.add(i);
+        }      
+        ContratoAuto [] ls = new ContratoAuto[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
+    public void cancelarPoliza(String razonCancelacion) throws SQLException {
+        String consulta = "UPDATE ContratoAuto SET Activo = 0 WHERE idContratoAuto = "+Integer.toString(this.idContratoAuto);
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        st.executeUpdate(consulta);
+        ///idHistorialSeguro, Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente
+        consulta = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroAuto, Agente_idAgente, Cliente_idCliente) "
+                + "VALUES ("
+                + "'"+razonCancelacion+"',"
+                + "CURDATE(),"
+                + "CURTIME(),"
+                + Integer.toString(this.idContratoAuto)+","
+                + Integer.toString(AseguradoraView.idEmpleado)+","
+                + Integer.toString(this.cliente.getIdCliente())
+                + ")";
+        st.execute(consulta);
+        st.close();
+    }
+    
+    
 }
 

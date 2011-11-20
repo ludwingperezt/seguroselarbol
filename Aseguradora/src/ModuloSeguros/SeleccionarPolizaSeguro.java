@@ -10,10 +10,13 @@
  */
 package ModuloSeguros;
 
+import CapaNegocios.Cliente;
 import CapaNegocios.ContratoAuto;
 import CapaNegocios.ContratoHogar;
 import CapaNegocios.ContratoVida;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -101,6 +104,48 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         }
         this.setVisible(true);
         return this.seleccionado;
+    }
+    
+    public Object cargarSegurosHogarActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 0;
+            listaPolizasHogar = ContratoHogar.polizasPorCliente(unCliente);
+            llenarTablaPolizasHogar();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    
+    public Object cargarSegurosVidaActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 1;
+            listaPolizasVida = ContratoVida.polizasPorCliente(unCliente);
+            llenarTablaPolizasVida();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    
+    public Object cargarSegurosAutoActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 2;
+            listaPolizasAuto = ContratoAuto.polizasPorCliente(unCliente);
+            llenarTablaPolizasAuto();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
     
     private void llenarTablaPolizasVida(){
