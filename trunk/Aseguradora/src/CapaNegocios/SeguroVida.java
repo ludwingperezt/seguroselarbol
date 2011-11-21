@@ -137,7 +137,7 @@ public class SeguroVida {
         return a;
     }
     
-    public static SeguroVida consultarNombreSeguro(int idSeguroBuscado) throws SQLException{
+    public static SeguroVida consultarDatosSeguro(int idSeguroBuscado) throws SQLException{
         String consulta = "SELECT Descripcion,Prima FROM seguroVida WHERE idSeguroVida = "+Integer.toString(idSeguroBuscado);
         SeguroVida sv = null;
         
