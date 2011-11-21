@@ -166,6 +166,23 @@ public class SeguroAuto {
         Statement st = (Statement) con.createStatement();
         int executeUpdate = st.executeUpdate(cadena);
     }
-
+    public static SeguroAuto consultarDatosSeguro(int idSeguroBuscado) throws SQLException{
+        SeguroAuto sa = null;
+        String consulta = "SELECT Descripcion,Prima FROM seguroAuto WHERE idSeguroAuto = "+Integer.toString(idSeguroBuscado);
+        
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        ResultSet rs = st.executeQuery(consulta);
+        
+        if (rs.next()){
+            sa = new SeguroAuto();
+            sa.idSeguroAuto = idSeguroBuscado;
+            sa.descripcion = rs.getString(1);
+            sa.prima = rs.getDouble(2);
+        }
+        rs.close();
+        st.close();
+        return sa;
+    }
 }
 

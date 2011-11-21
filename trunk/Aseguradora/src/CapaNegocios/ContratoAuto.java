@@ -12,9 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class ContratoAuto {
-
-    
+import javax.swing.JOptionPane;
+public class ContratoAuto {    
 
     private int idContratoAuto;
 
@@ -378,6 +377,55 @@ public class ContratoAuto {
                 + ")";
         st.execute(consulta);
         st.close();
+    }
+
+    public void renovar() {
+        try{
+            String consulta = "UPDATE ContratoAuto "
+                    + "SET Activo = 1, "
+                    + "FechaContrato = ?,"
+                    + "Descripcion = ?,"
+                    + "FechaPago = ?,"
+                    + "Año = ? ,"
+                    + "Mora = ?,"
+                    + "Valor = ?,"
+                    + "Vencimiento = ?,"
+                    + "NumeroPagos = ?,"
+                    + "MontoPagoSeguro = ?"
+                    + "WHERE idContratoAuto = "+Integer.toString(this.idContratoAuto);
+            Connection con = (Connection) Conexion.obtenerConexion();
+            Statement st = (Statement) con.createStatement();
+            PreparedStatement ps = (PreparedStatement) con.prepareStatement(consulta);
+            //st.executeUpdate(consulta);
+            ///idHistorialSeguro, Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente
+            ps.setDate(1, this.fechaContrato);
+            ps.setString(2, this.descripcion);
+            ps.setDate(3, this.fechaPago);
+            ps.setDate(4, this.año);
+            ps.setDouble(5, mora);
+            ps.setDouble(6, valor);
+            ps.setDate(7, vencimiento);
+            ps.setInt(8, numeroPagos);
+            ps.setDouble(9, montoPagoSeguro);
+
+            boolean execute = ps.execute();
+
+            consulta = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroAuto, Agente_idAgente, Cliente_idCliente) "
+                    + "VALUES ("
+                    + "'Póliza de seguro renovada',"
+                    + "CURDATE(),"
+                    + "CURTIME(),"
+                    + Integer.toString(this.idContratoAuto)+","
+                    + Integer.toString(AseguradoraView.idEmpleado)+","
+                    + Integer.toString(this.cliente.getIdCliente())
+                    + ")";
+            st.execute(consulta);
+            st.close();
+            ps.close();
+        }
+        catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     

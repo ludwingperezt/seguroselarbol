@@ -125,6 +125,26 @@ public class SeguroHogar {
         return a;
     }
     
+    public static SeguroHogar consultarNombreSeguro(int idSeguroBuscado) throws SQLException{
+        String ret = null;
+        SeguroHogar sh = null;
+        String consulta = "SELECT Descripcion,Prima FROM seguroHogar WHERE idSeguroHogar = "+Integer.toString(idSeguroBuscado);
+        
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        ResultSet rs = st.executeQuery(consulta);
+        
+        if (rs.next()){
+            sh = new SeguroHogar();
+            sh.idSeguroHogar = idSeguroBuscado;
+            sh.descripcion = rs.getString(1);
+            sh.prima = rs.getDouble(2);
+            ret = rs.getString(1);
+        }
+        rs.close();
+        st.close();
+        return sh;
+    }
     //TipoSeguro, Descripcion, Prima, Serie, Correlativo
 
 }

@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 
 public class Auto {
 
-    
+       
     private int idAuto;
 
     private String tipoVehiculo;
@@ -216,7 +216,24 @@ public class Auto {
         lista = ls.toArray(lista);
         return lista;        
     }
-
+    
+     public static Auto obtenerDatosAuto(int idAuto) throws SQLException {
+       String consulta = "select distinct idAuto,TipoVehiculo,Marca,Modelo,Placas from auto where idAuto = "+Integer.toString(idAuto);
+        
+        Connection cn = (Connection) Conexion.obtenerConexion();
+        PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
+        ResultSet rs =  ps.executeQuery();
+        Auto x = null;
+        while(rs.next()){
+            x = new Auto();
+            x.setIdAuto(rs.getInt(1));
+            x.setTipoVehiculo(rs.getString(2));
+            x.setMarca(rs.getString(3));
+            x.setModelo(rs.getString(4));
+            x.setPlacas(rs.getString(5));
+        }
+        return x;
+    }
 
 }
 
