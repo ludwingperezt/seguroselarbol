@@ -95,11 +95,36 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
             return null;
         }
     }
-    
+    public Object cargarSegurosHogarNoActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 0;
+            listaPolizasHogar = ContratoHogar.polizasNoActivasPorCliente(unCliente);
+            llenarTablaPolizasHogar();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
     public Object cargarSegurosVidaActivosPorCliente(Cliente unCliente){
         try {
             this.tipoPolizas = 1;
             listaPolizasVida = ContratoVida.polizasActivasPorCliente(unCliente);
+            llenarTablaPolizasVida();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    public Object cargarSegurosVidaNoActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 1;
+            listaPolizasVida = ContratoVida.polizasNoActivasPorCliente(unCliente);
             llenarTablaPolizasVida();
             this.setVisible(true);
             return this.seleccionado;
@@ -122,6 +147,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
             return null;
         }
     }
+    
     public Object cargarSegurosAutoActivosPorCliente(Cliente unCliente){
         try {
             this.tipoPolizas = 2;
@@ -139,6 +165,19 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
         try {
             this.tipoPolizas = 2;
             listaPolizasAuto = ContratoAuto.polizasPorCliente(unCliente);
+            llenarTablaPolizasAuto();
+            this.setVisible(true);
+            return this.seleccionado;
+        } catch (SQLException ex) {
+            //Logger.getLogger(SeleccionarPolizaSeguro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    public Object cargarSegurosAutoNoActivosPorCliente(Cliente unCliente){
+        try {
+            this.tipoPolizas = 2;
+            listaPolizasAuto = ContratoAuto.polizasNoActivasPorCliente(unCliente);
             llenarTablaPolizasAuto();
             this.setVisible(true);
             return this.seleccionado;

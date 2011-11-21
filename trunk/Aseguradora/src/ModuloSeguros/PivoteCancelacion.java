@@ -144,4 +144,58 @@ public class PivoteCancelacion {
             }
         }
     }
+    
+    public static void cancelarSeguroVida(){
+        try {
+            SeleccionarCliente sc = new SeleccionarCliente(null, true);
+            Cliente cl = sc.seleccionarCliente();            
+            if (cl!=null){
+                    SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
+                    ContratoVida cv = (ContratoVida) sps.cargarSegurosVidaActivosPorCliente(cl);
+                    if (cv!=null){
+                        String razonCancelacion = JOptionPane.showInputDialog(null, "Ingrese la razón de la cancelación del seguro", "Razón", JOptionPane.QUESTION_MESSAGE);
+                        cv.cancelarPoliza(razonCancelacion);
+                    }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(PivoteCancelacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void cancelarSeguroHogar(){
+        try {
+            SeleccionarCliente sc = new SeleccionarCliente(null, true);
+            Cliente cl = sc.seleccionarCliente();
+            if (cl!=null){
+                SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
+                ContratoHogar ch = (ContratoHogar) sps.cargarSegurosHogarActivosPorCliente(cl);
+                if (ch!=null){
+                    String razonCancelacion = JOptionPane.showInputDialog(null, "Ingrese la razón de la cancelación del seguro", "Razón", JOptionPane.QUESTION_MESSAGE);
+                    ch.cancelarPoliza(razonCancelacion);
+                }                
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(PivoteCancelacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void cancelarSeguroAuto(){
+        try{
+            SeleccionarCliente sc = new SeleccionarCliente(null, true);
+            Cliente cl = sc.seleccionarCliente();
+            if (cl!=null){
+                SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
+                ContratoAuto ca = (ContratoAuto) sps.cargarSegurosAutoActivosPorCliente(cl);
+                if (ca!=null){
+                    String razonCancelacion = JOptionPane.showInputDialog(null, "Ingrese la razón de la cancelación del seguro", "Razón", JOptionPane.QUESTION_MESSAGE);
+                    ca.cancelarPoliza(razonCancelacion);
+                }
+            }
+        }
+        catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(PivoteCancelacion.class.getName()).log(Level.SEVERE, null, ex);            
+        }
+    }
 }

@@ -288,11 +288,11 @@ public class ContratoHogar {
                 + "Cl.Telefono,"
                 + "Cl.Celular,"
                 + "Cl.FechaNacimiento,"
-                + "Cl.edad"
+                + "Cl.edad "
                 
                 + "FROM ContratoHogar AS CH "
                 + "INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar "
-                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente"
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente "
                 + "WHERE CH.idContratoHogar = "
                 + Integer.toString(this.idContratoHogar);
         
@@ -352,7 +352,7 @@ public class ContratoHogar {
         ArrayList<ContratoHogar> lista = new ArrayList<ContratoHogar>();
         Connection con = (Connection) Conexion.obtenerConexion();
         String consulta = "SELECT CH.idContratoHogar, CH.Identificacion,CH.Descripcion "
-                + "FROM ContratoHogar AS CH"
+                + "FROM ContratoHogar AS CH "
                 + " INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar "
                 + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente "
                 + "WHERE CH.Activo = 1 AND Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
@@ -373,12 +373,33 @@ public class ContratoHogar {
         ls = lista.toArray(ls);
         return ls;
     }
-
-    public void renovadr() {
-        
-        
-    }
     
+    public static ContratoHogar[] polizasNoActivasPorCliente(Cliente unCliente) throws SQLException {
+        ArrayList<ContratoHogar> lista = new ArrayList<ContratoHogar>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CH.idContratoHogar, CH.Identificacion,CH.Descripcion "
+                + "FROM ContratoHogar AS CH "
+                + " INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente "
+                + "WHERE CH.Activo = 0 AND Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoHogar i = new ContratoHogar();          
+            i.setIdContratoHogar(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            i.setCliente(unCliente);            
+            lista.add(i);
+        }      
+        ContratoHogar [] ls = new ContratoHogar[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
+
     public void renovar() {
         
         //
@@ -395,7 +416,7 @@ public class ContratoHogar {
                     + "ValorMueble = ?,"
                     + "Vencimiento = ?,"
                     + "NumeroPagos = ?,"
-                    + "MontoPagoSeguro = ?"
+                    + "MontoPagoSeguro = ? "
                     + "WHERE idContratoHogar = "+Integer.toString(this.idContratoHogar);
             Connection con = (Connection) Conexion.obtenerConexion();
             Statement st = (Statement) con.createStatement();

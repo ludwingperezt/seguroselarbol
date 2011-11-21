@@ -11,12 +11,9 @@
 package ModuloSeguros;
 import Varios.VisualizadorReportes;
 import CapaNegocios.*;
-import ModuloClientes.Clientes;
 import ModuloClientes.SeleccionarCliente;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
@@ -43,36 +40,44 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         if (actualCliente!=null){
             try {
                 SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-                actualContrato = (ContratoAuto) sps.cargarSegurosAutoPorCliente(actualCliente);
-                actualContrato.completarDatos();
-                actualSeguro = SeguroAuto.consultarDatosSeguro(actualContrato.getIdSeguroAuto());
-                actual = Auto.obtenerDatosAuto(actualContrato.getIdAuto());
+                actualContrato = (ContratoAuto) sps.cargarSegurosAutoNoActivosPorCliente(actualCliente);
+                if (actualContrato!=null){
+                    actualContrato.completarDatos();
+                    actualSeguro = SeguroAuto.consultarDatosSeguro(actualContrato.getIdSeguroAuto());
+                    actual = Auto.obtenerDatosAuto(actualContrato.getIdAuto());
+
+                    jTextField2.setText(actualSeguro.getDescripcion());
+                    prima.setText(Double.toString(actualSeguro.getPrima()));
+
+                    jTextField1.setText(actualContrato.getDescripcion());
+                    jTextField5.setText(Double.toString(actualContrato.getMora()));
+                    jTextField6.setText(Double.toString(actualContrato.getValor()));
+                    jTextField8.setText(Integer.toString(actualContrato.getNumeroPagos()));
+                    jTextField9.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
+
+                    dpi.setText(actualCliente.getDPI());
+                    nit.setText(actualCliente.getNIT());
+                    nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
+                    tel.setText(actualCliente.getTelefono());
+                    celular.setText(actualCliente.getCelular());
+
+                    tipoVehiculo.setText(actual.getTipoVehiculo());
+                    marca.setText(actual.getMarca());
+                    modelo.setText(actual.getModelo());
+                    placas.setText(actual.getPlacas());
+
+                    identificacion.setText(actualContrato.getIdentificacion());
                 
-                jTextField2.setText(actualSeguro.getDescripcion());
-                prima.setText(Double.toString(actualSeguro.getPrima()));
-                
-                jTextField1.setText(actualContrato.getDescripcion());
-                jTextField5.setText(Double.toString(actualContrato.getMora()));
-                jTextField6.setText(Double.toString(actualContrato.getValor()));
-                jTextField8.setText(Integer.toString(actualContrato.getNumeroPagos()));
-                jTextField9.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
-                
-                dpi.setText(actualCliente.getDPI());
-                nit.setText(actualCliente.getNIT());
-                nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
-                tel.setText(actualCliente.getTelefono());
-                celular.setText(actualCliente.getCelular());
-                
-                tipoVehiculo.setText(actual.getTipoVehiculo());
-                marca.setText(actual.getMarca());
-                modelo.setText(actual.getModelo());
-                placas.setText(actual.getPlacas());
-                
-                this.setVisible(true);
+                    this.setVisible(true);
+                }
+                else{
+                    this.dispose();
+                }
                 
             } catch (SQLException ex) {
                 //Logger.getLogger(RenovarContratoAuto.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                this.dispose();
             }           
         }
         else{
@@ -153,6 +158,8 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         jLabel19 = new javax.swing.JLabel();
         prima = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
+        identificacion = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(RenovarContratoAuto.class);
@@ -420,6 +427,13 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         jLabel20.setText(resourceMap.getString("jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
 
+        identificacion.setEditable(false);
+        identificacion.setText(resourceMap.getString("identificacion.text")); // NOI18N
+        identificacion.setName("identificacion"); // NOI18N
+
+        jLabel21.setText(resourceMap.getString("jLabel21.text")); // NOI18N
+        jLabel21.setName("jLabel21"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -470,18 +484,19 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                                 .addGap(125, 125, 125)
                                 .addComponent(jButton3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton4))))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel20))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(prima, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
-                        .addGap(233, 233, 233)))
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(prima, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(identificacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -490,16 +505,21 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(2, 2, 2)
+                        .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(prima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel20))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(identificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel21))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -632,6 +652,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
     private datechooser.beans.DateChooserCombo dateChooserCombo4;
     private javax.swing.JTextField dpi;
+    private javax.swing.JTextField identificacion;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -647,6 +668,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

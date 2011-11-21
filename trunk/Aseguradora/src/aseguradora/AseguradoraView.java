@@ -482,12 +482,27 @@ public class AseguradoraView extends FrameView {
 
         jButton18.setText(resourceMap.getString("jButton18.text")); // NOI18N
         jButton18.setName("jButton18"); // NOI18N
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
 
         jButton19.setText(resourceMap.getString("jButton19.text")); // NOI18N
         jButton19.setName("jButton19"); // NOI18N
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
 
         jButton20.setText(resourceMap.getString("jButton20.text")); // NOI18N
         jButton20.setName("jButton20"); // NOI18N
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -608,12 +623,27 @@ public class AseguradoraView extends FrameView {
 
         jButton21.setText(resourceMap.getString("jButton21.text")); // NOI18N
         jButton21.setName("jButton21"); // NOI18N
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
 
         jButton22.setText(resourceMap.getString("jButton22.text")); // NOI18N
         jButton22.setName("jButton22"); // NOI18N
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
 
         jButton23.setText(resourceMap.getString("jButton23.text")); // NOI18N
         jButton23.setName("jButton23"); // NOI18N
+        jButton23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton23ActionPerformed(evt);
+            }
+        });
 
         jButton36.setText(resourceMap.getString("jButton36.text")); // NOI18N
         jButton36.setName("jButton36"); // NOI18N
@@ -1068,6 +1098,39 @@ public class AseguradoraView extends FrameView {
         JOptionPane.showMessageDialog(mainPanel, "Si desea desactivar las pólizas que vencen hoy, dirijase al panel 'Cancelar Pólizas' en esta ventana ", "Advertencia", JOptionPane.WARNING_MESSAGE);
         VisualizadorReportes.verSegurosAVencerProximosSieteDias();
     }//GEN-LAST:event_jButton37ActionPerformed
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+        RenovarContratoVida rcv = new RenovarContratoVida(null, true);
+        rcv.renovarPolizaSeguroVida();
+    }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+        RenovarContratoHogar rch = new RenovarContratoHogar(null, true);
+        rch.renovarPolizaSeguroHogar();
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        // TODO add your handling code here:
+        RenovarContratoAuto rca = new RenovarContratoAuto(null, true);
+        rca.renovarPolizaSeguroAuto();
+    }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // TODO add your handling code here:
+        PivoteCancelacion.cancelarSeguroVida();
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        // TODO add your handling code here:
+        PivoteCancelacion.cancelarSeguroHogar();
+    }//GEN-LAST:event_jButton22ActionPerformed
+
+    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+        // TODO add your handling code here:
+        PivoteCancelacion.cancelarSeguroAuto();
+    }//GEN-LAST:event_jButton23ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

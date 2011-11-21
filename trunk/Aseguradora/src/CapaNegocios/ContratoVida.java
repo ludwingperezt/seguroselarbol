@@ -267,11 +267,11 @@ public class ContratoVida {
                 + "Cl.Telefono,"
                 + "Cl.Celular,"
                 + "Cl.FechaNacimiento,"
-                + "Cl.edad"
+                + "Cl.edad "
                 
                 + "FROM ContratoVida AS CV "
                 + "INNER JOIN ClienteSeguro as CS on CS.ContratoVida_idContratoVida = CV.idContratoVida "
-                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente"
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente "
                 + "WHERE CV.idContratoVida = "
                 + Integer.toString(this.idContratoVida);
         
@@ -382,12 +382,41 @@ public class ContratoVida {
         ls = lista.toArray(ls);
         return ls;
     }
+     
+     public static ContratoVida[] polizasNoActivasPorCliente(Cliente unCliente) throws SQLException {
+        
+        ArrayList<ContratoVida> lista = new ArrayList<ContratoVida>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CV.idContratoVida, "
+                + "CV.Identificacion,"
+                + "CV.Descripcion "
+                + "FROM ContratoVida AS CV "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoVida_idContratoVida = CV.idContratoVida "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente WHERE "
+                + "CV.Activo = 0 AND Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoVida i = new ContratoVida();          
+            i.setIdContratoVida(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            i.setCliente(unCliente);            
+            lista.add(i);
+        }      
+        ContratoVida [] ls = new ContratoVida[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
 
     public void renovar() {
         //Descripcion, 
         //Profesion, FechaContrato, FechaPago, Mora, Vencimiento, NumeroPagos, Activo, MontoPagoSeguro
                 try{
-            String consulta = "UPDATE ContratoHogar "
+            String consulta = "UPDATE ContratoVida "
                     + "SET Activo = 1, "
                     + "FechaContrato = ?,"
                     + "Descripcion = ?,"
@@ -396,7 +425,7 @@ public class ContratoVida {
                     + "Profesion = ?,"
                     + "Vencimiento = ?,"
                     + "NumeroPagos = ?,"
-                    + "MontoPagoSeguro = ?"
+                    + "MontoPagoSeguro = ? "
                     + "WHERE idContratoVida = "+Integer.toString(this.idContratoVida);
             Connection con = (Connection) Conexion.obtenerConexion();
             Statement st = (Statement) con.createStatement();
