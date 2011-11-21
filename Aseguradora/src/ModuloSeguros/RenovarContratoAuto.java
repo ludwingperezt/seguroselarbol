@@ -43,10 +43,33 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         if (actualCliente!=null){
             try {
                 SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-                actualContrato = (ContratoAuto) sps.cargarSegurosAutoActivosPorCliente(actualCliente);
+                actualContrato = (ContratoAuto) sps.cargarSegurosAutoPorCliente(actualCliente);
                 actualContrato.completarDatos();
                 actualSeguro = SeguroAuto.consultarDatosSeguro(actualContrato.getIdSeguroAuto());
                 actual = Auto.obtenerDatosAuto(actualContrato.getIdAuto());
+                
+                jTextField2.setText(actualSeguro.getDescripcion());
+                prima.setText(Double.toString(actualSeguro.getPrima()));
+                
+                jTextField1.setText(actualContrato.getDescripcion());
+                jTextField5.setText(Double.toString(actualContrato.getMora()));
+                jTextField6.setText(Double.toString(actualContrato.getValor()));
+                jTextField8.setText(Integer.toString(actualContrato.getNumeroPagos()));
+                jTextField9.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
+                
+                dpi.setText(actualCliente.getDPI());
+                nit.setText(actualCliente.getNIT());
+                nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
+                tel.setText(actualCliente.getTelefono());
+                celular.setText(actualCliente.getCelular());
+                
+                tipoVehiculo.setText(actual.getTipoVehiculo());
+                marca.setText(actual.getMarca());
+                modelo.setText(actual.getModelo());
+                placas.setText(actual.getPlacas());
+                
+                this.setVisible(true);
+                
             } catch (SQLException ex) {
                 //Logger.getLogger(RenovarContratoAuto.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -128,6 +151,8 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        prima = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(RenovarContratoAuto.class);
@@ -388,6 +413,13 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        prima.setEditable(false);
+        prima.setText(resourceMap.getString("prima.text")); // NOI18N
+        prima.setName("prima"); // NOI18N
+
+        jLabel20.setText(resourceMap.getString("jLabel20.text")); // NOI18N
+        jLabel20.setName("jLabel20"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -395,7 +427,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -416,40 +448,44 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jTextField2))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(8, 8, 8)
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel10))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateChooserCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel10))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateChooserCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(125, 125, 125)
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel20))
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)))
-                .addGap(96, 96, 96)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(prima, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                        .addGap(233, 233, 233)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addGap(259, 259, 259))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,6 +496,10 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(prima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -492,11 +532,11 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jButton4)))
@@ -504,7 +544,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
+                .addContainerGap())
         );
 
         pack();
@@ -516,30 +556,24 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
+       
             // TODO add your handling code here:
             
-                ContratoAuto ca = new ContratoAuto();
-                ca.setDescripcion(jTextField1.getText());
-                ca.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
-                ca.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
-                ca.setAño(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
-                ca.setMora(Double.parseDouble(jTextField5.getText()));
-                ca.setValor(Double.parseDouble(jTextField6.getText()));
-                ca.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo4.getText())));
-                ca.setNumeroPagos(Integer.parseInt(jTextField8.getText()));
-                ca.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
-                ca.insertarContraroAuto(actualSeguro,actualCliente,actual,ca);
-                ca.renovar();
+                actualContrato.setDescripcion(jTextField1.getText());
+                actualContrato.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
+                actualContrato.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
+                actualContrato.setAño(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
+                actualContrato.setMora(Double.parseDouble(jTextField5.getText()));
+                actualContrato.setValor(Double.parseDouble(jTextField6.getText()));
+                actualContrato.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo4.getText())));
+                actualContrato.setNumeroPagos(Integer.parseInt(jTextField8.getText()));
+                actualContrato.setMontoPagoSeguro(Double.parseDouble(jTextField9.getText()));
+                actualContrato.renovar();
                 //hay que agregar un informe para imprimir con los datos de la nueva poliza!!!!!!!!!
                 //JOptionPane.showMessageDialog(this.rootPane, "La operación finalizó con éxito. Esta ventana se cerrará", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
-                VisualizadorReportes.mostrarReportePolizaSeguroAuto(ca.getIdContratoAuto());
+                VisualizadorReportes.mostrarReportePolizaSeguroAuto(actualContrato.getIdContratoAuto());
                 this.dispose();
             
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(RenovarContratoAuto.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -612,6 +646,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -632,6 +667,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
     private javax.swing.JTextField nit;
     private javax.swing.JTextField nombre;
     private javax.swing.JTextField placas;
+    private javax.swing.JTextField prima;
     private javax.swing.JTextField tel;
     private javax.swing.JTextField tipoVehiculo;
     // End of variables declaration//GEN-END:variables

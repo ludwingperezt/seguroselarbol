@@ -412,7 +412,7 @@ public class ContratoAuto {
 
             consulta = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroAuto, Agente_idAgente, Cliente_idCliente) "
                     + "VALUES ("
-                    + "'Póliza de seguro renovada',"
+                    + "'Póliza de seguro de auto renovada',"
                     + "CURDATE(),"
                     + "CURTIME(),"
                     + Integer.toString(this.idContratoAuto)+","
@@ -427,7 +427,33 @@ public class ContratoAuto {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+    public static ContratoAuto[] polizasActivasPorCliente(Cliente unCliente) throws SQLException {
+        ArrayList<ContratoAuto> lista = new ArrayList<ContratoAuto>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CA.idContratoAuto, "
+                + "CA.Identificacion,"
+                + "CA.Descripcion "
+                + "FROM ContratoAuto AS CA "
+                + "INNER JOIN ClienteSeguro as CS on CS.ContratoAuto_idContratoAuto = CA.idContratoAuto"
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente WHERE "
+                + "CA.Activo = 1 AND Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoAuto i = new ContratoAuto();          
+            i.setIdContratoAuto(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            i.setCliente(unCliente);            
+            lista.add(i);
+        }      
+        ContratoAuto [] ls = new ContratoAuto[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
     
 }
 
