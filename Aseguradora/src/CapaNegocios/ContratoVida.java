@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 public class ContratoVida {
 
     
@@ -380,6 +381,55 @@ public class ContratoVida {
         ContratoVida [] ls = new ContratoVida[lista.size()];
         ls = lista.toArray(ls);
         return ls;
+    }
+
+    public void renovar() {
+        //Descripcion, 
+        //Profesion, FechaContrato, FechaPago, Mora, Vencimiento, NumeroPagos, Activo, MontoPagoSeguro
+                try{
+            String consulta = "UPDATE ContratoHogar "
+                    + "SET Activo = 1, "
+                    + "FechaContrato = ?,"
+                    + "Descripcion = ?,"
+                    + "FechaPago = ?,"
+                    + "Mora = ?,"
+                    + "Profesion = ?,"
+                    + "Vencimiento = ?,"
+                    + "NumeroPagos = ?,"
+                    + "MontoPagoSeguro = ?"
+                    + "WHERE idContratoVida = "+Integer.toString(this.idContratoVida);
+            Connection con = (Connection) Conexion.obtenerConexion();
+            Statement st = (Statement) con.createStatement();
+            PreparedStatement ps = (PreparedStatement) con.prepareStatement(consulta);
+            //st.executeUpdate(consulta);
+            ///idHistorialSeguro, Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente
+            ps.setDate(1, this.fechaContrato);
+            ps.setString(2, this.descripcion);
+            ps.setDate(3, this.fechaPago);
+            ps.setDouble(4, mora);
+            ps.setString(5, profesion);
+            ps.setDate(6, vencimiento);
+            ps.setInt(7, numeroPagos);
+            ps.setDouble(8, montoPagoSeguro);
+
+            boolean execute = ps.execute();
+
+            consulta = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroVida, Agente_idAgente, Cliente_idCliente) "
+                    + "VALUES ("
+                    + "'Póliza de seguro de hogar renovada',"
+                    + "CURDATE(),"
+                    + "CURTIME(),"
+                    + Integer.toString(this.idContratoVida)+","
+                    + Integer.toString(AseguradoraView.idEmpleado)+","
+                    + Integer.toString(this.cliente.getIdCliente())
+                    + ")";
+            st.execute(consulta);
+            st.close();
+            ps.close();
+        }
+        catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
 

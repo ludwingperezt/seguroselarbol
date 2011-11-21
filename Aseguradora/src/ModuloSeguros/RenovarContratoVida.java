@@ -4,15 +4,16 @@
  */
 
 /*
- * NuevaPolizaHogar.java
+ * NuevaPolizaVida.java
  *
- * Created on 28/10/2011, 09:16:31 PM
+ * Created on 27/10/2011, 12:08:12 AM
  */
 package ModuloSeguros;
 
 import Varios.VisualizadorReportes;
 import CapaNegocios.*;
-import ModuloClientes.*;
+import ModuloClientes.Clientes;
+import ModuloClientes.SeleccionarCliente;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,42 +27,43 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author HP G42
  */
-public class RenovarContratoHogar extends javax.swing.JDialog {
-        
-    private SeguroHogar actualSeguro;
-    private Cliente actualCliente = null;
-    private ContratoHogar actualContrato = null;
-    private Beneficiario[] listaBeneficiariosExistentes = null;
-
-    /** Creates new form NuevaPolizaHogar */
-    public RenovarContratoHogar(java.awt.Frame parent, boolean modal) {
+public class RenovarContratoVida extends javax.swing.JDialog {
+    
+    private Cliente actualCliente;
+    private SeguroVida actualSeguro;
+    private ContratoVida actualContrato;
+    private Beneficiario [] listaBeneficiariosExistentes = null;
+    
+    /** Creates new form NuevaPolizaVida */
+    public RenovarContratoVida(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        //jTextField3.setText(String.valueOf(new java.util.Date()));          
     }
     
-    public void renovarPolizaSeguroHogar(){
+    public void renovarPolizaSeguroVida(){
         SeleccionarCliente sc = new SeleccionarCliente(null, true);
         actualCliente = sc.seleccionarCliente();
         
         if (actualCliente!=null){
             try{
                 SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-                actualContrato = (ContratoHogar) sps.cargarSegurosHogarPorCliente(actualCliente);
+                actualContrato = (ContratoVida) sps.cargarSegurosVidaPorCliente(actualCliente);
                 actualContrato.completarDatos();
-                actualSeguro = SeguroHogar.consultarDatosSeguro(actualContrato.getIdSeguroHogar());
-                listaBeneficiariosExistentes = Beneficiario.listaBeneficiariosPorSeguroHogar(actualContrato.getIdContratoHogar());
+                actualSeguro = SeguroVida.consultarDatosSeguro(actualContrato.getIdSeguroVida());
+                listaBeneficiariosExistentes = Beneficiario.listaBeneficiariosPorSeguroVida(actualContrato.getIdContratoVida());
                 
                 tipoSeguro.setText(actualSeguro.getDescripcion());
                 prima.setText(Double.toString(actualSeguro.getPrima()));
+                identificacion.setText(actualContrato.getIdentificacion());
                 
                 mora.setText(Double.toString(actualContrato.getMora()));
                 descripcion.setText(actualContrato.getDescripcion());
                 
-                valorInmueble.setText(Double.toString(actualContrato.getValorInmueble()));
-                valorMuebles.setText(Double.toString(actualContrato.getValorMuebles()));
+                profesion.setText(actualContrato.getProfesion());
+                
                 pagos.setText(Integer.toString(actualContrato.getNumeroPagos()));
-                montopagoseguro.setText(Double.toString(actualContrato.getMontoPagoseguro()));
+                montopagoseguro.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
                 
                 dpi.setText(actualCliente.getDPI());
                 nit.setText(actualCliente.getNIT());
@@ -83,8 +85,7 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
             this.dispose();
         }
     }
-   
-        
+    
     public void actualizarBeneficiariosExistentes(){       
         jTable1.removeAll();
         //nuevos            
@@ -104,11 +105,10 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
 
             }
         }
-        
         jTable1.setModel(modeloExistentes);        
     }
-
-    public String formatearFecha(String antigua){
+    
+     public String formatearFecha(String antigua){
         String retorno = "20";
         String[]datos = antigua.split("/");
         
@@ -127,6 +127,7 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         
         return retorno;
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -136,7 +137,6 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -145,18 +145,23 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
-        dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
-        mora = new javax.swing.JTextField();
         descripcion = new javax.swing.JTextField();
-        dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
-        valorInmueble = new javax.swing.JTextField();
-        valorMuebles = new javax.swing.JTextField();
+        profesion = new javax.swing.JTextField();
+        mora = new javax.swing.JTextField();
         pagos = new javax.swing.JTextField();
         montopagoseguro = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
+        dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
+        dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        tipoSeguro = new javax.swing.JTextField();
+        prima = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         dpi = new javax.swing.JTextField();
         nit = new javax.swing.JTextField();
@@ -168,16 +173,11 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        tipoSeguro = new javax.swing.JTextField();
-        prima = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        identificacion = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(RenovarContratoHogar.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(RenovarContratoVida.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
@@ -205,8 +205,21 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
-        jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
-        jLabel10.setName("jLabel10"); // NOI18N
+        descripcion.setText(resourceMap.getString("descripcion.text")); // NOI18N
+        descripcion.setName("descripcion"); // NOI18N
+        descripcion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                descripcionFocusGained(evt);
+            }
+        });
+
+        profesion.setText(resourceMap.getString("profesion.text")); // NOI18N
+        profesion.setName("profesion"); // NOI18N
+        profesion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                profesionFocusGained(evt);
+            }
+        });
 
         mora.setText(resourceMap.getString("mora.text")); // NOI18N
         mora.setName("mora"); // NOI18N
@@ -216,38 +229,16 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
             }
         });
 
-        descripcion.setText(resourceMap.getString("descripcion.text")); // NOI18N
-        descripcion.setName("descripcion"); // NOI18N
-        descripcion.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                descripcionFocusGained(evt);
-            }
-        });
-
-        valorInmueble.setText(resourceMap.getString("valorInmueble.text")); // NOI18N
-        valorInmueble.setName("valorInmueble"); // NOI18N
-        valorInmueble.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                valorInmuebleFocusGained(evt);
-            }
-        });
-
-        valorMuebles.setText(resourceMap.getString("valorMuebles.text")); // NOI18N
-        valorMuebles.setName("valorMuebles"); // NOI18N
-
         pagos.setText(resourceMap.getString("pagos.text")); // NOI18N
         pagos.setName("pagos"); // NOI18N
+        pagos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pagosFocusGained(evt);
+            }
+        });
 
         montopagoseguro.setText(resourceMap.getString("montopagoseguro.text")); // NOI18N
         montopagoseguro.setName("montopagoseguro"); // NOI18N
-
-        jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setName("jButton3"); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setName("jButton4"); // NOI18N
@@ -256,6 +247,44 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        jButton5.setText(resourceMap.getString("jButton5.text")); // NOI18N
+        jButton5.setName("jButton5"); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setName("jTable1"); // NOI18N
+        jScrollPane2.setViewportView(jTable1);
+
+        tipoSeguro.setEditable(false);
+        tipoSeguro.setText(resourceMap.getString("tipoSeguro.text")); // NOI18N
+        tipoSeguro.setName("tipoSeguro"); // NOI18N
+
+        prima.setEditable(false);
+        prima.setText(resourceMap.getString("prima.text")); // NOI18N
+        prima.setName("prima"); // NOI18N
+
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
+        jLabel10.setName("jLabel10"); // NOI18N
+
+        jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
+        jLabel11.setName("jLabel11"); // NOI18N
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
         jPanel3.setName("jPanel3"); // NOI18N
@@ -344,32 +373,9 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tipoSeguro.setEditable(false);
-        tipoSeguro.setText(resourceMap.getString("tipoSeguro.text")); // NOI18N
-        tipoSeguro.setName("tipoSeguro"); // NOI18N
-
-        prima.setEditable(false);
-        prima.setText(resourceMap.getString("prima.text")); // NOI18N
-        prima.setName("prima"); // NOI18N
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
-        jLabel11.setName("jLabel11"); // NOI18N
-
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jTable1.setName("jTable1"); // NOI18N
-        jScrollPane2.setViewportView(jTable1);
+        identificacion.setEditable(false);
+        identificacion.setText(resourceMap.getString("identificacion.text")); // NOI18N
+        identificacion.setName("identificacion"); // NOI18N
 
         jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
         jLabel12.setName("jLabel12"); // NOI18N
@@ -383,59 +389,64 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel10))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(tipoSeguro, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(prima, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(93, 93, 93))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel9))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(pagos, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(valorMuebles, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(valorInmueble, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel11)
-                                        .addComponent(jLabel2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(13, 13, 13)
-                                        .addComponent(jLabel1)))
-                                .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(descripcion)
-                                    .addComponent(tipoSeguro)
-                                    .addComponent(prima, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
+                                    .addComponent(montopagoseguro)
+                                    .addComponent(pagos, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(162, 162, 162))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(montopagoseguro, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(79, 79, 79)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(87, 87, 87)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel12))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(profesion, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(736, 736, 736)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(identificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,91 +457,88 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tipoSeguro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
+                        .addGap(2, 2, 2)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(prima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(identificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel12)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
                             .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(profesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel7))
                             .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(valorInmueble, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(valorMuebles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
                             .addComponent(pagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(montopagoseguro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel9)
+                            .addComponent(montopagoseguro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton4)
-                            .addComponent(jButton3))))
-                .addContainerGap())
+                            .addComponent(jButton5)
+                            .addComponent(jButton4))
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
-            // TODO add your handling code here:
-                     
-                    
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       
+                    actualContrato.setDescripcion(descripcion.getText());
+                    actualContrato.setProfesion(profesion.getText());
                     actualContrato.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
                     actualContrato.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
                     actualContrato.setMora(Double.parseDouble(mora.getText()));
-                    actualContrato.setDescripcion(descripcion.getText());
                     actualContrato.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
-                    actualContrato.setValorInmueble(Double.parseDouble(valorInmueble.getText()));
-                    actualContrato.setValorMuebles(Double.parseDouble(valorMuebles.getText()));
                     actualContrato.setNumeroPagos(Integer.parseInt(pagos.getText()));
-                    actualContrato.setMontoPagoseguro(Double.parseDouble(montopagoseguro.getText()));
-                    actualContrato.renovar();
-                    //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    actualContrato.setMontoPagoSeguro(Double.parseDouble(montopagoseguro.getText()));
                     
-                    VisualizadorReportes.mostrarReportePolizaSeguroHogar(actualContrato.getIdContratoHogar());
+                    actualContrato.renovar();
+                    
+                    //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana ", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    int idContratoVidaInsertador = actualContrato.getIdContratoVida();
+                    VisualizadorReportes.mostrarReportePolizaSeguroVida(idContratoVidaInsertador);
                     this.dispose();
-                
-            
+               
         
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void descripcionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_descripcionFocusGained
@@ -539,18 +547,24 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         descripcion.setSelectionEnd(descripcion.getText().length());
     }//GEN-LAST:event_descripcionFocusGained
 
+    private void profesionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_profesionFocusGained
+        // TODO add your handling code here:
+        profesion.setSelectionStart(0);
+        profesion.setSelectionEnd(profesion.getText().length());
+    }//GEN-LAST:event_profesionFocusGained
+
     private void moraFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_moraFocusGained
         // TODO add your handling code here:
         mora.setSelectionStart(0);
         mora.setSelectionEnd(mora.getText().length());
     }//GEN-LAST:event_moraFocusGained
 
-    private void valorInmuebleFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_valorInmuebleFocusGained
+    private void pagosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pagosFocusGained
         // TODO add your handling code here:
-        valorInmueble.setSelectionStart(0);
-        valorInmueble.setSelectionEnd(valorInmueble.getText().length());
-    }//GEN-LAST:event_valorInmuebleFocusGained
-
+        pagos.setSelectionStart(0);
+        pagos.setSelectionEnd(pagos.getText().length());
+    }//GEN-LAST:event_pagosFocusGained
+        
     /**
      * @param args the command line arguments
      */
@@ -558,7 +572,7 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                RenovarContratoHogar dialog = new RenovarContratoHogar(new javax.swing.JFrame(), true);
+                RenovarContratoVida dialog = new RenovarContratoVida(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -574,11 +588,11 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
-    private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private javax.swing.JTextField descripcion;
     private javax.swing.JTextField dpi;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTextField identificacion;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -605,9 +619,8 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
     private javax.swing.JTextField nombre;
     private javax.swing.JTextField pagos;
     private javax.swing.JTextField prima;
+    private javax.swing.JTextField profesion;
     private javax.swing.JTextField tel;
     private javax.swing.JTextField tipoSeguro;
-    private javax.swing.JTextField valorInmueble;
-    private javax.swing.JTextField valorMuebles;
     // End of variables declaration//GEN-END:variables
 }

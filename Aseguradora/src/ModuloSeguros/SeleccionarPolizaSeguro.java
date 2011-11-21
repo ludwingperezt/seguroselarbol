@@ -112,7 +112,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     public Object cargarSegurosVidaPorCliente(Cliente unCliente){
         try {
             this.tipoPolizas = 1;
-            listaPolizasVida = ContratoVida.polizasActivasPorCliente(unCliente);
+            listaPolizasVida = ContratoVida.polizasPorCliente(unCliente);
             llenarTablaPolizasVida();
             this.setVisible(true);
             return this.seleccionado;
@@ -138,7 +138,7 @@ public class SeleccionarPolizaSeguro extends javax.swing.JDialog {
     public Object cargarSegurosAutoPorCliente(Cliente unCliente){
         try {
             this.tipoPolizas = 2;
-            listaPolizasAuto = ContratoAuto.polizasActivasPorCliente(unCliente);
+            listaPolizasAuto = ContratoAuto.polizasPorCliente(unCliente);
             llenarTablaPolizasAuto();
             this.setVisible(true);
             return this.seleccionado;

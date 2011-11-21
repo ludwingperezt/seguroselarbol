@@ -36,7 +36,7 @@ public class RenovarContratoAuto extends javax.swing.JDialog {
         
     }
 
-   public void RenovarContrato(){
+   public void renovarPolizaSeguroAuto(){
         SeleccionarCliente sc = new SeleccionarCliente(null, true);
         actualCliente = sc.seleccionarCliente();
         
