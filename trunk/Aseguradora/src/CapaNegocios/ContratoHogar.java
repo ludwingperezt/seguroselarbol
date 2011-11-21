@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 public class ContratoHogar {
 
     
@@ -347,6 +348,88 @@ public class ContratoHogar {
         st.close();
     }
 
+    public static ContratoHogar[] polizasActivasPorCliente(Cliente unCliente) throws SQLException {
+        ArrayList<ContratoHogar> lista = new ArrayList<ContratoHogar>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        String consulta = "SELECT CH.idContratoHogar, CH.Identificacion,CH.Descripcion "
+                + "FROM ContratoHogar AS CH"
+                + " INNER JOIN ClienteSeguro as CS on CS.ContratoHogar_idContratoHogar = CH.idContratoHogar "
+                + "INNER JOIN Cliente AS Cl on CS.Cliente_idAgente = Cl.idCliente "
+                + "WHERE CH.Activo = 1 AND Cl.idCliente = "+Integer.toString(unCliente.getIdCliente());
+        
+        Statement query = (Statement) con.createStatement();
+        
+        ResultSet rs = query.executeQuery(consulta);
+        
+        while (rs.next()){
+            ContratoHogar i = new ContratoHogar();          
+            i.setIdContratoHogar(rs.getInt(1));
+            i.setIdentificacion(rs.getString(2));
+            i.setDescripcion(rs.getString(3));
+            i.setCliente(unCliente);            
+            lista.add(i);
+        }      
+        ContratoHogar [] ls = new ContratoHogar[lista.size()];
+        ls = lista.toArray(ls);
+        return ls;
+    }
+
+    public void renovadr() {
+        
+        
+    }
     
+    public void renovar() {
+        
+        //
+        //FechaContrato, FechaPago, Mora, Descripcion, Vencimiento, 
+        //ValorInmueble, ValorMueble, NumeroPagos,MontoPagoSeguro
+        try{
+            String consulta = "UPDATE ContratoHogar "
+                    + "SET Activo = 1, "
+                    + "FechaContrato = ?,"
+                    + "Descripcion = ?,"
+                    + "FechaPago = ?,"
+                    + "Mora = ?,"
+                    + "ValorInmueble = ?,"
+                    + "ValorMueble = ?,"
+                    + "Vencimiento = ?,"
+                    + "NumeroPagos = ?,"
+                    + "MontoPagoSeguro = ?"
+                    + "WHERE idContratoHogar = "+Integer.toString(this.idContratoHogar);
+            Connection con = (Connection) Conexion.obtenerConexion();
+            Statement st = (Statement) con.createStatement();
+            PreparedStatement ps = (PreparedStatement) con.prepareStatement(consulta);
+            //st.executeUpdate(consulta);
+            ///idHistorialSeguro, Anotacion, Fecha, Hora, idSeguroVida, idSeguroHogar, idSeguroAuto, Agente_idAgente, Cliente_idCliente
+            ps.setDate(1, this.fechaContrato);
+            ps.setString(2, this.Descripcion);
+            ps.setDate(3, this.fechaPago);
+            ps.setDouble(4, Mora);
+            ps.setDouble(5, valorInmueble);
+            ps.setDouble(6, valorMuebles);
+            ps.setDate(7, vencimiento);
+            ps.setInt(8, numeroPagos);
+            ps.setDouble(9, montoPagoseguro);
+
+            boolean execute = ps.execute();
+
+            consulta = "INSERT INTO HistorialSeguro (Anotacion, Fecha, Hora, idSeguroHogar, Agente_idAgente, Cliente_idCliente) "
+                    + "VALUES ("
+                    + "'Póliza de seguro de hogar renovada',"
+                    + "CURDATE(),"
+                    + "CURTIME(),"
+                    + Integer.toString(this.idContratoHogar)+","
+                    + Integer.toString(AseguradoraView.idEmpleado)+","
+                    + Integer.toString(this.cliente.getIdCliente())
+                    + ")";
+            st.execute(consulta);
+            st.close();
+            ps.close();
+        }
+        catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
 

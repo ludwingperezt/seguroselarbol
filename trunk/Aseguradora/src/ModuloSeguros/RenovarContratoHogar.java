@@ -27,51 +27,63 @@ import javax.swing.table.DefaultTableModel;
  * @author HP G42
  */
 public class RenovarContratoHogar extends javax.swing.JDialog {
-    
-    private SeguroHogar [] listaSeguros ;
-    
-    private SeguroHogar seguroSeleccionado;
-    private Cliente clienteSeleccionado = null;
-    private ArrayList<Beneficiario> listaBeneficiariosNuevos = new ArrayList<Beneficiario>();
-    private ArrayList<Beneficiario> listaBeneficiariosExistentes = new ArrayList<Beneficiario>();
+        
+    private SeguroHogar actualSeguro;
+    private Cliente actualCliente = null;
+    private ContratoHogar actualContrato = null;
+    private Beneficiario[] listaBeneficiariosExistentes = null;
 
     /** Creates new form NuevaPolizaHogar */
     public RenovarContratoHogar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        try {
-            
-            jComboBox2.removeAllItems();
-            listaSeguros = SeguroHogar.consultarListaSegurosHogar();
-            for (SeguroHogar i:listaSeguros){
-                jComboBox2.addItem(i.getDescripcion());
-            }                        
-        } catch (SQLException ex) {
-            Logger.getLogger(RenovarContratoHogar.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
     }
     
-    public void actualizarBeneficiariosNuevos(){       
-        jTable2.removeAll();
-              
-        DefaultTableModel modeloNuevos = new DefaultTableModel();
-        modeloNuevos.addColumn("DPI");
-        modeloNuevos.addColumn("Nombre");
-        modeloNuevos.addColumn("Apellido");
-
-        for (Beneficiario i: listaBeneficiariosNuevos){
-            Object []fila = new Object[3];
-
-            fila[0]=i.getDPI();
-            fila[1]=i.getNombres();
-            fila[2]=i.getApellidos();
-            modeloNuevos.addRow(fila);
-
+    public void renovarContratoHogar(){
+        SeleccionarCliente sc = new SeleccionarCliente(null, true);
+        actualCliente = sc.seleccionarCliente();
+        
+        if (actualCliente!=null){
+            try{
+                SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
+                actualContrato = (ContratoHogar) sps.cargarSegurosHogarPorCliente(actualCliente);
+                actualContrato.completarDatos();
+                actualSeguro = SeguroHogar.consultarDatosSeguro(actualContrato.getIdSeguroHogar());
+                listaBeneficiariosExistentes = Beneficiario.listaBeneficiariosPorSeguroHogar(actualContrato.getIdContratoHogar());
+                
+                tipoSeguro.setText(actualSeguro.getDescripcion());
+                prima.setText(Double.toString(actualSeguro.getPrima()));
+                
+                mora.setText(Double.toString(actualContrato.getMora()));
+                descripcion.setText(actualContrato.getDescripcion());
+                
+                valorInmueble.setText(Double.toString(actualContrato.getValorInmueble()));
+                valorMuebles.setText(Double.toString(actualContrato.getValorMuebles()));
+                pagos.setText(Integer.toString(actualContrato.getNumeroPagos()));
+                montopagoseguro.setText(Double.toString(actualContrato.getMontoPagoseguro()));
+                
+                dpi.setText(actualCliente.getDPI());
+                nit.setText(actualCliente.getNIT());
+                nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
+                tel.setText(actualCliente.getTelefono());
+                celular.setText(actualCliente.getCelular());
+                
+                actualizarBeneficiariosExistentes();
+                this.setVisible(true);
+                
+            }
+            catch (SQLException ex){
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
-        jTable2.setModel(modeloNuevos);
-              
+        else{
+            JOptionPane.showMessageDialog(null, "El cliente seleccionado no posee seguros de auto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            this.dispose();
+        }
     }
+   
         
     public void actualizarBeneficiariosExistentes(){       
         jTable1.removeAll();
@@ -81,15 +93,18 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         modeloExistentes.addColumn("Nombre");
         modeloExistentes.addColumn("Apellido");
 
-        for (Beneficiario i: listaBeneficiariosExistentes){
-            Object []fila = new Object[3];
+        if (listaBeneficiariosExistentes!=null){
+            for (Beneficiario i: listaBeneficiariosExistentes){
+                Object []fila = new Object[3];
 
-            fila[0]=i.getDPI();
-            fila[1]=i.getNombres();
-            fila[2]=i.getApellidos();
-            modeloExistentes.addRow(fila);
+                fila[0]=i.getDPI();
+                fila[1]=i.getNombres();
+                fila[2]=i.getApellidos();
+                modeloExistentes.addRow(fila);
 
+            }
         }
+        
         jTable1.setModel(modeloExistentes);        
     }
 
@@ -122,7 +137,6 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
     private void initComponents() {
 
         dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -132,40 +146,40 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        mora = new javax.swing.JTextField();
+        descripcion = new javax.swing.JTextField();
         dateChooserCombo3 = new datechooser.beans.DateChooserCombo();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        valorInmueble = new javax.swing.JTextField();
+        valorMuebles = new javax.swing.JTextField();
+        pagos = new javax.swing.JTextField();
+        montopagoseguro = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        dpi = new javax.swing.JTextField();
+        nit = new javax.swing.JTextField();
+        nombre = new javax.swing.JTextField();
+        tel = new javax.swing.JTextField();
+        celular = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        tipoSeguro = new javax.swing.JTextField();
+        prima = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton7 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(RenovarContratoHogar.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
@@ -194,40 +208,38 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
         jLabel10.setName("jLabel10"); // NOI18N
 
-        jComboBox2.setName("jComboBox2"); // NOI18N
-
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        mora.setText(resourceMap.getString("mora.text")); // NOI18N
+        mora.setName("mora"); // NOI18N
+        mora.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField1FocusGained(evt);
+                moraFocusGained(evt);
             }
         });
 
-        jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
-        jTextField2.setName("jTextField2"); // NOI18N
-        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+        descripcion.setText(resourceMap.getString("descripcion.text")); // NOI18N
+        descripcion.setName("descripcion"); // NOI18N
+        descripcion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField2FocusGained(evt);
+                descripcionFocusGained(evt);
             }
         });
 
-        jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
-        jTextField3.setName("jTextField3"); // NOI18N
-        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+        valorInmueble.setText(resourceMap.getString("valorInmueble.text")); // NOI18N
+        valorInmueble.setName("valorInmueble"); // NOI18N
+        valorInmueble.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField3FocusGained(evt);
+                valorInmuebleFocusGained(evt);
             }
         });
 
-        jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
-        jTextField4.setName("jTextField4"); // NOI18N
+        valorMuebles.setText(resourceMap.getString("valorMuebles.text")); // NOI18N
+        valorMuebles.setName("valorMuebles"); // NOI18N
 
-        jTextField5.setText(resourceMap.getString("jTextField5.text")); // NOI18N
-        jTextField5.setName("jTextField5"); // NOI18N
+        pagos.setText(resourceMap.getString("pagos.text")); // NOI18N
+        pagos.setName("pagos"); // NOI18N
 
-        jTextField6.setText(resourceMap.getString("jTextField6.text")); // NOI18N
-        jTextField6.setName("jTextField6"); // NOI18N
+        montopagoseguro.setText(resourceMap.getString("montopagoseguro.text")); // NOI18N
+        montopagoseguro.setName("montopagoseguro"); // NOI18N
 
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
@@ -245,95 +257,106 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
             }
         });
 
-        jLabel13.setText(resourceMap.getString("jLabel13.text")); // NOI18N
-        jLabel13.setName("jLabel13"); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
+        jPanel3.setName("jPanel3"); // NOI18N
 
-        jButton5.setText(resourceMap.getString("jButton5.text")); // NOI18N
-        jButton5.setName("jButton5"); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
+        dpi.setEditable(false);
+        dpi.setName("dpi"); // NOI18N
 
-        jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
-        jButton6.setName("jButton6"); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
+        nit.setEditable(false);
+        nit.setName("nit"); // NOI18N
 
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+        nombre.setEditable(false);
+        nombre.setName("nombre"); // NOI18N
 
-        jPanel2.setName("jPanel2"); // NOI18N
+        tel.setEditable(false);
+        tel.setName("tel"); // NOI18N
 
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        celular.setEditable(false);
+        celular.setName("celular"); // NOI18N
 
-        jButton8.setText(resourceMap.getString("jButton8.text")); // NOI18N
-        jButton8.setName("jButton8"); // NOI18N
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
+        jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
+        jLabel15.setName("jLabel15"); // NOI18N
 
-        jScrollPane3.setName("jScrollPane3"); // NOI18N
+        jLabel16.setText(resourceMap.getString("jLabel16.text")); // NOI18N
+        jLabel16.setName("jLabel16"); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jLabel17.setText(resourceMap.getString("jLabel17.text")); // NOI18N
+        jLabel17.setName("jLabel17"); // NOI18N
 
-            },
-            new String [] {
+        jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
+        jLabel18.setName("jLabel18"); // NOI18N
 
-            }
-        ));
-        jTable2.setName("jTable2"); // NOI18N
-        jScrollPane3.setViewportView(jTable2);
+        jLabel19.setText(resourceMap.getString("jLabel19.text")); // NOI18N
+        jLabel19.setName("jLabel19"); // NOI18N
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton8)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17))
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(nit, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(dpi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel19))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(celular, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton8))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(dpi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(nit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(tel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(celular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+        tipoSeguro.setEditable(false);
+        tipoSeguro.setText(resourceMap.getString("tipoSeguro.text")); // NOI18N
+        tipoSeguro.setName("tipoSeguro"); // NOI18N
 
-        jPanel1.setName("jPanel1"); // NOI18N
+        prima.setEditable(false);
+        prima.setText(resourceMap.getString("prima.text")); // NOI18N
+        prima.setName("prima"); // NOI18N
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
+        jLabel11.setName("jLabel11"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -348,41 +371,8 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         jTable1.setName("jTable1"); // NOI18N
         jScrollPane2.setViewportView(jTable1);
 
-        jButton7.setText(resourceMap.getString("jButton7.text")); // NOI18N
-        jButton7.setName("jButton7"); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
+        jLabel12.setName("jLabel12"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -403,41 +393,49 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(dateChooserCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(pagos, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(valorMuebles, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(valorInmueble, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel1))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addComponent(jLabel1)))
                                 .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, 0, 268, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)))
+                                    .addComponent(descripcion)
+                                    .addComponent(tipoSeguro)
+                                    .addComponent(prima, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(montopagoseguro, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(86, 86, 86)
-                                .addComponent(jButton6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton5)))
-                        .addGap(46, 46, 46)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(79, 79, 79)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(87, 87, 87)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(736, 736, 736)
                         .addComponent(jButton3)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,16 +443,14 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton6)
-                                .addComponent(jButton5)))
-                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(tipoSeguro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(prima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -465,11 +461,17 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(mora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel12)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel6)
@@ -477,67 +479,53 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(valorInmueble, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(valorMuebles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(pagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(montopagoseguro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton4)
                             .addComponent(jButton3))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
+
             // TODO add your handling code here:
-            seguroSeleccionado= listaSeguros[jComboBox2.getSelectedIndex()];
-            if (seguroSeleccionado==null){
-                JOptionPane.showMessageDialog(rootPane, "Debe seleccionar un tipo de seguro", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else if (clienteSeleccionado==null){
-                JOptionPane.showMessageDialog(rootPane, "Debe seleccionar un cliente", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else
-            {
-                if ((listaBeneficiariosExistentes.isEmpty())&&(listaBeneficiariosNuevos.isEmpty())){
-                    JOptionPane.showMessageDialog(rootPane, "Debe seleccionar o crear al menos un beneficiario para este seguro", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else{            
-                    ContratoHogar nuevoContrato = new ContratoHogar();
-                    nuevoContrato.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
-                    nuevoContrato.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
-                    nuevoContrato.setMora(Double.parseDouble(jTextField1.getText()));
-                    nuevoContrato.setDescripcion(jTextField2.getText());
-                    nuevoContrato.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
-                    nuevoContrato.setValorInmueble(Double.parseDouble(jTextField3.getText()));
-                    nuevoContrato.setValorMuebles(Double.parseDouble(jTextField4.getText()));
-                    nuevoContrato.setNumeroPagos(Integer.parseInt(jTextField5.getText()));
-                    nuevoContrato.setMontoPagoseguro(Double.parseDouble(jTextField6.getText()));
-                    nuevoContrato.insertarEnBaseDatos(clienteSeleccionado,seguroSeleccionado,listaBeneficiariosNuevos,listaBeneficiariosExistentes);
+                     
+                    
+                    actualContrato.setFechaContrato(Date.valueOf(this.formatearFecha(dateChooserCombo1.getText())));
+                    actualContrato.setFechaPago(Date.valueOf(this.formatearFecha(dateChooserCombo2.getText())));
+                    actualContrato.setMora(Double.parseDouble(mora.getText()));
+                    actualContrato.setDescripcion(descripcion.getText());
+                    actualContrato.setVencimiento(Date.valueOf(this.formatearFecha(dateChooserCombo3.getText())));
+                    actualContrato.setValorInmueble(Double.parseDouble(valorInmueble.getText()));
+                    actualContrato.setValorMuebles(Double.parseDouble(valorMuebles.getText()));
+                    actualContrato.setNumeroPagos(Integer.parseInt(pagos.getText()));
+                    actualContrato.setMontoPagoseguro(Double.parseDouble(montopagoseguro.getText()));
+                    actualContrato.renovar();
                     //JOptionPane.showMessageDialog(rootPane, "La operación se finalizó con éxito. Se cerrará esta ventana", "Insersión exitosa", JOptionPane.INFORMATION_MESSAGE);
                     
-                    VisualizadorReportes.mostrarReportePolizaSeguroHogar(nuevoContrato.getIdContratoHogar());
+                    VisualizadorReportes.mostrarReportePolizaSeguroHogar(actualContrato.getIdContratoHogar());
                     this.dispose();
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(RenovarContratoHogar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                
+            
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -545,99 +533,23 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void descripcionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_descripcionFocusGained
         // TODO add your handling code here:
-        /*
-        if (jComboBox3.getItemCount()>0){
-            boolean add = listaBeneficiariosExistentes.add(listaBeneficiarios[jComboBox3.getSelectedIndex()]);
-            actualizarBeneficiarios();
-        }*/
-        SeleccionarBeneficiario sb = new SeleccionarBeneficiario(null, true);
-        ArrayList<Beneficiario> beneficiariosSeleccionados = sb.beneficiariosSeleccionados();
-        if (listaBeneficiariosExistentes!=null){
-            listaBeneficiariosExistentes.addAll(beneficiariosSeleccionados);
-            actualizarBeneficiariosExistentes();
-        }
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        descripcion.setSelectionStart(0);
+        descripcion.setSelectionEnd(descripcion.getText().length());
+    }//GEN-LAST:event_descripcionFocusGained
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:      
-        int r = JOptionPane.showConfirmDialog(rootPane,"Cuando ingrese un nuevo cliente ya no podrá seleccionar a otro de la lista", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION);
-        if (r==JOptionPane.YES_OPTION){
-            Clientes nc = new Clientes(null, true);
-            try {
-                clienteSeleccionado = nc.mostrar();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-        }
-        //JOptionPane.showMessageDialog(rootPane, "Cuando ingrese un nuevo cliente ya no podrá seleccionar a otro de la lista", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void moraFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_moraFocusGained
         // TODO add your handling code here:
-        NuevoBeneficiario nb = new NuevoBeneficiario(null, true);
-        Beneficiario n = nb.obtenerDatosNuevoBeneficiario();
-        if (n!=null){
-            listaBeneficiariosNuevos.add(n);
-            actualizarBeneficiariosNuevos();
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        mora.setSelectionStart(0);
+        mora.setSelectionEnd(mora.getText().length());
+    }//GEN-LAST:event_moraFocusGained
 
-    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+    private void valorInmuebleFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_valorInmuebleFocusGained
         // TODO add your handling code here:
-        jTextField2.setSelectionStart(0);
-        jTextField2.setSelectionEnd(jTextField2.getText().length());
-    }//GEN-LAST:event_jTextField2FocusGained
-
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        // TODO add your handling code here:
-        jTextField1.setSelectionStart(0);
-        jTextField1.setSelectionEnd(jTextField1.getText().length());
-    }//GEN-LAST:event_jTextField1FocusGained
-
-    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
-        // TODO add your handling code here:
-        jTextField3.setSelectionStart(0);
-        jTextField3.setSelectionEnd(jTextField3.getText().length());
-    }//GEN-LAST:event_jTextField3FocusGained
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        SeleccionarCliente sc = new SeleccionarCliente(null, true);
-        this.clienteSeleccionado = sc.seleccionarCliente();
-        if (this.clienteSeleccionado==null){
-            JOptionPane.showMessageDialog(rootPane, "Debe seleccionar al menos un cliente o insertar los datos de un cliente nuevo", "Seleccionar cliente", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-        ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();
-        int[] selectedRows = jTable2.getSelectedRows();
-        for (int i:selectedRows){
-            //eliminar de beneficiarios nuevos
-            listaEliminar.add(listaBeneficiariosNuevos.get(i));
-        }
-        listaBeneficiariosNuevos.removeAll(listaEliminar);
-        actualizarBeneficiariosNuevos();
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        ArrayList<Beneficiario> listaEliminar = new ArrayList<Beneficiario>();
-        int[] selectedRows = jTable1.getSelectedRows();
-        for (int i:selectedRows){
-            //eliminar de beneficiarios nuevos
-            //listaBeneficiariosExistentes.remove(i);
-            listaEliminar.add(listaBeneficiariosExistentes.get(i));
-        }
-        listaBeneficiariosExistentes.removeAll(listaEliminar);
-        actualizarBeneficiariosExistentes();
-    }//GEN-LAST:event_jButton7ActionPerformed
+        valorInmueble.setSelectionStart(0);
+        valorInmueble.setSelectionEnd(valorInmueble.getText().length());
+    }//GEN-LAST:event_valorInmuebleFocusGained
 
     /**
      * @param args the command line arguments
@@ -658,22 +570,24 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField celular;
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField descripcion;
+    private javax.swing.JTextField dpi;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -682,18 +596,18 @@ public class RenovarContratoHogar extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField montopagoseguro;
+    private javax.swing.JTextField mora;
+    private javax.swing.JTextField nit;
+    private javax.swing.JTextField nombre;
+    private javax.swing.JTextField pagos;
+    private javax.swing.JTextField prima;
+    private javax.swing.JTextField tel;
+    private javax.swing.JTextField tipoSeguro;
+    private javax.swing.JTextField valorInmueble;
+    private javax.swing.JTextField valorMuebles;
     // End of variables declaration//GEN-END:variables
 }

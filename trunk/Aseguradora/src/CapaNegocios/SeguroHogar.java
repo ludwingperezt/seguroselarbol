@@ -125,7 +125,7 @@ public class SeguroHogar {
         return a;
     }
     
-    public static SeguroHogar consultarNombreSeguro(int idSeguroBuscado) throws SQLException{
+    public static SeguroHogar consultarDatosSeguro(int idSeguroBuscado) throws SQLException{
         String ret = null;
         SeguroHogar sh = null;
         String consulta = "SELECT Descripcion,Prima FROM seguroHogar WHERE idSeguroHogar = "+Integer.toString(idSeguroBuscado);

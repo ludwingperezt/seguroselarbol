@@ -105,5 +105,62 @@ public class Beneficiario extends Cliente {
         lista = ls.toArray(lista);
         return lista;
     }
+    
+    
+    
+    public static Beneficiario[] listaBeneficiariosPorSeguroHogar(int idcontratohogar) throws SQLException{
+        Beneficiario [] lista;
+        ArrayList<Beneficiario> ls = new ArrayList<Beneficiario>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT b.idBeneficiarios,b.DPI,Nombres,b.Apellidos "
+                + "FROM contratoHogar as ch "
+                + "INNER JOIN seguroHogarBeneficiarios as sb on sb.ContratoHogar_idContratoHogar = ch.idContratoHogar "
+                + "INNER JOIN beneficiarios as b on b.idBeneficiarios = sb.Beneficiarios_idBeneficiarios "
+                + "WHERE ch.idContratoHogar = "+Integer.toString(idcontratohogar);
+        
+        ResultSet rs = cmd.executeQuery(consulta);
+
+        while (rs.next()){
+            Beneficiario bf = new Beneficiario();
+            bf.setIdBeneficiario(rs.getInt(1));
+            bf.setDPI(rs.getString(2));
+            bf.setNombres(rs.getString(3));
+            bf.setApellidos(rs.getString(4));
+            ls.add(bf);
+        }
+        cmd.close();
+        lista = new Beneficiario[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;
+    }
+    
+    public static Beneficiario[] listaBeneficiariosPorSeguroVida(int idcontratovida) throws SQLException{
+        Beneficiario [] lista;
+        ArrayList<Beneficiario> ls = new ArrayList<Beneficiario>();
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT b.idBeneficiarios,b.DPI,Nombres,b.Apellidos "
+                + "FROM contratoVida as ch "
+                + "INNER JOIN seguroVidaBeneficiarios as sb on sb.ContratoVida_idContratoVida = ch.idContratoVida "
+                + "INNER JOIN beneficiarios as b on b.idBeneficiarios = sb.Beneficiarios_idBeneficiarios "
+                + "WHERE ch.idContratoHogar = "+Integer.toString(idcontratovida);
+        
+        ResultSet rs = cmd.executeQuery(consulta);
+
+        while (rs.next()){
+            Beneficiario bf = new Beneficiario();
+            bf.setIdBeneficiario(rs.getInt(1));
+            bf.setDPI(rs.getString(2));
+            bf.setNombres(rs.getString(3));
+            bf.setApellidos(rs.getString(4));
+            ls.add(bf);
+        }
+        cmd.close();
+        lista = new Beneficiario[ls.size()];
+        lista = ls.toArray(lista);
+        return lista;
+    }
+
 }
 
