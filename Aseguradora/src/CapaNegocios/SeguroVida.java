@@ -136,5 +136,24 @@ public class SeguroVida {
         a = lista.toArray(a);
         return a;
     }
+    
+    public static SeguroVida consultarNombreSeguro(int idSeguroBuscado) throws SQLException{
+        String consulta = "SELECT Descripcion,Prima FROM seguroVida WHERE idSeguroVida = "+Integer.toString(idSeguroBuscado);
+        SeguroVida sv = null;
+        
+        Connection con = (Connection) Conexion.obtenerConexion();
+        Statement st = (Statement) con.createStatement();
+        ResultSet rs = st.executeQuery(consulta);
+        
+        if (rs.next()){
+            sv = new SeguroVida();
+            sv.idSeguroVida = idSeguroBuscado;
+            sv.descripcion = rs.getString(1);
+            sv.prima = rs.getDouble(2);
+        }
+        rs.close();
+        st.close();
+        return sv;
+    }
 }
 
