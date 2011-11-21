@@ -144,7 +144,7 @@ public class Beneficiario extends Cliente {
                 + "FROM contratoVida as ch "
                 + "INNER JOIN seguroVidaBeneficiarios as sb on sb.ContratoVida_idContratoVida = ch.idContratoVida "
                 + "INNER JOIN beneficiarios as b on b.idBeneficiarios = sb.Beneficiarios_idBeneficiarios "
-                + "WHERE ch.idContratoHogar = "+Integer.toString(idcontratovida);
+                + "WHERE ch.idContratoVida = "+Integer.toString(idcontratovida);
         
         ResultSet rs = cmd.executeQuery(consulta);
 

@@ -48,35 +48,41 @@ public class RenovarContratoVida extends javax.swing.JDialog {
         if (actualCliente!=null){
             try{
                 SeleccionarPolizaSeguro sps = new SeleccionarPolizaSeguro(null, true);
-                actualContrato = (ContratoVida) sps.cargarSegurosVidaPorCliente(actualCliente);
-                actualContrato.completarDatos();
-                actualSeguro = SeguroVida.consultarDatosSeguro(actualContrato.getIdSeguroVida());
-                listaBeneficiariosExistentes = Beneficiario.listaBeneficiariosPorSeguroVida(actualContrato.getIdContratoVida());
-                
-                tipoSeguro.setText(actualSeguro.getDescripcion());
-                prima.setText(Double.toString(actualSeguro.getPrima()));
-                identificacion.setText(actualContrato.getIdentificacion());
-                
-                mora.setText(Double.toString(actualContrato.getMora()));
-                descripcion.setText(actualContrato.getDescripcion());
-                
-                profesion.setText(actualContrato.getProfesion());
-                
-                pagos.setText(Integer.toString(actualContrato.getNumeroPagos()));
-                montopagoseguro.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
-                
-                dpi.setText(actualCliente.getDPI());
-                nit.setText(actualCliente.getNIT());
-                nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
-                tel.setText(actualCliente.getTelefono());
-                celular.setText(actualCliente.getCelular());
-                
-                actualizarBeneficiariosExistentes();
-                this.setVisible(true);
+                actualContrato = (ContratoVida) sps.cargarSegurosVidaNoActivosPorCliente(actualCliente);
+                if (actualContrato!=null){
+                    actualContrato.completarDatos();
+                    actualSeguro = SeguroVida.consultarDatosSeguro(actualContrato.getIdSeguroVida());
+                    listaBeneficiariosExistentes = Beneficiario.listaBeneficiariosPorSeguroVida(actualContrato.getIdContratoVida());
+
+                    tipoSeguro.setText(actualSeguro.getDescripcion());
+                    prima.setText(Double.toString(actualSeguro.getPrima()));
+                    identificacion.setText(actualContrato.getIdentificacion());
+
+                    mora.setText(Double.toString(actualContrato.getMora()));
+                    descripcion.setText(actualContrato.getDescripcion());
+
+                    profesion.setText(actualContrato.getProfesion());
+
+                    pagos.setText(Integer.toString(actualContrato.getNumeroPagos()));
+                    montopagoseguro.setText(Double.toString(actualContrato.getMontoPagoSeguro()));
+
+                    dpi.setText(actualCliente.getDPI());
+                    nit.setText(actualCliente.getNIT());
+                    nombre.setText(actualCliente.getNombres()+" "+actualCliente.getApellidos());
+                    tel.setText(actualCliente.getTelefono());
+                    celular.setText(actualCliente.getCelular());
+
+                    actualizarBeneficiariosExistentes();
+                    this.setVisible(true);
+                }
+                else{
+                    this.dispose();
+                }
                 
             }
             catch (SQLException ex){
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                this.dispose();
             }
             
         }
