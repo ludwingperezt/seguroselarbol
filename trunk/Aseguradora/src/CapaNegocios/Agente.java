@@ -411,4 +411,20 @@ public class Agente {
             conn.rollback();
         }
     }
+    
+    public void modificarActivo() throws SQLException, FileNotFoundException
+    {
+        Connection conn=Conexion.obtenerConexion();
+        conn.setAutoCommit(false);
+        conn.rollback();
+        PreparedStatement ps = (PreparedStatement) conn.prepareStatement("UPDATE Agente SET ACTIVO='"+this.getActivo()+
+                "' WHERE idAgente="+this.getIdAgente()+";");
+        try {
+            ps.executeUpdate();
+            ps.executeQuery("commit;");
+            conn.commit();
+        } catch (SQLException ex) {
+            conn.rollback();
+        }
+    }
 }
