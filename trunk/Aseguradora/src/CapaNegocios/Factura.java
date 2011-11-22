@@ -89,7 +89,7 @@ public class Factura {
                     +"'"+this.fecha+"',"
                     +"'"+this.descuento+"',"
                     +"'"+this.total+"',"
-                    +")";
+                    +");";
          comandos = con.prepareStatement(cadena);
          comandos.execute();
          comandos = con.prepareStatement("UNLOCK TABLES;");
