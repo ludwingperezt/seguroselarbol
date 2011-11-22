@@ -11,10 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,6 +138,11 @@ public class Agente {
 
     public void setFotografia (File val) {
         this.fotografia = val;
+    }
+    
+    public void setFotografia (byte[] val) throws IOException {
+        
+        this.foto = getImage(val, false);
     }
     
     public int getIdAgente () {
@@ -321,20 +328,87 @@ public class Agente {
     }
     
     
-    public static Image getImage(byte[] bytes, boolean isThumbnail) throws IOException {
+    public static Image getImage(byte[] bytes, boolean isThumbnail) {
         if (bytes!=null){                
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
             Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
             ImageReader reader = (ImageReader) readers.next();
             Object source = bis; // File or InputStream
-            ImageInputStream iis = ImageIO.createImageInputStream(source);
-            reader.setInput(iis, true);
-            ImageReadParam param = reader.getDefaultReadParam();
-            if (isThumbnail) {
-                param.setSourceSubsampling(4, 4, 0, 0);
+            ImageInputStream iis;
+            try {
+                iis = ImageIO.createImageInputStream(source);
+                reader.setInput(iis, true);
+                ImageReadParam param = reader.getDefaultReadParam();
+                if (isThumbnail) {
+                    param.setSourceSubsampling(4, 4, 0, 0);
+                    return reader.read(0, param);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return reader.read(0, param);
         }
         return null;
+    }
+    
+     public static Agente[] consultarListaAgentes() throws SQLException, IOException {
+        Agente[] lista;
+        ArrayList<Agente> ls = new ArrayList<Agente>();
+        java.sql.Connection  con =  Conexion.obtenerConexion();
+        Statement cmd = (Statement) con.createStatement();
+        String consulta = "SELECT * FROM Agente";
+        
+        ResultSet rs = cmd.executeQuery(consulta);
+        
+        while(rs.next()){
+            Agente x = new Agente();
+            x.setIdAgente(rs.getInt(1));
+            x.setDPI(rs.getString(2));
+            x.setNIT(rs.getString(3));
+            x.setNombre(rs.getString(4));
+            x.setDireccion(rs.getString(5));
+            x.setTelefono(rs.getString(6));
+            x.setCelular(rs.getString(7));
+            x.setComision(rs.getDouble(8));
+            x.setSueldoBase(rs.getInt(9));
+            x.setFotografia(rs.getBytes("Fotografia"));
+            x.setUsuario(rs.getString(11));
+            x.setContraseña(rs.getBytes(12));
+            x.setNivelAcceso(rs.getInt(13));
+            x.setActivo(rs.getInt(14));
+            ls.add(x);
+        }
+        
+        lista = new Agente[ls.size()];
+        lista = ls.toArray(lista);        
+        return lista;
+    }
+
+    private void setContraseña(byte[] bytes) {
+        this.Contraseña=bytes;
+    }
+
+    public void modificar() throws SQLException, FileNotFoundException {
+        Connection conn=Conexion.obtenerConexion();
+        conn.setAutoCommit(false);
+        conn.rollback();
+        PreparedStatement ps = (PreparedStatement) conn.prepareStatement("UPDATE Agente SET DPI='"+
+                this.getDPI()+"', NIT='"+this.getNIT()+"', NOMBRE='"+this.getNombre()+"', DIRECCION='"+
+                this.getDireccion()+"', TELEFONO='"+this.getTelefono()+"', CELULAR='"+this.getCelular()+"', COMISION='"+
+                this.getComision()+"', SUELDOBASE='"+this.getSueldoBase()+"', FOTOGRAFIA=?, USUARIO='"+this.getUsuario()+"', CONTRASEÑA=?, NIVELACCESO='"+
+                this.getNivelAcceso()+"', ACTIVO='"+this.getActivo()+"' WHERE idAgente="+this.getIdAgente()+";");
+        try {
+            FileInputStream fis = new FileInputStream(fotografia);
+            ps.setBinaryStream(1, fis, (int) fotografia.length());
+            ps.setBlob(2, new SerialBlob(Contraseña));
+            ps.executeUpdate();
+            ps.executeQuery("commit;");            
+            ResultSet rs = ps.executeQuery("Select idAgente from agente WHERE NIT LIKE '"+this.getNIT()+"';");            
+            rs.next();
+            int index = rs.getInt(1);
+            this.setIdAgente(index);
+            conn.commit();
+        } catch (SQLException ex) {
+            conn.rollback();
+        }
     }
 }

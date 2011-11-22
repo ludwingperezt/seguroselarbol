@@ -39,7 +39,7 @@
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
           <Properties>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor predeterminado"/>
+              <Color id="Cursor Por defecto"/>
             </Property>
             <Property name="name" type="java.lang.String" value="jTabbedPane1" noResource="true"/>
           </Properties>
@@ -85,28 +85,35 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jButton3" min="-2" pref="190" max="-2" attributes="0"/>
-                                          <EmptySpace min="25" pref="25" max="25" attributes="0"/>
-                                          <Component id="jButton4" min="-2" pref="212" max="-2" attributes="0"/>
-                                          <EmptySpace min="6" pref="6" max="6" attributes="0"/>
-                                          <Component id="jButton12" min="-2" pref="174" max="-2" attributes="0"/>
-                                          <EmptySpace min="26" pref="26" max="26" attributes="0"/>
-                                          <Component id="jButton30" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jButton34" min="-2" pref="190" max="-2" attributes="0"/>
-                                          <EmptySpace min="25" pref="25" max="25" attributes="0"/>
-                                          <Component id="jButton5" min="-2" pref="212" max="-2" attributes="0"/>
-                                          <EmptySpace min="6" pref="6" max="6" attributes="0"/>
-                                          <Component id="jButton13" min="-2" pref="174" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
                                           <Component id="jButton27" min="-2" pref="190" max="-2" attributes="0"/>
                                           <EmptySpace min="25" pref="25" max="25" attributes="0"/>
                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                               <Component id="jButton35" alignment="0" max="32767" attributes="1"/>
-                                              <Component id="jButton6" alignment="0" max="32767" attributes="1"/>
                                               <Component id="jButton37" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jButton6" alignment="0" min="-2" max="-2" attributes="1"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jButton3" min="-2" pref="190" max="-2" attributes="0"/>
+                                                  <EmptySpace min="25" pref="25" max="25" attributes="0"/>
+                                                  <Component id="jButton4" min="-2" pref="212" max="-2" attributes="0"/>
+                                                  <EmptySpace min="6" pref="6" max="6" attributes="0"/>
+                                                  <Component id="jButton12" min="-2" pref="174" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jButton34" min="-2" pref="190" max="-2" attributes="0"/>
+                                                  <EmptySpace min="25" pref="25" max="25" attributes="0"/>
+                                                  <Component id="jButton5" min="-2" pref="212" max="-2" attributes="0"/>
+                                                  <EmptySpace min="6" pref="6" max="6" attributes="0"/>
+                                                  <Component id="jButton13" min="-2" pref="174" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="jButton38" alignment="0" max="32767" attributes="1"/>
+                                              <Component id="jButton30" alignment="0" max="32767" attributes="1"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -136,7 +143,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jButton34" min="-2" max="-2" attributes="0"/>
                               <Component id="jButton5" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton13" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jButton13" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButton38" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="11" pref="11" max="11" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -284,6 +294,15 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton37ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton38">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="jButton38.text"/>
+                    <Property name="name" type="java.lang.String" value="jButton38" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton38ActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -787,8 +806,15 @@
                 <LineBorder/>
               </Border>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Mano"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="lblFoto" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFotoMouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblFotoMousePressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
