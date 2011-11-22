@@ -1114,8 +1114,6 @@ public class AseguradoraView extends FrameView {
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here
-        SeleccionarCliente lista= new SeleccionarCliente(this.getFrame(), true);
-        lista.setVisible(true);
         FacturaF ls= new FacturaF(this.getFrame(), true);
         ls.setVisible(true);
     }//GEN-LAST:event_jButton24ActionPerformed
