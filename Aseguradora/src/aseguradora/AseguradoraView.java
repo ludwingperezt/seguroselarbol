@@ -186,13 +186,6 @@ public class AseguradoraView extends FrameView {
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem19 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -838,49 +831,6 @@ public class AseguradoraView extends FrameView {
 
         menuBar.add(fileMenu);
 
-        jMenu2.setText(resourceMap.getString("jMenu2.text")); // NOI18N
-        jMenu2.setName("jMenu2"); // NOI18N
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
-
-        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
-        jMenuItem5.setName("jMenuItem5"); // NOI18N
-        jMenu2.add(jMenuItem5);
-
-        jSeparator1.setName("jSeparator1"); // NOI18N
-        jMenu2.add(jSeparator1);
-
-        jMenuItem19.setText(resourceMap.getString("jMenuItem19.text")); // NOI18N
-        jMenuItem19.setName("jMenuItem19"); // NOI18N
-        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem19ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem19);
-
-        menuBar.add(jMenu2);
-
-        jMenu4.setText(resourceMap.getString("jMenu4.text")); // NOI18N
-        jMenu4.setName("jMenu4"); // NOI18N
-
-        jMenuItem17.setText(resourceMap.getString("jMenuItem17.text")); // NOI18N
-        jMenuItem17.setName("jMenuItem17"); // NOI18N
-        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem17ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem17);
-
-        jSeparator3.setName("jSeparator3"); // NOI18N
-        jMenu4.add(jSeparator3);
-
-        menuBar.add(jMenu4);
-
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
@@ -983,21 +933,6 @@ public class AseguradoraView extends FrameView {
         }
     }
     
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jMenu2ActionPerformed
-
-    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
-        // TODO add your handling code here:
-        VisualizadorReportes.mostrarReporteBeneficiariosPorSeguroHogar();
-    }//GEN-LAST:event_jMenuItem17ActionPerformed
-
-    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        // TODO add your handling code here:
-        VisualizadorReportes.mostrarReporteMarcasMasAseguradas();
-    }//GEN-LAST:event_jMenuItem19ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         StringConexion sc = new StringConexion(null, true);
@@ -1281,12 +1216,7 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1295,8 +1225,6 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JPanel mainPanel;
