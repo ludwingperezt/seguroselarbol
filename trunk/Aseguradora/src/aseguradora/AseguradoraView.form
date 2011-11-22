@@ -39,7 +39,7 @@
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
           <Properties>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Cursor predeterminado"/>
             </Property>
             <Property name="name" type="java.lang.String" value="jTabbedPane1" noResource="true"/>
           </Properties>
@@ -367,12 +367,18 @@
                     <Property name="text" type="java.lang.String" resourceKey="jButton25.text"/>
                     <Property name="name" type="java.lang.String" value="jButton25" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton25ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton26">
                   <Properties>
                     <Property name="text" type="java.lang.String" resourceKey="jButton26.text"/>
                     <Property name="name" type="java.lang.String" value="jButton26" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton26ActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -816,7 +822,7 @@
               </Border>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor de Mano"/>
+              <Color id="Cursor predeterminado"/>
             </Property>
             <Property name="name" type="java.lang.String" value="lblFoto" noResource="true"/>
           </Properties>

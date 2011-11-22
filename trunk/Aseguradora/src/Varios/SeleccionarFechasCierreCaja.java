@@ -16,10 +16,10 @@ import java.sql.Date;
  *
  * @author HP G42
  */
-public class SeleccionarFechas extends javax.swing.JDialog {
+public class SeleccionarFechasCierreCaja extends javax.swing.JDialog {
 
     /** Creates new form SeleccionarFechas */
-    public SeleccionarFechas(java.awt.Frame parent, boolean modal) {
+    public SeleccionarFechasCierreCaja(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -59,7 +59,7 @@ public class SeleccionarFechas extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarFechas.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(SeleccionarFechasCierreCaja.class);
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +120,7 @@ public class SeleccionarFechas extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Date fecha1 = Date.valueOf(this.formatearFecha(dateChooserCombo1.getText()));
-        VisualizadorReportes.mostrarReporteHistorialEntre(fecha1);
+        VisualizadorReportes.mostrarReporteCierreCaja(fecha1);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -146,13 +146,13 @@ public class SeleccionarFechas extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarFechas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarFechasCierreCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarFechas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarFechasCierreCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarFechas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarFechasCierreCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarFechas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarFechasCierreCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -160,7 +160,7 @@ public class SeleccionarFechas extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                SeleccionarFechas dialog = new SeleccionarFechas(new javax.swing.JFrame(), true);
+                SeleccionarFechasCierreCaja dialog = new SeleccionarFechasCierreCaja(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
