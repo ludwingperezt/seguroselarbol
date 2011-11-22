@@ -24,6 +24,7 @@ import ModuloSeguros.*;
 import ModuloClientes.*;
 import CapaNegocios.*;
 import Varios.SeleccionarFechas;
+import Varios.SeleccionarFechasCierreCaja;
 import Varios.VisualizadorReportes;
 import com.mysql.jdbc.Connection;
 //import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl; // QUIEN FUE EL GENIO Q USO ESTO??? 
@@ -424,9 +425,19 @@ public class AseguradoraView extends FrameView {
 
         jButton25.setText(resourceMap.getString("jButton25.text")); // NOI18N
         jButton25.setName("jButton25"); // NOI18N
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton25ActionPerformed(evt);
+            }
+        });
 
         jButton26.setText(resourceMap.getString("jButton26.text")); // NOI18N
         jButton26.setName("jButton26"); // NOI18N
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -772,7 +783,7 @@ public class AseguradoraView extends FrameView {
         lblFoto.setText(resourceMap.getString("lblFoto.text")); // NOI18N
         lblFoto.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         lblFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        lblFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblFoto.setName("lblFoto"); // NOI18N
         lblFoto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1212,6 +1223,7 @@ public class AseguradoraView extends FrameView {
 
     private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
         // TODO add your handling code here:
+        VisualizadorReportes.mostrarReporteSegurosPorAgente();
     }//GEN-LAST:event_jButton32ActionPerformed
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
@@ -1219,6 +1231,16 @@ public class AseguradoraView extends FrameView {
         acagente ventana=new acagente(this.getFrame(), true);
         ventana.setVisible(true);
     }//GEN-LAST:event_jButton33ActionPerformed
+
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        // TODO add your handling code here:
+        SeleccionarFechasCierreCaja sfc = new SeleccionarFechasCierreCaja(null, true);
+        sfc.setVisible(true);
+    }//GEN-LAST:event_jButton26ActionPerformed
+
+    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton25ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
