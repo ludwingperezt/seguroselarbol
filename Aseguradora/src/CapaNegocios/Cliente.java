@@ -189,7 +189,7 @@ public class Cliente {
     public static Cliente[] consultarListaClientes() throws SQLException {
         Cliente[] lista;
         ArrayList<Cliente> ls = new ArrayList<Cliente>();
-        java.sql.Connection  con =  Conexion.iniciarConexion();
+        java.sql.Connection  con =  Conexion.obtenerConexion();
         Statement cmd = (Statement) con.createStatement();
         String consulta = "SELECT * FROM Cliente";
         
@@ -222,9 +222,9 @@ public class Cliente {
     }
 
     public boolean modificar() throws SQLException {
-        java.sql.Connection con=Conexion.iniciarConexion();
+        java.sql.Connection con=Conexion.obtenerConexion();
         con.setAutoCommit(false);
-        Statement st=(Statement) Conexion.iniciarConexion().createStatement();
+        Statement st=(Statement) con.createStatement();
         try {            
             st.execute("Begin");
             st.execute("UPDATE Cliente SET DPI="+this.getDPI()+", NIT='"+this.getNIT()+"', Nombres='"+this.getNombres()+"', Apellidos='"+this.getApellidos()+

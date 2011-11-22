@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 public class Agente extends javax.swing.JDialog {
     ImageIcon img[];
     CapaNegocios.Agente nuevo;
+    boolean mod;
     boolean listo=false;
     /** Creates new form Agente */
     public Agente(java.awt.Frame parent, boolean modal) {
@@ -81,9 +82,10 @@ public class Agente extends javax.swing.JDialog {
         lblIcon1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(Agente.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(aseguradora.AseguradoraApp.class).getContext().getResourceMap(Agente.class);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
@@ -101,6 +103,7 @@ public class Agente extends javax.swing.JDialog {
         jTextField8.setName("jTextField8"); // NOI18N
 
         jTextField7.setText(resourceMap.getString("jTextField7.text")); // NOI18N
+        jTextField7.setToolTipText(resourceMap.getString("jTextField7.toolTipText")); // NOI18N
         jTextField7.setName("jTextField7"); // NOI18N
 
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
@@ -380,8 +383,7 @@ public class Agente extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -441,25 +443,53 @@ public class Agente extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (listo){
-            nuevo.setDPI(jTextField3.getText());
-            nuevo.setNIT(jTextField4.getText());
-            nuevo.setNombre(jTextField1.getText());
-            nuevo.setDireccion(jTextField2.getText());
-            nuevo.setTelefono(jTextField5.getText());
-            nuevo.setCelular(jTextField6.getText());
-            nuevo.setComision(Double.valueOf(jTextField7.getText()));
-            nuevo.setSueldoBase(Double.valueOf(jTextField8.getText()));
-            nuevo.setUsuario(jTextField9.getText());
-            nuevo.setContraseña(jPasswordField1.getText());
-            nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
-            nuevo.setActivo(1);
-            try {
-                nuevo.guardarAgente();
-                this.dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+            if (!mod){
+                nuevo.setDPI(jTextField3.getText());
+                nuevo.setNIT(jTextField4.getText());
+                nuevo.setNombre(jTextField1.getText());
+                nuevo.setDireccion(jTextField2.getText());
+                nuevo.setTelefono(jTextField5.getText());
+                nuevo.setCelular(jTextField6.getText());
+                nuevo.setComision(Double.valueOf(jTextField7.getText()));
+                nuevo.setSueldoBase(Double.valueOf(jTextField8.getText()));
+                nuevo.setUsuario(jTextField9.getText());
+                nuevo.setContraseña(jPasswordField1.getText());
+                nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
+                nuevo.setActivo(1);
+                try {
+                    nuevo.guardarAgente();
+                    this.dispose();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                dispose();
+            }
+            else
+            {
+                nuevo.setDPI(jTextField3.getText());
+                nuevo.setNIT(jTextField4.getText());
+                nuevo.setNombre(jTextField1.getText());
+                nuevo.setDireccion(jTextField2.getText());
+                nuevo.setTelefono(jTextField5.getText());
+                nuevo.setCelular(jTextField6.getText());
+                nuevo.setComision(Double.valueOf(jTextField7.getText()));
+                nuevo.setSueldoBase(Double.valueOf(jTextField8.getText()));
+                //nuevo.setUsuario(jTextField9.getText());
+                if ((jPasswordField1.getText().length()>0) && (jPasswordField1.getText().equals(jPasswordField2.getText())))
+                    nuevo.setContraseña(jPasswordField1.getText());
+                nuevo.setNivelAcceso(jComboBox1.getSelectedIndex()+1);
+                nuevo.setActivo(1);
+                try {
+                    nuevo.modificar();
+                     dispose();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Agente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
             }
         }
         else        
@@ -468,7 +498,7 @@ public class Agente extends javax.swing.JDialog {
 
     private void jPasswordField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2FocusLost
         // TODO add your handling code here:
-        if (!jPasswordField1.getText().equals(jPasswordField2.getText()))
+        if (!jPasswordField1.getText().equals(jPasswordField2.getText()) || jPasswordField1.getText().length()==0)
         {
             jPasswordField1.requestFocus();
             listo=false;
@@ -574,4 +604,36 @@ public class Agente extends javax.swing.JDialog {
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblIcon1;
     // End of variables declaration//GEN-END:variables
+
+    public void editarAgente(CapaNegocios.Agente seleccionado, boolean b) {
+        jTextField1.setText(seleccionado.getNombre());
+        jTextField3.setText(seleccionado.getNIT());
+        jTextField4.setText(seleccionado.getDPI());
+        jTextField2.setText(seleccionado.getDireccion());
+        jTextField5.setText(seleccionado.getTelefono());
+        jTextField6.setText(seleccionado.getCelular());
+        jTextField7.setText(String.valueOf(seleccionado.getComision()));
+        jTextField8.setText(String.valueOf(seleccionado.getSueldoBase()));
+        jTextField9.setText(seleccionado.getUsuario());
+        jTextField9.setEnabled(false);
+        jComboBox1.setSelectedIndex(seleccionado.getNivelAcceso()-1);
+        if (seleccionado.getFotografia()!=null)
+            lblFoto.setIcon(new ImageIcon(seleccionado.getFotografia()));
+        else
+            cargarFoto(new File(System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"nofoto.gif"));
+        
+        lblFoto.setSize(lblFoto.getIcon().getIconWidth(), lblFoto.getIcon().getIconHeight());
+        if (!b)
+        {
+            jTextField3.setEnabled(false);
+            jTextField4.setEnabled(false);
+            jTextField1.setEnabled(false);
+            jTextField7.setEnabled(false);
+            jTextField8.setEnabled(false);
+            jComboBox1.setEnabled(false);
+        }
+        nuevo=seleccionado;
+        mod=true;
+        this.setVisible(true);
+    }
 }

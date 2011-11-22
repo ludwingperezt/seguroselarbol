@@ -5,6 +5,7 @@
 package aseguradora;
 
 import CapaDatos.Conexion;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +29,11 @@ import com.mysql.jdbc.Connection;
 //import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl; // QUIEN FUE EL GENIO Q USO ESTO??? 
 import java.awt.Component;
 import java.awt.Image;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import moduloagentes.SeleccionarAgente;
 /**
  * The application's main frame.
  */
@@ -146,6 +149,7 @@ public class AseguradoraView extends FrameView {
         jButton34 = new javax.swing.JButton();
         jButton35 = new javax.swing.JButton();
         jButton37 = new javax.swing.JButton();
+        jButton38 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jButton24 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
@@ -314,6 +318,14 @@ public class AseguradoraView extends FrameView {
             }
         });
 
+        jButton38.setText(resourceMap.getString("jButton38.text")); // NOI18N
+        jButton38.setName("jButton38"); // NOI18N
+        jButton38.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton38ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -333,26 +345,30 @@ public class AseguradoraView extends FrameView {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)
-                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(jButton30))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton34, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)
-                                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jButton35, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton37, javax.swing.GroupLayout.Alignment.LEADING)))))
+                                    .addComponent(jButton37, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton34, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButton38, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton30, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -373,7 +389,9 @@ public class AseguradoraView extends FrameView {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton34)
                     .addComponent(jButton5)
-                    .addComponent(jButton13))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton13)
+                        .addComponent(jButton38)))
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton27)
@@ -738,7 +756,16 @@ public class AseguradoraView extends FrameView {
         lblFoto.setText(resourceMap.getString("lblFoto.text")); // NOI18N
         lblFoto.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         lblFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblFoto.setName("lblFoto"); // NOI18N
+        lblFoto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFotoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblFotoMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -900,6 +927,12 @@ public class AseguradoraView extends FrameView {
             ImageIcon imgI=new ImageIcon(logueado.getFotografia().getScaledInstance(108, 138, Image.SCALE_DEFAULT));
             lblFoto.setIcon(imgI);
         }        
+        else{
+            File f=new File(System.getProperty("user.dir")+File.separator+"imagenes"+File.separator+"nofoto.gif");
+            logueado.setFotografia(f);
+            Image imI=new ImageIcon(f.getAbsolutePath()).getImage().getScaledInstance(108, 138, Image.SCALE_DEFAULT);
+            lblFoto.setIcon(new ImageIcon(imI));
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void ControlUsuario(){      
@@ -1132,6 +1165,31 @@ public class AseguradoraView extends FrameView {
         PivoteCancelacion.cancelarSeguroAuto();
     }//GEN-LAST:event_jButton23ActionPerformed
 
+    private void jButton38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton38ActionPerformed
+        try {
+            // TODO add your handling code here:
+            SeleccionarAgente sa = new SeleccionarAgente(null, true);
+            Agente seleccionado = sa.seleccionarAgente();
+            if (seleccionado !=null){
+                    moduloagentes.Agente na = new moduloagentes.Agente(getFrame(), true);
+                    na.editarAgente(seleccionado,true);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AseguradoraView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton38ActionPerformed
+
+    private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
+        // TODO add your handling code here:
+        moduloagentes.Agente ag=new moduloagentes.Agente(this.getFrame(), true);
+        ag.editarAgente(logueado, false);
+    }//GEN-LAST:event_lblFotoMouseClicked
+
+    private void lblFotoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMousePressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_lblFotoMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -1164,6 +1222,7 @@ public class AseguradoraView extends FrameView {
     private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton36;
     private javax.swing.JButton jButton37;
+    private javax.swing.JButton jButton38;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
