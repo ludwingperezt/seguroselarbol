@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteFactura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="53"/>
 	<parameter name="idFact" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -124,21 +124,21 @@ where f.idFactura = $P{idFact};]]>
 				<staticText>
 					<reportElement mode="Opaque" x="294" y="156" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement>
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descuento]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="294" y="176" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement>
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Subtotal]]></text>
 				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="294" y="196" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement>
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Total]]></text>
 				</staticText>
@@ -159,63 +159,63 @@ where f.idFactura = $P{idFact};]]>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="407" y="156" width="148" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Descuento}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="407" y="176" width="148" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Subtotal}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="407" y="196" width="148" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="54" y="86" width="46" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement textAlignment="Center">
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[NIT]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="113" y="86" width="262" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{NIT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="113" y="106" width="262" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Apellidos}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="113" y="126" width="262" height="20"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Nombres}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="54" y="106" width="46" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<reportElement mode="Opaque" x="25" y="106" width="75" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement textAlignment="Center">
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Apellidos]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="54" y="126" width="46" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
+					<reportElement mode="Opaque" x="25" y="126" width="75" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 					<textElement textAlignment="Center">
-						<font size="14" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Nombres]]></text>
 				</staticText>
@@ -263,28 +263,28 @@ where f.idFactura = $P{idFact};]]>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="185" y="27" width="190" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Tipo de seguro}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="185" y="47" width="190" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Tipo de pòliza}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="185" y="7" width="190" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Identificacion}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="185" y="67" width="190" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Mora}]]></textFieldExpression>
 			</textField>
@@ -294,28 +294,28 @@ where f.idFactura = $P{idFact};]]>
 			<staticText>
 				<reportElement mode="Opaque" x="61" y="27" width="109" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tipo de seguro]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="61" y="47" width="109" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tipo de pòliza]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="61" y="7" width="109" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Identificacion]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="124" y="67" width="46" height="20" forecolor="#006699" backcolor="#E6E6E6"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mora]]></text>
 			</staticText>
