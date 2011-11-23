@@ -81,7 +81,7 @@ public class DetalleFactura {
                     +"'"+this.idContratoAuto+"',"
                     +"'"+this.idContratoVida+"',"
                     +"'"+this.idContratoHogar+"',"
-                    +"'"+this.subtotal+"',"
+                    +"'"+this.subtotal+"'"
                     +")";
          comandos = con.prepareStatement(cadena);
          comandos.execute();

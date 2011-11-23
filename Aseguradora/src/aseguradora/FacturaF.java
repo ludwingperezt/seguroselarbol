@@ -10,6 +10,7 @@
  */
 package aseguradora;
 import CapaNegocios.*;
+import CapaNegocios.DetalleFactura;
 import ModuloClientes.Clientes;
 import ModuloClientes.SeleccionarCliente;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,6 +35,7 @@ public class FacturaF extends javax.swing.JDialog {
     CapaNegocios.Factura Fac=new CapaNegocios.Factura();
     CapaNegocios.DetalleFactura Det=new CapaNegocios.DetalleFactura();
     private Cliente clienteFactura = null;
+    double total,descuentoTotal;
     Integer idSeguro=0;
     String tipoSeguro=null;
     Serie a;
@@ -77,6 +80,7 @@ public class FacturaF extends javax.swing.JDialog {
             dfm1.addColumn("Subtotal");
             dfm1.addColumn("Tipo Seguro");
             dfm1.addColumn("Descripcion");
+            jTable2.setModel(dfm1);
         }
                    ArrayList<String> seriesActivas = new ArrayList<String>();
         try {
@@ -152,6 +156,8 @@ public class FacturaF extends javax.swing.JDialog {
         jTextField16 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        jTextField17 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -377,6 +383,22 @@ public class FacturaF extends javax.swing.JDialog {
         jLabel9.setName("jLabel9"); // NOI18N
 
         jTextField4.setName("jTextField4"); // NOI18N
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setText(resourceMap.getString("jLabel24.text")); // NOI18N
+        jLabel24.setName("jLabel24"); // NOI18N
+
+        jTextField17.setEnabled(false);
+        jTextField17.setName("jTextField17"); // NOI18N
+        jTextField17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField17ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -393,14 +415,7 @@ public class FacturaF extends javax.swing.JDialog {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel10)
                                         .addGap(619, 619, 619))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addGap(580, 580, 580)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -430,7 +445,7 @@ public class FacturaF extends javax.swing.JDialog {
                                                         .addComponent(jLabel23)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))))
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE))
                                         .addGap(22, 22, 22)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -491,7 +506,19 @@ public class FacturaF extends javax.swing.JDialog {
                                         .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)))
                                 .addGap(15, 15, 15))
                             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(164, 164, 164))))
+                        .addGap(164, 164, 164))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel24)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(330, 330, 330))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -571,19 +598,23 @@ public class FacturaF extends javax.swing.JDialog {
                             .addComponent(jLabel22)
                             .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel21)
-                            .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)))
+                            .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(103, 103, 103)
                         .addComponent(jButton4)
                         .addGap(86, 86, 86)
                         .addComponent(jButton5)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -684,6 +715,9 @@ private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     insert[5]=this.jTextField14.getText();
     insert[6]=tipoSeguro;
     insert[7]=this.jTextField15.getText();
+    descuentoTotal = descuentoTotal+ Double.valueOf(this.jTextField16.getText());
+    total = total + Double.parseDouble(this.jTextField14.getText());
+    this.jTextField17.setText(String.valueOf(total));
     dfm1.addRow(insert);
     this.jTable2.setModel(dfm1);
     this.jButton2.setEnabled(true);
@@ -699,6 +733,47 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 // TODO add your handling code here:
     int idSerie= a.getIdSerie();
     int correlativo=Integer.parseInt(this.jTextField1.getText());
+    int idAgente = Integer.parseInt(this.jTextField4.getText());
+    String cl1 = this.dateChooserCombo1.getText(); 
+    int largo = cl1.length();
+     String fecha1="";
+                if (largo==7)
+                {
+                    fecha1="20"+cl1.substring(largo-2,largo)+"-"+cl1.substring(largo-5,largo-3)+"/"+cl1.substring(largo-7,largo-6);
+                }
+                if (largo==8)
+                {
+                    fecha1="20"+cl1.substring(largo-2,largo)+"/"+cl1.substring(largo-5,largo-3)+"/"+cl1.substring(largo-8,largo-6);
+                }
+      Date fechaC = null;
+      //fechaC= Date.valueOf(fecha1);
+    Factura Fact = new Factura();
+    Fact.setCorrelativo(correlativo);
+    Fact.setDescuento(descuentoTotal);
+    Fact.setFecha(fechaC);
+    Fact.setIdAgente(idAgente);
+    Fact.setIdSerie(idSerie);
+    Fact.setTotal(total);
+    DetalleFactura detallef= new DetalleFactura();
+    try{
+    Fact.setidFactura();
+    
+    }
+    catch(SQLException ex){
+       JOptionPane.showMessageDialog(this, "Error idFactura!", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+       DetalleFactura nDetalle = new DetalleFactura();
+       nDetalle.setIdRecibo(Fact.getIdFactura());
+       nDetalle.setSubtotal(Integer.parseInt(this.jTextField17.getText()));
+    }
+    try{
+       Fact.insertarFactura();
+      // VisualizadorReportes.
+       JOptionPane.showMessageDialog(this, "Pago realizado con Exito!", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    catch(SQLException ex){
+        JOptionPane.showMessageDialog(this, "error en Insercion!", "Advertencia",JOptionPane.WARNING_MESSAGE);
+    }
+    
     
     
 }//GEN-LAST:event_jButton2ActionPerformed
@@ -708,6 +783,15 @@ private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     subtotal=pago - Double.parseDouble(jTextField16.getText());
     jTextField14.setText(String.valueOf(subtotal));
 }//GEN-LAST:event_jTextField16ActionPerformed
+
+private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+// TODO add your handling code here:
+    jTextField4.setEnabled(true);
+}//GEN-LAST:event_jTextField4ActionPerformed
+
+private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_jTextField17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -774,6 +858,7 @@ private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -794,6 +879,7 @@ private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField16;
+    private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
